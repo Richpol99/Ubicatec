@@ -448,27 +448,25 @@
             /* Leyenda expandida desde la pestaña */
             .leyenda-marcadores {
                 position: fixed;
-                bottom: 0;
+                bottom: 60px;
                 left: 50%;
-                transform: translateX(-50%) translateY(calc(100% + 60px));
+                transform: translateX(-50%);
                 margin: 0;
                 border-radius: 25px 25px 0 0;
                 max-height: 50vh;
                 overflow-y: auto;
                 z-index: 1000;
-                transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 padding: 0 15px 10px 15px;
                 background: #007bff;
                 box-shadow: 0 -10px 40px rgba(0, 123, 255, 0.4);
                 border: 1px solid rgba(0, 123, 255, 0.2);
                 min-width: 200px;
                 max-width: 90vw;
-                opacity: 0;
+                display: none;
             }
             
             .leyenda-marcadores.show {
-                transform: translateX(-50%) translateY(60px);
-                opacity: 1;
+                display: block;
             }
             
             .leyenda-marcadores h4 {
