@@ -404,8 +404,23 @@
         /* Responsive design para móviles */
         @media (max-width: 768px) {
             .leyenda-marcadores {
-                display: none;
+                display: none !important;
             }
+            
+            .leyenda-tab {
+                display: flex !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .leyenda-marcadores {
+                display: block !important;
+            }
+            
+            .leyenda-tab {
+                display: none !important;
+            }
+        }
             
             /* Pestaña de leyenda en móviles */
             .leyenda-tab {
@@ -443,6 +458,41 @@
             
             .leyenda-tab.expanded i {
                 transform: rotate(180deg);
+            }
+            
+            /* Botón de scroll hacia arriba */
+            .scroll-to-top {
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                background: #007bff;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+                transition: all 0.3s ease;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            
+            .scroll-to-top.show {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .scroll-to-top:hover {
+                background: #0056b3;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
             }
             
             /* Modal de leyenda */
@@ -500,53 +550,6 @@
                 transform: scale(1.1);
             }
             
-            .leyenda-marcadores {
-                display: none;
-            }
-            
-            .leyenda-marcadores h4 {
-                font-size: 16px;
-                margin: 15px 0 12px 0;
-                text-align: center;
-                color: white;
-                font-weight: 700;
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-            }
-            
-            .leyenda-item {
-                margin-bottom: 8px;
-                padding: 8px 10px;
-                background: rgba(255, 255, 255, 0.95);
-                border-radius: 8px;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                transition: all 0.2s ease;
-                backdrop-filter: blur(10px);
-            }
-            
-            .leyenda-item:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                background: rgba(255, 255, 255, 1);
-            }
-            
-            .leyenda-color {
-                width: 20px;
-                height: 20px;
-                margin-right: 10px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-            }
-            
-            .leyenda-icon {
-                width: 12px;
-                height: 12px;
-            }
-            
-            .leyenda-texto {
-                font-size: 13px;
-                font-weight: 600;
-                color: #2c3e50;
-            }
             
             /* Ajustar el mapa para móviles */
             #map {
@@ -638,6 +641,11 @@
                         <span>Leyenda de Marcadores</span>
                     </div>
                     
+                    <!-- Botón de scroll hacia arriba -->
+                    <button class="scroll-to-top" id="scrollToTop" style="display: none;">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    
                     <!-- Modal de leyenda -->
                     <div class="leyenda-modal" id="leyendaModal">
                         <div class="leyenda-content">
@@ -682,7 +690,7 @@
                         </div>
                     </div>
                     
-                    <!-- Leyenda de colores (oculta en móviles) -->
+                    <!-- Leyenda de colores (solo para desktop) -->
                     <div class="leyenda-marcadores" id="leyendaMarcadores">
                         <h4>Leyenda de Marcadores</h4>
                         <div class="leyenda-item">
@@ -744,15 +752,18 @@
             const leyendaModal = document.getElementById('leyendaModal');
             const leyendaClose = document.getElementById('leyendaClose');
             const leyendaMarcadores = document.getElementById('leyendaMarcadores');
+            const scrollToTop = document.getElementById('scrollToTop');
+            const mapSection = document.getElementById('mapa');
             
             // Mostrar/ocultar pestaña en móviles
             function checkScreenSize() {
                 if (window.innerWidth <= 768) {
+                    // Móvil: mostrar pestaña, ocultar leyenda flotante
                     leyendaTab.style.display = 'flex';
                     leyendaMarcadores.style.display = 'none';
                 } else {
+                    // Desktop: ocultar pestaña, mostrar leyenda flotante
                     leyendaTab.style.display = 'none';
-                    // En desktop, la leyenda siempre está visible
                     leyendaMarcadores.style.display = 'block';
                 }
             }
@@ -760,6 +771,36 @@
             // Verificar tamaño de pantalla al cargar y al redimensionar
             checkScreenSize();
             window.addEventListener('resize', checkScreenSize);
+            
+            // Detectar scroll en la sección del mapa
+            function handleScroll() {
+                if (window.innerWidth <= 768 && mapSection) {
+                    const rect = mapSection.getBoundingClientRect();
+                    const isInMapSection = rect.top <= 0 && rect.bottom > 0;
+                    
+                    if (isInMapSection) {
+                        scrollToTop.classList.add('show');
+                    } else {
+                        scrollToTop.classList.remove('show');
+                    }
+                } else {
+                    scrollToTop.classList.remove('show');
+                }
+            }
+            
+            // Escuchar eventos de scroll
+            window.addEventListener('scroll', handleScroll);
+            
+            // Scroll hacia arriba al hacer click en el botón
+            scrollToTop.addEventListener('click', function() {
+                const searchSection = document.querySelector('.search-section');
+                if (searchSection) {
+                    searchSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
             
             // Abrir modal al hacer click en la pestaña
             leyendaTab.addEventListener('click', function() {
