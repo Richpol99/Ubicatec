@@ -234,8 +234,8 @@ function initialize360Viewer(imagen360) {
     modal360.className = 'modal';
     modal360.style.display = 'none';
     modal360.innerHTML = `
-        <div class="modal-content" style="width: 90%; height: 90%; max-width: none; max-height: none;">
-            <span class="close-button" id="cerrar360Btn" style="position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; z-index: 1001; color: white;">&times;</span>
+        <div class="modal-content">
+            <span class="close-button" id="cerrar360Btn" style="position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; z-index: 1002; color: white;">&times;</span>
             <div id="viewer360" style="width: 100%; height: 100%;"></div>
         </div>
     `;
