@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Ubica tu Aula</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <!-- Optimizaciones de rendimiento -->
     <meta name="description" content="Encuentra tu aula en el campus del TecNM Puebla">
     <meta name="robots" content="index, follow">
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="css/markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* Estilos para la navbar con transparencia */
@@ -282,6 +283,118 @@
             height: 16px;
             filter: brightness(0) invert(1);
         }
+        
+        /* Estilos para la leyenda de marcadores */
+        .leyenda-marcadores {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .leyenda-marcadores h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .leyenda-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .leyenda-texto {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        /* Responsive design para móviles */
+        @media (max-width: 768px) {
+            .leyenda-marcadores {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: 0;
+                border-radius: 15px 15px 0 0;
+                max-height: 50vh;
+                overflow-y: auto;
+                z-index: 1000;
+                transform: translateY(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .leyenda-marcadores.show {
+                transform: translateY(0);
+            }
+            
+            .leyenda-marcadores h4 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .leyenda-item {
+                margin-bottom: 8px;
+                padding: 6px;
+            }
+            
+            .leyenda-color {
+                width: 25px;
+                height: 25px;
+                margin-right: 10px;
+            }
+            
+            .leyenda-icon {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .leyenda-texto {
+                font-size: 13px;
+            }
+            
+            /* Botón para mostrar/ocultar leyenda en móviles */
+            .leyenda-toggle {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #007bff;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+                z-index: 1001;
+                transition: all 0.3s ease;
+            }
+            
+            .leyenda-toggle:hover {
+                background: #0056b3;
+                transform: scale(1.1);
+            }
+            
+            /* Ajustar el mapa para móviles */
+            #map {
+                height: calc(100vh - 200px);
+                margin-bottom: 80px;
+            }
+        }
     </style>
 </head>
 
@@ -360,8 +473,13 @@
                     </div>
                     <div id="map"></div>
                     
+                    <!-- Botón toggle para leyenda en móviles -->
+                    <button class="leyenda-toggle" id="leyendaToggle" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    
                     <!-- Leyenda de colores -->
-                    <div class="leyenda-marcadores">
+                    <div class="leyenda-marcadores" id="leyendaMarcadores">
                         <h4>Leyenda de Marcadores</h4>
                         <div class="leyenda-item">
                             <div class="leyenda-color" style="background-color: #3498db; border-color: #2980b9;">
@@ -416,6 +534,43 @@
     <script src="js/app.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="js/mapa.js"></script>
+    
+    <script>
+        // Funcionalidad para la leyenda en móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            const leyendaToggle = document.getElementById('leyendaToggle');
+            const leyendaMarcadores = document.getElementById('leyendaMarcadores');
+            
+            // Mostrar/ocultar botón toggle en móviles
+            function checkScreenSize() {
+                if (window.innerWidth <= 768) {
+                    leyendaToggle.style.display = 'block';
+                    leyendaMarcadores.classList.remove('show');
+                } else {
+                    leyendaToggle.style.display = 'none';
+                    leyendaMarcadores.classList.add('show');
+                }
+            }
+            
+            // Verificar tamaño de pantalla al cargar y al redimensionar
+            checkScreenSize();
+            window.addEventListener('resize', checkScreenSize);
+            
+            // Toggle de la leyenda
+            leyendaToggle.addEventListener('click', function() {
+                leyendaMarcadores.classList.toggle('show');
+            });
+            
+            // Cerrar leyenda al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !leyendaMarcadores.contains(e.target) && 
+                    !leyendaToggle.contains(e.target)) {
+                    leyendaMarcadores.classList.remove('show');
+                }
+            });
+        });
+    </script>
 
 </body>
 
