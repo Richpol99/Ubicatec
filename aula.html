@@ -641,11 +641,11 @@
             function checkScreenSize() {
                 if (window.innerWidth <= 768) {
                     leyendaTab.style.display = 'flex';
-                    leyendaMarcadores.classList.remove('show');
+                    leyendaMarcadores.style.display = 'none';
                 } else {
                     leyendaTab.style.display = 'none';
-                    // En desktop, la leyenda siempre está visible (sin clase 'show')
-                    leyendaMarcadores.classList.remove('show');
+                    // En desktop, la leyenda siempre está visible
+                    leyendaMarcadores.style.display = 'block';
                 }
             }
             
@@ -655,16 +655,17 @@
             
             // Toggle de la leyenda con pestaña
             leyendaTab.addEventListener('click', function() {
-                const isExpanded = leyendaMarcadores.classList.contains('show');
-                leyendaMarcadores.classList.toggle('show');
-                leyendaTab.classList.toggle('expanded');
-                
-                // Cambiar el icono
-                const icon = leyendaTab.querySelector('i');
-                if (isExpanded) {
-                    icon.className = 'fas fa-chevron-up';
-                } else {
-                    icon.className = 'fas fa-chevron-down';
+                if (window.innerWidth <= 768) {
+                    const isVisible = leyendaMarcadores.style.display === 'block';
+                    leyendaMarcadores.style.display = isVisible ? 'none' : 'block';
+                    
+                    // Cambiar el icono
+                    const icon = leyendaTab.querySelector('i');
+                    if (isVisible) {
+                        icon.className = 'fas fa-chevron-up';
+                    } else {
+                        icon.className = 'fas fa-chevron-down';
+                    }
                 }
             });
             
@@ -673,8 +674,7 @@
                 if (window.innerWidth <= 768 && 
                     !leyendaMarcadores.contains(e.target) && 
                     !leyendaTab.contains(e.target)) {
-                    leyendaMarcadores.classList.remove('show');
-                    leyendaTab.classList.remove('expanded');
+                    leyendaMarcadores.style.display = 'none';
                     const icon = leyendaTab.querySelector('i');
                     icon.className = 'fas fa-chevron-up';
                 }
