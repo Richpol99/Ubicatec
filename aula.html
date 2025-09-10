@@ -415,45 +415,53 @@
                 transform: translateX(-50%);
                 background: #007bff;
                 color: white;
-                padding: 12px 24px;
+                padding: 15px 30px;
                 border-radius: 25px 25px 0 0;
                 cursor: pointer;
                 z-index: 1001;
-                box-shadow: 0 -4px 12px rgba(0, 123, 255, 0.3);
+                box-shadow: 0 -4px 20px rgba(0, 123, 255, 0.4);
                 transition: all 0.3s ease;
                 font-weight: 600;
-                font-size: 14px;
+                font-size: 16px;
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 10px;
+                min-width: 200px;
+                justify-content: center;
             }
             
             .leyenda-tab:hover {
                 background: #0056b3;
                 transform: translateX(-50%) translateY(-2px);
+                box-shadow: 0 -6px 25px rgba(0, 123, 255, 0.5);
             }
             
             .leyenda-tab i {
                 transition: transform 0.3s ease;
+                font-size: 18px;
             }
             
             .leyenda-tab.expanded i {
                 transform: rotate(180deg);
             }
             
+            /* Leyenda mejorada para móviles */
             .leyenda-marcadores {
                 position: fixed;
                 bottom: 0;
                 left: 0;
                 right: 0;
                 margin: 0;
-                border-radius: 15px 15px 0 0;
-                max-height: 60vh;
+                border-radius: 20px 20px 0 0;
+                max-height: 70vh;
                 overflow-y: auto;
                 z-index: 1000;
                 transform: translateY(100%);
-                transition: transform 0.3s ease;
-                padding-top: 20px;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 25px 20px 20px 20px;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+                border: 1px solid rgba(0, 123, 255, 0.1);
             }
             
             .leyenda-marcadores.show {
@@ -461,29 +469,45 @@
             }
             
             .leyenda-marcadores h4 {
-                font-size: 16px;
-                margin-bottom: 10px;
+                font-size: 20px;
+                margin-bottom: 20px;
                 text-align: center;
+                color: #2c3e50;
+                font-weight: 700;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
             }
             
             .leyenda-item {
-                margin-bottom: 8px;
-                padding: 6px;
+                margin-bottom: 15px;
+                padding: 12px 15px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                border: 1px solid #e9ecef;
+                transition: all 0.2s ease;
+            }
+            
+            .leyenda-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
             }
             
             .leyenda-color {
-                width: 25px;
-                height: 25px;
-                margin-right: 10px;
+                width: 30px;
+                height: 30px;
+                margin-right: 15px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
             }
             
             .leyenda-icon {
-                width: 14px;
-                height: 14px;
+                width: 16px;
+                height: 16px;
             }
             
             .leyenda-texto {
-                font-size: 13px;
+                font-size: 15px;
+                font-weight: 600;
+                color: #2c3e50;
             }
             
             /* Ajustar el mapa para móviles */
