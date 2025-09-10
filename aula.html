@@ -332,9 +332,15 @@
         
         /* Hacer que el mapa ocupe toda la altura disponible */
         #map {
-            height: calc(100vh - 180px) !important;
-            margin: 0 !important;
+            height: calc(100vh - 200px) !important;
+            margin: 0 0 20px 0 !important; /* Margen inferior pequeño */
             padding: 0 !important;
+            width: 100% !important;
+        }
+        
+        /* Ocultar footer para eliminar espacio */
+        footer {
+            display: none !important;
         }
         
         /* Eliminar márgenes de contenedores */
@@ -354,6 +360,25 @@
         /* Asegurar que no hay espacio después del mapa */
         #mapa + * {
             margin-top: 0 !important;
+        }
+        
+        /* Eliminar solo espacios inferiores del body y html */
+        body {
+            margin: 0 !important;
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
+            overflow-x: hidden !important;
+        }
+        
+        html {
+            margin: 0 !important;
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
+        }
+        
+        /* Asegurar que la sección del mapa solo elimine espacio inferior */
+        #mapa {
+            margin: 0 !important;
+            padding-top: 3rem !important; /* Mantener padding superior */
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
         }
         
         /* En desktop, la leyenda siempre está visible con diseño original */
@@ -592,22 +617,11 @@
                         </div>
                         </div>
                     </div>
-                    
-                    <div id="map"></div>
-                    
-                    <!-- Pestaña de leyenda para móviles -->
-                    <div class="leyenda-tab" id="leyendaTab" style="display: none;">
-                        <i class="fas fa-chevron-up"></i>
-                        <span>Leyenda de Marcadores</span>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="text-center py-4 bg-dark text-white">
-        <p>&copy; 2025 UBICATEC. Todos los derechos reservados.</p>
-    </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="vendor/bootstrap/bootstrap.min.js"></script>
