@@ -772,13 +772,14 @@
             checkScreenSize();
             window.addEventListener('resize', checkScreenSize);
             
-            // Detectar scroll en la sección del mapa
+            // Detectar scroll para mostrar botón
             function handleScroll() {
-                if (window.innerWidth <= 768 && mapSection) {
-                    const rect = mapSection.getBoundingClientRect();
-                    const isInMapSection = rect.top <= 0 && rect.bottom > 0;
+                if (window.innerWidth <= 768) {
+                    // Mostrar botón cuando el usuario haya hecho scroll hacia abajo
+                    const scrollY = window.scrollY;
+                    const shouldShow = scrollY > 200; // Aparece después de 200px de scroll
                     
-                    if (isInMapSection) {
+                    if (shouldShow) {
                         scrollToTop.classList.add('show');
                     } else {
                         scrollToTop.classList.remove('show');
