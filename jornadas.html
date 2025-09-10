@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jornadas de TICS - UBICATEC</title>
+    <meta name="description" content="Información sobre las Jornadas de TICS - Evento de tecnología e innovación">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/lightcase/lightcase.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+    <style>
+        /* Estilos para el hero section */
+        .hero-section {
+            background-color: #042962;
+            color: white;
+            padding: 120px 0 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .event-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .event-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-detail i {
+            font-size: 1.2rem;
+            color: #4fc3f7;
+        }
+
+        /* Estilos para el contenido principal */
+        .main-content {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .schedule-section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .schedule-day {
+            margin-bottom: 3rem;
+        }
+
+        .schedule-day:last-child {
+            margin-bottom: 0;
+        }
+
+        .day-title {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .auditorium-section {
+            margin-bottom: 2rem;
+        }
+
+        .auditorium-title {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-left: 4px solid #007bff;
+        }
+
+        .session-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .session-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #007bff;
+        }
+
+        .session-time {
+            font-weight: 600;
+            color: #007bff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-speaker {
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 0.3rem;
+        }
+
+        .session-company {
+            color: #007bff;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .session-category {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .workshops-section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .workshop-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .workshop-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #28a745;
+        }
+
+        .workshop-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .workshop-instructor {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .workshop-company {
+            color: #28a745;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            background: white;
+            color: #007bff;
+            border: 2px solid white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cta:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-cta-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-cta-outline:hover {
+            background: white;
+            color: #007bff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .schedule-section,
+            .workshops-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-cta {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4" style="background-color: rgba(12, 56, 114, 0.55); backdrop-filter: blur(10px);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="index.html">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="aula.html">Mapa</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="accesosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accesos Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="accesosDropdown">
+                            <a class="dropdown-item" href="https://sii.utpuebla.edu.mx/" target="_blank">SII</a>
+                            <a class="dropdown-item" href="https://moodle.utpuebla.edu.mx/" target="_blank">Moodle</a>
+                            <a class="dropdown-item" href="https://biblioteca.utpuebla.edu.mx/" target="_blank">Biblioteca</a>
+                            <a class="dropdown-item" href="https://correo.utpuebla.edu.mx/" target="_blank">Correo</a>
+                            <a class="dropdown-item" href="https://utpuebla.edu.mx/" target="_blank">UTP</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="equipo.html">Equipo de desarrollo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Jornadas de TICS</h1>
+                <p class="hero-subtitle">Evento de tecnología e innovación - Septiembre 2024</p>
+                
+                <div class="event-info">
+                    <h3><i class="fas fa-calendar-alt"></i> Información del Evento</h3>
+                    <div class="event-details">
+                        <div class="event-detail">
+                            <i class="fas fa-calendar"></i>
+                            <span>19-20 de Septiembre</span>
+                        </div>
+                        <div class="event-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>9:00 - 19:00 hrs</span>
+                        </div>
+                        <div class="event-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Edificio 36</span>
+                        </div>
+                        <div class="event-detail">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>Evento Gratuito</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Schedule Section -->
+            <div class="schedule-section">
+                <h2 class="text-center mb-5"><i class="fas fa-calendar-check"></i> Programa de Actividades</h2>
+                
+                <!-- Viernes 19 de Septiembre -->
+                <div class="schedule-day">
+                    <div class="day-title">Viernes 19 de Septiembre</div>
+                    
+                    <!-- Ponencias - Auditorio 1 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">9:00 - 10:00</div>
+                            <div class="session-title">Análisis de señales fetales con inteligencia artificial y fusión de datos multimodal</div>
+                            <div class="session-speaker">Socrates Reyes Romero</div>
+                            <div class="session-company">INAOE - PUEBLA</div>
+                            <span class="session-category">IA</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">10:00 - 11:00</div>
+                            <div class="session-title">Seguridad y ética en el uso de la IA</div>
+                            <div class="session-speaker">Ángel de Jesús</div>
+                            <div class="session-company">PWO MEXICO</div>
+                            <span class="session-category">IA</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">11:00 - 12:00</div>
+                            <div class="session-title">PostgreSQL en la Inteligencia Artificial</div>
+                            <div class="session-speaker">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
+                            <div class="session-company">PGDAY MEXICO</div>
+                            <span class="session-category">IA</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">12:00 - 13:00</div>
+                            <div class="session-title">Inteligencia Artificial para la enseñanza</div>
+                            <div class="session-speaker">Roberto Andrade Fonseca</div>
+                            <div class="session-company">PGDAY MEXICO</div>
+                            <span class="session-category">IA</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Talleres - Auditorio 2 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-tools"></i> Talleres - Auditorio 2
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">9:00 - 10:00</div>
+                            <div class="session-title">No olvides que el software es un negocio</div>
+                            <div class="session-speaker">Carlos Amin Espinoza</div>
+                            <div class="session-company">MICROSOFT</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">10:00 - 11:00</div>
+                            <div class="session-title">Del servicio al producto</div>
+                            <div class="session-speaker">Alejandro Miguel Escalante Medina</div>
+                            <div class="session-company">AUDELABS.COM</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">11:00 - 12:00</div>
+                            <div class="session-title">El poder de AWS a tu alcance</div>
+                            <div class="session-speaker">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
+                            <div class="session-company">AWS USER GROUP MIXTLI</div>
+                            <span class="session-category">AWS</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">12:00 - 13:00</div>
+                            <div class="session-title">Construyendo un futuro exitoso: El poder de las Bases en Tecnologías de la Información</div>
+                            <div class="session-speaker">Atanacio Mauricio Noyola Corona</div>
+                            <div class="session-company">ORACLE DBA</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sábado 20 de Septiembre -->
+                <div class="schedule-day">
+                    <div class="day-title">Sábado 20 de Septiembre</div>
+                    
+                    <!-- Ponencias - Auditorio 1 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">9:00 - 10:00</div>
+                            <div class="session-title">AWS Lambda: Menos estrés, más ServerLESS</div>
+                            <div class="session-speaker">Israel Jesús García Osorio</div>
+                            <div class="session-company">AWS PUEBLA</div>
+                            <span class="session-category">AWS</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">10:00 - 11:00</div>
+                            <div class="session-title">How time and space complexity impacts your infrastructure</div>
+                            <div class="session-speaker">Edwin Alan Moedano Cardiel</div>
+                            <div class="session-company">CAYLENT</div>
+                            <span class="session-category">AWS</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">11:00 - 12:00</div>
+                            <div class="session-title">Primeros pasos en AWS</div>
+                            <div class="session-speaker">Luis Gerardo Guerra Garrido</div>
+                            <div class="session-company">CAYLENT</div>
+                            <span class="session-category">AWS</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">12:00 - 13:00</div>
+                            <div class="session-title">Serverless vs Anonymous. La nube al rescate</div>
+                            <div class="session-speaker">David Jonathan Sol Llaven</div>
+                            <div class="session-company">PYTHON CDMX, AWS AJOLOTES, CAYLENT</div>
+                            <span class="session-category">AWS</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Talleres - Auditorio 2 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-tools"></i> Talleres - Auditorio 2
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">9:00 - 10:00</div>
+                            <div class="session-title">UX: El ingrediente secreto del software que sí conecta más allá de funciones</div>
+                            <div class="session-speaker">Jesús Javier García Osorio</div>
+                            <div class="session-company">AWS PUEBLA</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">10:00 - 11:00</div>
+                            <div class="session-title">El arte de construir castillos de datos al viento</div>
+                            <div class="session-speaker">Héctor Iván Castañeda Nazario</div>
+                            <div class="session-company">PYTHON CDMX</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">11:00 - 12:00</div>
+                            <div class="session-title">Transformación digital</div>
+                            <div class="session-speaker">Jesús López Domínguez</div>
+                            <div class="session-company">INTERCOVAMEX</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-time">12:00 - 13:00</div>
+                            <div class="session-title">¡Sin romper el cochinito! Construyendo tu aplicación con herramientas de software libre</div>
+                            <div class="session-speaker">Mario Meza</div>
+                            <div class="session-company">CAYLENT PUEBLA</div>
+                            <span class="session-category">Product Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Workshops Section -->
+            <div class="workshops-section">
+                <h2 class="text-center mb-5"><i class="fas fa-laptop-code"></i> Talleres Adicionales (14:00 - 19:00 hrs)</h2>
+                <p class="text-center text-muted mb-4">Todos los talleres se realizarán en el Edificio 36</p>
+                
+                <div class="workshop-grid">
+                    <div class="workshop-item">
+                        <div class="workshop-title">Introducción a redes neuronales con Python en plataforma Google Colab y uso de aplicaciones en IA</div>
+                        <div class="workshop-instructor">Socrates Reyes Romero</div>
+                        <div class="workshop-company">INAOE - PUEBLA</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Programa tu primer aplicación Web Serverless con AWS</div>
+                        <div class="workshop-instructor">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
+                        <div class="workshop-company">AWS USER GROUP MIXTLI</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Videojuegos con APP Inventor</div>
+                        <div class="workshop-instructor">Jesús Hernández Guillén</div>
+                        <div class="workshop-company">I. T. TLAHUAC</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Animación y ciencia</div>
+                        <div class="workshop-instructor">Ricardo Irving López Beristain</div>
+                        <div class="workshop-company">Universidad Autónoma Metropolitana</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Instalación de PostgreSQL</div>
+                        <div class="workshop-instructor">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
+                        <div class="workshop-company">PGDAY MEXICO</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Desarrollo con NodeJS</div>
+                        <div class="workshop-instructor">Alejandro Miguel Escalante Medina</div>
+                        <div class="workshop-company">AUDELABS.COM</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Construye APIs Serverless con Python y AWS</div>
+                        <div class="workshop-instructor">Cristian Jesús Abrajan Fortis</div>
+                        <div class="workshop-company">SOFTTEK</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Crea tu primer app low code con Oracle Apex</div>
+                        <div class="workshop-instructor">Carlos Francisco Huerta del Niño de Rivera</div>
+                        <div class="workshop-company">Oracle</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Ship Fast, Think Smart: CI/CD for GenAI with AWS & GitHub</div>
+                        <div class="workshop-instructor">Edwin Alan Moedano Cardiel</div>
+                        <div class="workshop-company">CAYLENT</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Tu primer despliegue en la Nube</div>
+                        <div class="workshop-instructor">Mario Meza</div>
+                        <div class="workshop-company">CAYLENT PUEBLA</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Front End Inteligente: Diseño fundamental con HTML/HTML5, CSS Y JS. Diseño con Frameworks React, Angular y Vue</div>
+                        <div class="workshop-instructor">Marco Antonio Hernández Sánchez</div>
+                        <div class="workshop-company">THYSSENKRUPP</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Taller Sistema ERP Odoo</div>
+                        <div class="workshop-instructor">Jesús López D. y José Ángel Bacilio D.</div>
+                        <div class="workshop-company">INTERCOVAMEX</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Potencializa tu desarrollo de software con Kiro AI</div>
+                        <div class="workshop-instructor">Luis Gerardo Guerra Garrido</div>
+                        <div class="workshop-company">CAYLENT</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">UX/UI para desarrolladores: Crear interfaces intuitivas</div>
+                        <div class="workshop-instructor">Guadalupe Sarai Calixto M.</div>
+                        <div class="workshop-company">SEBN MX</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Instalación de Linux</div>
+                        <div class="workshop-instructor">Pablo Carmona</div>
+                        <div class="workshop-company">TEC PUEBLA</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Instalación básica de ArchLinux</div>
+                        <div class="workshop-instructor">Yael Hernández Espinosa</div>
+                        <div class="workshop-company">Instituto Politécnico Nacional, Unidad Profesional Interdisciplinaria de Ingeniería Campus Tlaxcala</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">GitHub Foundations en 5 horas o menos</div>
+                        <div class="workshop-instructor">Daniel Paredes Z. y Galilea Márquez S.</div>
+                        <div class="workshop-company">SUDO FCIENCIAS UNAM</div>
+                    </div>
+                    
+                    <div class="workshop-item">
+                        <div class="workshop-title">Arduino Básico</div>
+                        <div class="workshop-instructor">IEEE Sección Puebla</div>
+                        <div class="workshop-company">IEEE SECCIÓN PUEBLA, WIE IEEE SECCION PUEBLA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">¡No te lo pierdas!</h2>
+            <p class="cta-subtitle">Evento gratuito con ponentes de primer nivel</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn-cta">
+                    <i class="fas fa-qrcode"></i>
+                    Registro con QR
+                </a>
+                <a href="index.html" class="btn-cta btn-cta-outline">
+                    <i class="fas fa-home"></i>
+                    Volver al Inicio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="vendor/bootstrap/popper.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="vendor/stellar/jquery.stellar.js"></script>
+    <script src="vendor/isotope/isotope.min.js"></script>
+    <script src="vendor/lightcase/lightcase.js"></script>
+    <script src="vendor/waypoints/waypoint.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/app.min.js"></script>
+
+    <script>
+        // Inicializar AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
