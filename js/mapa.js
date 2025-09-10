@@ -253,7 +253,7 @@ $(document).ready(function() {
         
         return L.divIcon({
             className: 'custom-marker marker-' + tipo,
-            html: '<div style="background-color: ' + config.color + '; border: 3px solid ' + config.color + '; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s ease;"><img src="Icon/tabler/' + config.icono + '" alt="' + tipo + '" style="width: 16px; height: 16px; filter: brightness(0) invert(1);" /></div>',
+            html: '<div style="background-color: ' + config.color + '; border: 3px solid ' + config.color + '; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.3); cursor: pointer;"><img src="Icon/tabler/' + config.icono + '" alt="' + tipo + '" style="width: 16px; height: 16px; filter: brightness(0) invert(1);" /></div>',
             iconSize: [30, 30],
             iconAnchor: [15, 15],
             popupAnchor: [0, -15]
