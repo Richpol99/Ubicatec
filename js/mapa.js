@@ -136,69 +136,100 @@ $(document).ready(function() {
         return distancia;
     }
 
-    var map = L.map('map').setView([19.0698, -98.1688], 18);
+    // Verificar que el contenedor del mapa existe
+    var mapContainer = document.getElementById('map');
+    if (!mapContainer) {
+        console.error('Contenedor del mapa no encontrado');
+        return;
+    }
 
-    var calle = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        attribution: '&copy; OpenStreetMap contributors'
-    });
+    // Crear el mapa con un pequeño delay para asegurar que el DOM esté listo
+    setTimeout(function() {
+        var map = L.map('map', {
+            zoomControl: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            dragging: true
+        }).setView([19.0698, -98.1688], 19);
 
-    calle.addTo(map);
+        // Agregar controles de zoom personalizados
+        L.control.zoom({
+            position: 'topright'
+        }).addTo(map);
+
+        var calle = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            minZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        });
+
+        calle.addTo(map);
+        
+        // Hacer el mapa global para que esté disponible en otras funciones
+        window.map = map;
+        
+        console.log('Mapa inicializado correctamente');
+        
+        // Crear marcadores después de que el mapa esté listo
+        crearMarcadores(map);
+    }, 100);
 
     var edificios = [
-        { nombre: "Edificio 1 (direccion)", coords: [19.0700471611661, -98.16987998532049], link: "edif_1.html", tipo: "administrativo" },
-        { nombre: "Edificio 2 (coordinacion)", coords: [19.070339683584418, -98.16984213200494], link: "edif_2.html", tipo: "administrativo" },
-        { nombre: "Edificio 3 (Sistemas y Computacion)", coords: [19.07028250570129, -98.1691442328977], link: "edif_3.html", tipo: "laboratorio" },
-        { nombre: "Edificio 4 (Aulas, WC)", coords: [19.070338275809316, -98.16871239724523], link: "edif_4.html", tipo: "aula" },
-        { nombre: "Edificio 5 (Aulas)", coords: [19.070279970696365, -98.16838516772772], link: "edif_5.html", tipo: "aula" },
-        { nombre: "Edificio 6 (Desarrollo Academico y C.E.S.A)", coords: [19.070056890074806, -98.16867484631699], link: "edif_6.html", tipo: "administrativo" },
-        { nombre: "Edificio 7 (Aula de clases)", coords: [19.069965, -98.168309], link: "edif_7.html", tipo: "aula" },
-        { nombre: "Edificio 8 (Aulas)", coords: [19.0697161, -98.1687085], link: "edif_8.html", tipo: "aula" },
-        { nombre: "Edificio 9 (Aulas y cubiculos para maestros)", coords: [19.0696648, -98.1683283], link: "edif_9.html", tipo: "aula" },
-        { nombre: "Edificio 10 (Depto. Ciencias economico administrativas)", coords: [19.069675, -98.168104], link: "edif_10.html", tipo: "administrativo" },
-        { nombre: "Edificio 11 (Aulas y portico)", coords: [19.069590, -98.169141], link: "edif_11.html", tipo: "aula" },
-        { nombre: "Edificio 12 (Aulas portico, WC)", coords: [19.069453, -98.168654], link: "edif_12.html", tipo: "aula" },
-        { nombre: "Edificio 13 (Aulas)", coords: [19.0693308, -98.1681797], link: "edif_13.html", tipo: "aula" },
-        { nombre: "Edificio 14 (Aulas, Galileo Galilei)", coords: [19.069386, -98.169351], link: "edif_14.html", tipo: "aula" },
-        { nombre: "Edificio 15 (Aulas)", coords: [19.069281, -98.168944], link: "edif_15.html", tipo: "aula" },
-        { nombre: "Edificio 16 (Cubiculos para profesores)", coords: [19.069341, -98.170290], link: "edif_16.html", tipo: "administrativo" },
-        { nombre: "Edificio 17 (Aulas y sala de titulacion)", coords: [19.069322, -98.169910], link: "edif_17.html", tipo: "aula" },
-        { nombre: "Edificio 18 (WC, Portico, Aula Jean Piaget)", coords: [19.069206, -98.169657], link: "edif_18.html", tipo: "aula" },
-        { nombre: "Edificio 19 (Laboratorio de Fisica y Quimica)", coords: [19.069084, -98.169326], link: "edif_19.html", tipo: "laboratorio" },
-        { nombre: "Edificio 20 (Laboratorio de Ingenieria Electrica)", coords: [19.069205695460248, -98.16860064509656], link: "edif_20.html", tipo: "laboratorio" },
-        { nombre: "Edificio 21 (Depto. Economico administrativo. Lab de negocios)", coords: [19.068948, -98.168838], link: "edif_21.html", tipo: "administrativo" },
-        { nombre: "Edificio 22 (Aulas)", coords: [19.069201, -98.170032], link: "edif_22.html", tipo: "aula" },
-        { nombre: "Edificio 23 (Aulas)", coords: [19.068833, -98.170307], link: "edif_23.html", tipo: "aula" },
-        { nombre: "Edificio 24 (Sala T.Alva E. Sala A.Einstein. Sala W.E.Deming)", coords: [19.068907, -98.169477], link: "edif_24.html", tipo: "aula" },
-        { nombre: "Edificio 25 (Servicio Medico)", coords: [19.068845419565694, -98.16910953816078], link: "edif_25.html", tipo: "administrativo" },
-        { nombre: "Edificio 26 (Aulas)", coords: [19.0688019, -98.1688332], link: "edif_26.html", tipo: "aula" },
-        { nombre: "Edificio 27 (Lab. Ing Mecanica)", coords: [19.068793, -98.168558], link: "edif_27.html", tipo: "laboratorio" },
-        { nombre: "Edificio 28 (Aulas)", coords: [19.068603, -98.170041], link: "edif_28.html", tipo: "aula" },
-        { nombre: "Edificio 29 (Posgrado)", coords: [19.068590, -98.169251], link: "edif_29.html", tipo: "administrativo" },
-        { nombre: "Edificio 30 (Manufactura avanzada Lab; y depto. Metal mecanica)", coords: [19.0684055, -98.1689559], link: "edif_30.html", tipo: "laboratorio" },
-        { nombre: "Edificio 31 (Coordinacion cultural)", coords: [19.0684058, -98.1685666], link: "edif_31.html", tipo: "administrativo" },
-        { nombre: "Edificio 32 (Exsub-Estacion electrica 1)", coords: [19.068168, -98.168593], link: "edif_32.html", tipo: "otro" },
-        { nombre: "Edificio 33 (Lab. Desarrollo tecnico e innovacion)", coords: [19.068213, -98.169197], link: "edif_33.html", tipo: "laboratorio" },
-        { nombre: "Edificio 34 (Coordinacion cultural)", coords: [19.068175, -98.169059], link: "edif_34.html", tipo: "administrativo" },
-        { nombre: "Edificio 35 (Lab. Ing electronica)", coords: [19.068176, -98.168952], link: "edif_35.html", tipo: "laboratorio" },
-        { nombre: "Edificio 36 (Centro de computo y lab de sistemas, WC)", coords: [19.068163, -98.170270], link: "edif_36.html", tipo: "laboratorio" },
-        { nombre: "Edificio 37 (Sub-Estacion electrica 2)", coords: [19.067984, -98.170599], link: "edif_37.html", tipo: "otro" },
-        { nombre: "Edificio 38 (Cuarto de maq. Coordinacion deportiva, WC)", coords: [19.067226, -98.168782], link: "edif_38.html", tipo: "baño" },
-        { nombre: "Edificio 39 (Utileria de coordinacion cultural)", coords: [19.067036, -98.168557], link: "edif_39.html", tipo: "otro" },
-        { nombre: "Edificio 40 (Laboratorio de posgrado-Proyecto)", coords: [19.067282, -98.170378], link: "edif_40.html", tipo: "laboratorio" },
-        { nombre: "Edificio 41 (Centro de lenguas extranjeras-Lab. Logistica)", coords: [19.071208, -98.169903], link: "edif_41.html", tipo: "administrativo" },
-        { nombre: "Edificio 42 (Edificio de Sep Federal)", coords: [19.071135, -98.169291], link: "edif_42.html", tipo: "administrativo" },
-        { nombre: "Edificio 43 (Recursos materiales y servicios)", coords: [19.0670547, -98.1706309], link: "edif_43.html", tipo: "administrativo" },
-        { nombre: "Edificio 44 (Sub-Estacion Electrica 3-Centro de vinculacion)", coords: [19.071905, -98.169451], link: "edif_44.html", tipo: "administrativo" },
-        { nombre: "Edificio 45 (Unidad academica departamental-Ing. Industrial)", coords: [19.070917, -98.168811], link: "edif_45.html", tipo: "administrativo" },
-        { nombre: "Edificio 46 (Sub-Estacion Electrica de U. A. Departamental)", coords: [19.070816, -98.168218], link: "edif_46.html", tipo: "otro" },
-        { nombre: "Edificio 47 (Almacen activo fijo)", coords: [19.067090, -98.168774], link: "edif_47.html", tipo: "otro" },
-        { nombre: "Edificio 48 (Almacen de servicios generales)", coords: [19.0670829, -98.1705089], link: "edif_48.html", tipo: "otro" },
-        { nombre: "Edificio 49 (Lab. Ing Electronica)", coords: [19.069142, -98.168277], link: "edif_49.html", tipo: "laboratorio" },
-        { nombre: "Edificio 50 (Centro de Informacion, WC)", coords: [19.067422488611665, -98.169682206123], link: "edif_50.html", tipo: "administrativo" },
-        { nombre: "Edificio 51 (Unidad academica departamental-Ing. Mecanica)", coords: [19.071552, -98.169811], link: "edif_51.html", tipo: "administrativo" },
-        { nombre: "Edificio 52 (Sala de titulacion)", coords: [19.069555, -98.169899], link: "edif_52.html", tipo: "administrativo" },
-        { nombre: "Edificio 53 (Ciencias basicas, WC)", coords: [19.070834, -98.169673], link: "edif_53.html", tipo: "aula" },
+        { nombre: "Edificio 1 (direccion)", coords: [19.0700471611661, -98.16987998532049], link: "edificio.html?id=1", tipo: "administrativo" },
+        { nombre: "Edificio 2 (coordinacion)", coords: [19.070339683584418, -98.16984213200494], link: "edificio.html?id=2", tipo: "administrativo" },
+        { nombre: "Edificio 3 (Sistemas y Computacion)", coords: [19.07028250570129, -98.1691442328977], link: "edificio.html?id=3", tipo: "laboratorio" },
+        { nombre: "Edificio 4 (Aulas, WC)", coords: [19.070338275809316, -98.16871239724523], link: "edificio.html?id=4", tipo: "aula" },
+        { nombre: "Edificio 5 (Aulas)", coords: [19.070279970696365, -98.16838516772772], link: "edificio.html?id=5", tipo: "aula" },
+        { nombre: "Edificio 6 (Desarrollo Academico y C.E.S.A)", coords: [19.070056890074806, -98.16867484631699], link: "edificio.html?id=6", tipo: "administrativo" },
+        { nombre: "Edificio 7 (Aula de clases)", coords: [19.069965, -98.168309], link: "edificio.html?id=7", tipo: "aula" },
+        { nombre: "Edificio 8 (Aulas)", coords: [19.0697161, -98.1687085], link: "edificio.html?id=8", tipo: "aula" },
+        { nombre: "Edificio 9 (Aulas y cubiculos para maestros)", coords: [19.0696648, -98.1683283], link: "edificio.html?id=9", tipo: "aula" },
+        { nombre: "Edificio 10 (Depto. Ciencias economico administrativas)", coords: [19.069675, -98.168104], link: "edificio.html?id=10", tipo: "administrativo" },
+        { nombre: "Edificio 11 (Aulas y portico)", coords: [19.069590, -98.169141], link: "edificio.html?id=11", tipo: "aula" },
+        { nombre: "Edificio 12 (Aulas portico, WC)", coords: [19.069453, -98.168654], link: "edificio.html?id=12", tipo: "aula" },
+        { nombre: "Edificio 13 (Aulas)", coords: [19.0693308, -98.1681797], link: "edificio.html?id=13", tipo: "aula" },
+        { nombre: "Edificio 14 (Aulas, Galileo Galilei)", coords: [19.069386, -98.169351], link: "edificio.html?id=14", tipo: "aula" },
+        { nombre: "Edificio 15 (Aulas)", coords: [19.069281, -98.168944], link: "edificio.html?id=15", tipo: "aula" },
+        { nombre: "Edificio 16 (Cubiculos para profesores)", coords: [19.069341, -98.170290], link: "edificio.html?id=16", tipo: "administrativo" },
+        { nombre: "Edificio 17 (Aulas y sala de titulacion)", coords: [19.069322, -98.169910], link: "edificio.html?id=17", tipo: "aula" },
+        { nombre: "Edificio 18 (WC, Portico, Aula Jean Piaget)", coords: [19.069206, -98.169657], link: "edificio.html?id=18", tipo: "aula" },
+        { nombre: "Edificio 19 (Laboratorio de Fisica y Quimica)", coords: [19.069084, -98.169326], link: "edificio.html?id=19", tipo: "laboratorio" },
+        { nombre: "Edificio 20 (Laboratorio de Ingenieria Electrica)", coords: [19.069205695460248, -98.16860064509656], link: "edificio.html?id=20", tipo: "laboratorio" },
+        { nombre: "Edificio 21 (Depto. Economico administrativo. Lab de negocios)", coords: [19.068948, -98.168838], link: "edificio.html?id=21", tipo: "administrativo" },
+        { nombre: "Edificio 22 (Aulas)", coords: [19.069201, -98.170032], link: "edificio.html?id=22", tipo: "aula" },
+        { nombre: "Edificio 23 (Aulas)", coords: [19.068833, -98.170307], link: "edificio.html?id=23", tipo: "aula" },
+        { nombre: "Edificio 24 (Sala T.Alva E. Sala A.Einstein. Sala W.E.Deming)", coords: [19.068907, -98.169477], link: "edificio.html?id=24", tipo: "aula" },
+        { nombre: "Edificio 25 (Servicio Medico)", coords: [19.068845419565694, -98.16910953816078], link: "edificio.html?id=25", tipo: "administrativo" },
+        { nombre: "Edificio 26 (Aulas)", coords: [19.0688019, -98.1688332], link: "edificio.html?id=26", tipo: "aula" },
+        { nombre: "Edificio 27 (Lab. Ing Mecanica)", coords: [19.068793, -98.168558], link: "edificio.html?id=27", tipo: "laboratorio" },
+        { nombre: "Edificio 28 (Aulas)", coords: [19.068603, -98.170041], link: "edificio.html?id=28", tipo: "aula" },
+        { nombre: "Edificio 29 (Posgrado)", coords: [19.068590, -98.169251], link: "edificio.html?id=29", tipo: "administrativo" },
+        { nombre: "Edificio 30 (Manufactura avanzada Lab; y depto. Metal mecanica)", coords: [19.0684055, -98.1689559], link: "edificio.html?id=30", tipo: "laboratorio" },
+        { nombre: "Edificio 31 (Coordinacion cultural)", coords: [19.0684058, -98.1685666], link: "edificio.html?id=31", tipo: "administrativo" },
+        { nombre: "Edificio 32 (Exsub-Estacion electrica 1)", coords: [19.068168, -98.168593], link: "edificio.html?id=32", tipo: "otro" },
+        { nombre: "Edificio 33 (Lab. Desarrollo tecnico e innovacion)", coords: [19.068213, -98.169197], link: "edificio.html?id=33", tipo: "laboratorio" },
+        { nombre: "Edificio 34 (Coordinacion cultural)", coords: [19.068175, -98.169059], link: "edificio.html?id=34", tipo: "administrativo" },
+        { nombre: "Edificio 35 (Lab. Ing electronica)", coords: [19.068176, -98.168952], link: "edificio.html?id=35", tipo: "laboratorio" },
+        { nombre: "Edificio 36 (Centro de computo y lab de sistemas, WC)", coords: [19.068163, -98.170270], link: "edificio.html?id=36", tipo: "laboratorio" },
+        { nombre: "Edificio 37 (Sub-Estacion electrica 2)", coords: [19.067984, -98.170599], link: "edificio.html?id=37", tipo: "otro" },
+        { nombre: "Edificio 38 (Cuarto de maq. Coordinacion deportiva, WC)", coords: [19.067226, -98.168782], link: "edificio.html?id=38", tipo: "baño" },
+        { nombre: "Edificio 39 (Utileria de coordinacion cultural)", coords: [19.067036, -98.168557], link: "edificio.html?id=39", tipo: "otro" },
+        { nombre: "Edificio 40 (Laboratorio de posgrado-Proyecto)", coords: [19.067282, -98.170378], link: "edificio.html?id=40", tipo: "laboratorio" },
+        { nombre: "Edificio 41 (Centro de lenguas extranjeras-Lab. Logistica)", coords: [19.071208, -98.169903], link: "edificio.html?id=41", tipo: "administrativo" },
+        { nombre: "Edificio 42 (Edificio de Sep Federal)", coords: [19.071135, -98.169291], link: "edificio.html?id=42", tipo: "administrativo" },
+        { nombre: "Edificio 43 (Recursos materiales y servicios)", coords: [19.0670547, -98.1706309], link: "edificio.html?id=43", tipo: "administrativo" },
+        { nombre: "Edificio 44 (Sub-Estacion Electrica 3-Centro de vinculacion)", coords: [19.071905, -98.169451], link: "edificio.html?id=44", tipo: "administrativo" },
+        { nombre: "Edificio 45 (Unidad academica departamental-Ing. Industrial)", coords: [19.070917, -98.168811], link: "edificio.html?id=45", tipo: "administrativo" },
+        { nombre: "Edificio 46 (Sub-Estacion Electrica de U. A. Departamental)", coords: [19.070816, -98.168218], link: "edificio.html?id=46", tipo: "otro" },
+        { nombre: "Edificio 47 (Almacen activo fijo)", coords: [19.067090, -98.168774], link: "edificio.html?id=47", tipo: "otro" },
+        { nombre: "Edificio 48 (Almacen de servicios generales)", coords: [19.0670829, -98.1705089], link: "edificio.html?id=48", tipo: "otro" },
+        { nombre: "Edificio 49 (Lab. Ing Electronica)", coords: [19.069142, -98.168277], link: "edificio.html?id=49", tipo: "laboratorio" },
+        { nombre: "Edificio 50 (Centro de Informacion, WC)", coords: [19.067422488611665, -98.169682206123], link: "edificio.html?id=50", tipo: "administrativo" },
+        { nombre: "Edificio 51 (Unidad academica departamental-Ing. Mecanica)", coords: [19.071552, -98.169811], link: "edificio.html?id=51", tipo: "administrativo" },
+        { nombre: "Edificio 52 (Sala de titulacion)", coords: [19.069555, -98.169899], link: "edificio.html?id=52", tipo: "administrativo" },
+        { nombre: "Edificio 53 (Ciencias basicas, WC)", coords: [19.070834, -98.169673], link: "edificio.html?id=53", tipo: "aula" },
         { nombre: "Acceso principal (Avenida Tecnologico)", coords: [19.069821422656712, -98.17042957607508], tipo: "acceso" },
         { nombre: "Acceso Visitantes (Avenida Tecnologico, Frente a Sears)", coords: [19.068467599492795, -98.17061388514823], tipo: "acceso" },
         { nombre: "Acceso Hangar Autobuses y Estacionamiento 3 (Avenida Tecnologico, a un costado de Benteler)", coords: [19.067184781628676, -98.17086525607026], tipo: "acceso" },
@@ -229,37 +260,49 @@ $(document).ready(function() {
         });
     }
 
-    var markersData = [];
-    edificios.forEach(function (edificio) {
-        var icono = crearIconoPersonalizado(edificio.tipo);
-        var marker = L.marker(edificio.coords, { icon: icono });
-        marker.bindTooltip(edificio.nombre, { 
-            permanent: true, 
-            direction: 'top',
-            className: 'custom-tooltip'
+    // Función para crear marcadores
+    function crearMarcadores(map) {
+        var markersData = [];
+        edificios.forEach(function (edificio) {
+            var icono = crearIconoPersonalizado(edificio.tipo);
+            var marker = L.marker(edificio.coords, { icon: icono });
+            marker.bindTooltip(edificio.nombre, { 
+                permanent: true, 
+                direction: 'top',
+                className: 'custom-tooltip'
+            });
+            if (edificio.link) {
+                marker.on('click', function () { window.location.href = edificio.link; });
+            }
+            markersData.push({ marker: marker, name: edificio.nombre.toLowerCase(), tipo: edificio.tipo });
         });
-        if (edificio.link) {
-            marker.on('click', function () { window.location.href = edificio.link; });
-        }
-        markersData.push({ marker: marker, name: edificio.nombre.toLowerCase(), tipo: edificio.tipo });
-    });
 
-    var edificioMarkers = L.layerGroup();
-    markersData.forEach(function (data) {
-        edificioMarkers.addLayer(data.marker);
-    });
+        var edificioMarkers = L.layerGroup();
+        markersData.forEach(function (data) {
+            edificioMarkers.addLayer(data.marker);
+        });
 
-    edificioMarkers.addTo(map);
-
-        // Llamada inicial a updateMarkers con un array vacío para no mostrar marcadores al cargar
-        updateMarkers('', []);
-
-        var initialLoad = true; // Variable para controlar la carga inicial
+        edificioMarkers.addTo(map);
+        
+        // Hacer las variables globales para que estén disponibles en otras funciones
+        window.markersData = markersData;
+        window.edificioMarkers = edificioMarkers;
+        
+        // Ocultar todos los marcadores al principio
+        window.edificioMarkers.clearLayers();
+        
+        console.log('Marcadores creados correctamente');
+    }
 
     function updateMarkers(query, selectedFilter) {
-        edificioMarkers.clearLayers();
+        if (!window.edificioMarkers || !window.markersData) {
+            console.log('Marcadores no están listos aún');
+            return;
+        }
+        
+        window.edificioMarkers.clearLayers();
         if (query || selectedFilter !== 'todos') { // Mostrar solo si hay una búsqueda o filtro seleccionado
-            markersData.forEach(function (data) {
+            window.markersData.forEach(function (data) {
                 var matchesQuery = data.name.includes(query.toLowerCase());
                 var matchesFilter = selectedFilter === 'todos'; // Si es 'todos', todos pasan
 
@@ -282,15 +325,11 @@ $(document).ready(function() {
                 }
 
                 if (matchesQuery && matchesFilter) {
-                    edificioMarkers.addLayer(data.marker);
+                    window.edificioMarkers.addLayer(data.marker);
                 }
             });
         }
     }
-
-    // Llamada inicial para no mostrar marcadores
-    updateMarkers('', 'todos');
-    initialLoad = false; // Desactivar la bandera después de la carga inicial
     
     // Event listener para el campo de búsqueda
     document.getElementById('searchInput').addEventListener('input', function () {
@@ -305,7 +344,6 @@ $(document).ready(function() {
         var selectedFilter = filterSelect.value;
         updateMarkers(query, selectedFilter);
     });
-
 
     // Event listener para el selector de filtros
     document.getElementById('filterSelect').addEventListener('change', function () {

@@ -1,0 +1,931 @@
+{
+  "edificios": [
+    {
+      "id": 1,
+      "nombre": "Edificio 1",
+      "descripcion": "El Edificio 1 es el corazón administrativo del Instituto Tecnológico de Puebla, albergando la dirección general y diversas oficinas clave. Este edificio central facilita la gestión y coordinación de las actividades académicas y administrativas de la institución.",
+      "imagen": "img/edificios/edificio 1.jpg",
+      "instalaciones": [
+        "Oficina de Rectoría.",
+        "Salas de Presentación equipadas para reuniones, conferencias y presentaciones importantes."
+      ],
+      "horario": "Lunes a Viernes de 9:00 a 17:00 horas.",
+      "coords": [
+        19.0700471611661,
+        -98.16987998532049
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/Edificio_1_y_2.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Edificio 2",
+      "descripcion": "El Edificio 2 es un punto neurálgico para el alumnado del instituto, ya que alberga las oficinas de los coordinadores de las diversas carreras ofrecidas. Además, cuenta con ventanillas dedicadas a la gestión de trámites esenciales como la solicitud de constancias, reposición de credenciales, permisos vehiculares y procesos de titulación, entre otros.",
+      "imagen": "img/edificios/edificio 2.jpg",
+      "instalaciones": [
+        "Cubículos donde los coordinadores podrán entablar conversaciones con el estudiante acerca de su rendimiento académico.",
+        "Ventanillas para recepción de documentos."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070339683584418,
+        -98.16984213200494
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 3,
+      "nombre": "Edificio 3",
+      "descripcion": "El Edificio 3 es el centro de encuentro entre el alumnado y el cuerpo docente del instituto, albergando los cubículos de los profesores y la jefatura del departamento.",
+      "imagen": "img/edificios/edificio 3.jpg",
+      "instalaciones": [
+        "Cubículos individuales para la atención y tutoría de los estudiantes por parte de los docentes.",
+        "Oficina de la Jefatura del Departamento, encargada de la coordinación académica y administrativa."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.07028250570129,
+        -98.1691442328977
+      ],
+      "tipo": "laboratorio",
+      "imagen_360": "img/360/Edificio_3.jpg"
+    },
+    {
+      "id": 4,
+      "nombre": "Edificio 4",
+      "descripcion": "El Edificio 4 está dedicado principalmente al desarrollo académico de los estudiantes, albergando diversas aulas para las diferentes materias y servicios sanitarios para la comunidad estudiantil.",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Aulas equipadas para la impartición de clases teóricas y prácticas.",
+        "Servicios sanitarios para hombres y mujeres."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070338275809316,
+        -98.16871239724523
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 5,
+      "nombre": "Edificio 5",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070279970696365,
+        -98.16838516772772
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 6,
+      "nombre": "Edificio 6",
+      "descripcion": "El Edificio 6 alberga el Departamento de Desarrollo Académico y el Comité Ejecutivo de la Sociedad de Alumnos (CESA). Este edificio es un centro vital para el apoyo y la representación de la comunidad educativa.",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Oficinas de las Coordinaciones del Departamento de Desarrollo Académico.",
+        "Espacios de reunión y oficinas del Comité Ejecutivo de la Sociedad de Alumnos (CESA)."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070056890074806,
+        -98.16867484631699
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 7,
+      "nombre": "Edificio 7",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069965,
+        -98.168309
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 8,
+      "nombre": "Edificio 8",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0697161,
+        -98.1687085
+      ],
+      "tipo": "aula",
+      "imagen_360": "img/360/Edificio_8.jpg"
+    },
+    {
+      "id": 9,
+      "nombre": "Edificio 9",
+      "descripcion": "El Edificio 9 alberga una combinación de aulas destinadas a la instrucción académica y cubículos para el personal docente, facilitando tanto el proceso de enseñanza-aprendizaje como la labor de los profesores.",
+      "imagen": "img/edificios/edificio 9.jpg",
+      "instalaciones": [
+        "Aulas equipadas para diversas disciplinas y modalidades de enseñanza.",
+        "Cubículos individuales para la atención de estudiantes, preparación de clases y actividades administrativas del profesorado."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0696648,
+        -98.1683283
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 10,
+      "nombre": "Edificio 10",
+      "descripcion": "El Edificio 10 alberga la Jefatura del Departamento de Ciencias Económico Administrativas y otras oficinas clave de este departamento. Es el punto de contacto principal para estudiantes y personal interesado en temas relacionados con las licenciaturas en esta área.",
+      "imagen": "img/edificios/edificio 10.jpg",
+      "instalaciones": [
+        "Oficina de la Jefatura del Departamento de Ciencias Económico Administrativas.",
+        "Oficinas de atención administrativa del departamento."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069675,
+        -98.168104
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/Edificio_10.jpg"
+    },
+    {
+      "id": 11,
+      "nombre": "Edificio 11",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 11.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.06959,
+        -98.169141
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 12,
+      "nombre": "Edificio 12",
+      "descripcion": "El Edificio 12 está destinado al uso académico de los estudiantes, ofreciendo diversas aulas para la impartición de clases y contando con servicios sanitarios para la comodidad de la comunidad estudiantil.",
+      "imagen": "img/edificios/edificio 12.jpg",
+      "instalaciones": [
+        "Aulas equipadas para el desarrollo de las sesiones de clase.",
+        "Servicios sanitarios para hombres y mujeres."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069453,
+        -98.168654
+      ],
+      "tipo": "aula",
+      "imagen_360": "img/360/Edificio_12.jpg"
+    },
+    {
+      "id": 13,
+      "nombre": "Edificio 13",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 13.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0693308,
+        -98.1681797
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 14,
+      "nombre": "Edificio 14",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 14.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069386,
+        -98.169351
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 15,
+      "nombre": "Edificio 15",
+      "descripcion": "Este edificio alberga diversas aulas destinadas a la impartición de clases teóricas y prácticas para las diferentes carreras ofrecidas por el instituto, proporcionando espacios adecuados para el aprendizaje y la interacción académica.",
+      "imagen": "img/edificios/edificio 15.jpg",
+      "instalaciones": [
+        "Aulas equipadas con mobiliario funcional y recursos audiovisuales para el desarrollo de las sesiones de clase."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069281,
+        -98.168944
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 16,
+      "nombre": "Edificio 16",
+      "descripcion": "El Edificio 16 ofrece espacios tanto para la instrucción grupal en salones como para la atención individual y el trabajo del personal docente en cubículos.",
+      "imagen": "img/edificios/edificio 16.jpg",
+      "instalaciones": [
+        "Salones de clase equipados para diversas actividades de enseñanza y aprendizaje.",
+        "Cubículos destinados al uso de los profesores para la preparación de clases, tutorías y otras actividades académicas."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069341,
+        -98.17029
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 17,
+      "nombre": "Edificio 17",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 17.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069322,
+        -98.16991
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 18,
+      "nombre": "Edificio 18",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 18.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069206,
+        -98.169657
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 19,
+      "nombre": "Edificio 19",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/labo ciencias basicas.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069084,
+        -98.169326
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 20,
+      "nombre": "Edificio 20",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 20.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069205695460248,
+        -98.16860064509656
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 21,
+      "nombre": "Edificio 21",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 21.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068948,
+        -98.168838
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 22,
+      "nombre": "Edificio 22",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 22.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069201,
+        -98.170032
+      ],
+      "tipo": "aula",
+      "imagen_360": "img/360/Edificio_22.jpg"
+    },
+    {
+      "id": 23,
+      "nombre": "Edificio 23",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068833,
+        -98.170307
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 24,
+      "nombre": "Edificio 24",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 24.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068907,
+        -98.169477
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 25,
+      "nombre": "Edificio 25",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/servicio medico.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068845419565694,
+        -98.16910953816078
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 26,
+      "nombre": "Edificio 26",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 26.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0688019,
+        -98.1688332
+      ],
+      "tipo": "aula",
+      "imagen_360": "img/360/Edificio_26.jpg"
+    },
+    {
+      "id": 27,
+      "nombre": "Edificio 27",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/labo mecanica.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068793,
+        -98.168558
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 28,
+      "nombre": "Edificio 28",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 28.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068603,
+        -98.170041
+      ],
+      "tipo": "aula"
+    },
+    {
+      "id": 29,
+      "nombre": "Edificio 29",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 29.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.06859,
+        -98.169251
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/Edificio_29.jpg"
+    },
+    {
+      "id": 30,
+      "nombre": "Edificio 30",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 30.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0684055,
+        -98.1689559
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 31,
+      "nombre": "Edificio 31",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/cordi cultural.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0684058,
+        -98.1685666
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 32,
+      "nombre": "Edificio 32",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068168,
+        -98.168593
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 33,
+      "nombre": "Edificio 33",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068213,
+        -98.169197
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 34,
+      "nombre": "Edificio 34",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068175,
+        -98.169059
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 35,
+      "nombre": "Edificio 35",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 35.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068176,
+        -98.168952
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 36,
+      "nombre": "Edificio 36",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.068163,
+        -98.17027
+      ],
+      "tipo": "laboratorio",
+      "imagen_360": "img/360/Edificio_36.jpg"
+    },
+    {
+      "id": 37,
+      "nombre": "Edificio 37",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.067984,
+        -98.170599
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 38,
+      "nombre": "Edificio 38",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.067226,
+        -98.168782
+      ],
+      "tipo": "baño"
+    },
+    {
+      "id": 39,
+      "nombre": "Edificio 39",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.067036,
+        -98.168557
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 40,
+      "nombre": "Edificio 40",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.067282,
+        -98.170378
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 41,
+      "nombre": "Edificio 41",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 41.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.071208,
+        -98.169903
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/Edificio_41_,_idiomas_logística_.jpg"
+    },
+    {
+      "id": 42,
+      "nombre": "Edificio 42",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.071135,
+        -98.169291
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 43,
+      "nombre": "Edificio 43",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0670547,
+        -98.1706309
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 44,
+      "nombre": "Edificio 44",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.071905,
+        -98.169451
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 45,
+      "nombre": "Edificio 45",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070917,
+        -98.168811
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/Edificio_45_industrial_.jpg"
+    },
+    {
+      "id": 46,
+      "nombre": "Edificio 46",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070816,
+        -98.168218
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 47,
+      "nombre": "Edificio 47",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.06709,
+        -98.168774
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 48,
+      "nombre": "Edificio 48",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.0670829,
+        -98.1705089
+      ],
+      "tipo": "otro"
+    },
+    {
+      "id": 49,
+      "nombre": "Edificio 49",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/labo electronica.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069142,
+        -98.168277
+      ],
+      "tipo": "laboratorio"
+    },
+    {
+      "id": 50,
+      "nombre": "Edificio 50",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/centro de informacion.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.067422488611665,
+        -98.169682206123
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 51,
+      "nombre": "Edificio 51",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 51.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.071552,
+        -98.169811
+      ],
+      "tipo": "administrativo",
+      "imagen_360": "img/360/51_mecánica_.jpg"
+    },
+    {
+      "id": 52,
+      "nombre": "Edificio 52",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 36.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.069555,
+        -98.169899
+      ],
+      "tipo": "administrativo"
+    },
+    {
+      "id": 53,
+      "nombre": "Edificio 53",
+      "descripcion": "El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,\n                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes\n                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e\n                        internet de las cosas (IoT).",
+      "imagen": "img/edificios/edificio 53.jpg",
+      "instalaciones": [
+        "Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.",
+        "Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.",
+        "Aulas teóricas con proyector y pizarras digitales para clases magistrales.",
+        "Conectividad inalámbrica de alta velocidad en todo el laboratorio."
+      ],
+      "horario": "Horario no especificado",
+      "coords": [
+        19.070834,
+        -98.169673
+      ],
+      "tipo": "aula"
+    }
+  ]
+}
