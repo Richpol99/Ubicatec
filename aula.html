@@ -456,17 +456,19 @@
                 max-height: 70vh;
                 overflow-y: auto;
                 z-index: 1000;
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 padding: 25px 20px 20px 20px;
                 background: #007bff;
                 box-shadow: 0 -10px 40px rgba(0, 123, 255, 0.4);
                 border: 1px solid rgba(0, 123, 255, 0.2);
                 min-width: 200px;
                 max-width: 90vw;
+                opacity: 0;
             }
             
             .leyenda-marcadores.show {
                 transform: translateX(-50%) translateY(0);
+                opacity: 1;
             }
             
             .leyenda-marcadores h4 {
@@ -668,11 +670,13 @@
             function checkScreenSize() {
                 if (window.innerWidth <= 768) {
                     leyendaTab.style.display = 'flex';
-                    leyendaMarcadores.style.display = 'none';
+                    leyendaMarcadores.style.display = 'block';
+                    leyendaMarcadores.classList.remove('show');
                 } else {
                     leyendaTab.style.display = 'none';
                     // En desktop, la leyenda siempre está visible
                     leyendaMarcadores.style.display = 'block';
+                    leyendaMarcadores.classList.remove('show');
                 }
             }
             
@@ -683,12 +687,13 @@
             // Toggle de la leyenda con pestaña
             leyendaTab.addEventListener('click', function() {
                 if (window.innerWidth <= 768) {
-                    const isVisible = leyendaMarcadores.style.display === 'block';
-                    leyendaMarcadores.style.display = isVisible ? 'none' : 'block';
+                    const isExpanded = leyendaMarcadores.classList.contains('show');
+                    leyendaMarcadores.classList.toggle('show');
+                    leyendaTab.classList.toggle('expanded');
                     
                     // Cambiar el icono
                     const icon = leyendaTab.querySelector('i');
-                    if (isVisible) {
+                    if (isExpanded) {
                         icon.className = 'fas fa-chevron-up';
                     } else {
                         icon.className = 'fas fa-chevron-down';
@@ -701,7 +706,8 @@
                 if (window.innerWidth <= 768 && 
                     !leyendaMarcadores.contains(e.target) && 
                     !leyendaTab.contains(e.target)) {
-                    leyendaMarcadores.style.display = 'none';
+                    leyendaMarcadores.classList.remove('show');
+                    leyendaTab.classList.remove('expanded');
                     const icon = leyendaTab.querySelector('i');
                     icon.className = 'fas fa-chevron-up';
                 }
