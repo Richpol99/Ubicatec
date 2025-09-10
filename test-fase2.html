@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas Fase 2 - Sistema de Rutas Accesibles</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <style>
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .test-pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Pruebas Fase 2 - Sistema de Rutas Accesibles</h1>
+        
+        <div class="test-section">
+            <h3>1. Verificación de Carga de Scripts</h3>
+            <div id="script-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Pruebas de Inicialización</h3>
+            <div id="init-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Pruebas de Cálculo de Distancias</h3>
+            <div id="distance-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Pruebas de Algoritmo Dijkstra</h3>
+            <div id="dijkstra-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Pruebas de Validación de Rutas</h3>
+            <div id="validation-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>6. Pruebas de Navegación Unificada</h3>
+            <div id="navigation-tests"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>7. Mapa de Prueba</h3>
+            <div id="map"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>8. Estadísticas del Sistema</h3>
+            <div id="statistics"></div>
+        </div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Scripts del sistema de rutas accesibles -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log('🧪 Iniciando pruebas de la Fase 2...');
+            
+            // Ejecutar todas las pruebas
+            runAllTests();
+        });
+
+        function runAllTests() {
+            testScriptLoading();
+            testInitialization();
+            testDistanceCalculation();
+            testDijkstraAlgorithm();
+            testRouteValidation();
+            testUnifiedNavigation();
+            testMapIntegration();
+            showStatistics();
+        }
+
+        function testScriptLoading() {
+            const tests = [
+                { name: 'CampusNodes', test: () => typeof CampusNodes !== 'undefined' },
+                { name: 'CampusConnections', test: () => typeof CampusConnections !== 'undefined' },
+                { name: 'AccessibilityWeights', test: () => typeof AccessibilityWeights !== 'undefined' },
+                { name: 'DistanceCalculator', test: () => typeof DistanceCalculator !== 'undefined' },
+                { name: 'RouteValidator', test: () => typeof RouteValidator !== 'undefined' },
+                { name: 'DijkstraRouteCalculator', test: () => typeof DijkstraRouteCalculator !== 'undefined' },
+                { name: 'AccessibleRouteSystem', test: () => typeof AccessibleRouteSystem !== 'undefined' },
+                { name: 'UnifiedNavigationSystem', test: () => typeof window.unifiedNav !== 'undefined' }
+            ];
+
+            const results = tests.map(test => {
+                const passed = test.test();
+                return `<div class="test-result ${passed ? 'test-pass' : 'test-fail'}">
+                    ${passed ? '✅' : '❌'} ${test.name}: ${passed ? 'Cargado correctamente' : 'No encontrado'}
+                </div>`;
+            }).join('');
+
+            $('#script-tests').html(results);
+        }
+
+        function testInitialization() {
+            const results = [];
+
+            try {
+                // Probar CampusNodes
+                const campusNodes = new CampusNodes();
+                results.push(`<div class="test-result test-pass">✅ CampusNodes: Inicializado correctamente</div>`);
+                
+                // Probar CampusConnections
+                const campusConnections = new CampusConnections();
+                campusConnections.setCampusNodes(campusNodes);
+                results.push(`<div class="test-result test-pass">✅ CampusConnections: Inicializado correctamente</div>`);
+                
+                // Probar AccessibilityWeights
+                const accessibilityWeights = new AccessibilityWeights();
+                results.push(`<div class="test-result test-pass">✅ AccessibilityWeights: Inicializado correctamente</div>`);
+                
+                // Probar DistanceCalculator
+                const distanceCalculator = new DistanceCalculator();
+                results.push(`<div class="test-result test-pass">✅ DistanceCalculator: Inicializado correctamente</div>`);
+                
+                // Probar RouteValidator
+                const routeValidator = new RouteValidator();
+                routeValidator.setDistanceCalculator(distanceCalculator);
+                results.push(`<div class="test-result test-pass">✅ RouteValidator: Inicializado correctamente</div>`);
+                
+                // Probar DijkstraRouteCalculator
+                const dijkstraCalculator = new DijkstraRouteCalculator();
+                dijkstraCalculator.setCampusSystems(campusNodes, campusConnections);
+                results.push(`<div class="test-result test-pass">✅ DijkstraRouteCalculator: Inicializado correctamente</div>`);
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error en inicialización: ${error.message}</div>`);
+            }
+
+            $('#init-tests').html(results.join(''));
+        }
+
+        function testDistanceCalculation() {
+            const results = [];
+            
+            try {
+                const distanceCalculator = new DistanceCalculator();
+                
+                // Coordenadas de prueba
+                const coords1 = [19.0698, -98.1688];
+                const coords2 = [19.0699, -98.1689];
+                
+                const distance = distanceCalculator.calculateDistance(coords1, coords2);
+                results.push(`<div class="test-result test-pass">✅ Cálculo de distancia: ${Math.round(distance)} metros</div>`);
+                
+                // Probar conversión de unidades
+                const distanceKm = distanceCalculator.convertDistance(distance, 'km');
+                results.push(`<div class="test-result test-info">ℹ️ Distancia en km: ${distanceKm} km</div>`);
+                
+                // Probar validación de coordenadas
+                const isValid = distanceCalculator.isValidCoordinates(coords1);
+                results.push(`<div class="test-result ${isValid ? 'test-pass' : 'test-fail'}">
+                    ${isValid ? '✅' : '❌'} Validación de coordenadas: ${isValid ? 'Válidas' : 'Inválidas'}
+                </div>`);
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error en cálculo de distancias: ${error.message}</div>`);
+            }
+
+            $('#distance-tests').html(results.join(''));
+        }
+
+        function testDijkstraAlgorithm() {
+            const results = [];
+            
+            try {
+                const campusNodes = new CampusNodes();
+                const campusConnections = new CampusConnections();
+                campusConnections.setCampusNodes(campusNodes);
+                
+                const dijkstraCalculator = new DijkstraRouteCalculator();
+                dijkstraCalculator.setCampusSystems(campusNodes, campusConnections);
+                
+                // Obtener algunos nodos para probar
+                const allNodes = campusNodes.exportNodes();
+                const buildingNodes = allNodes.filter(node => node.type === 'building');
+                
+                if (buildingNodes.length >= 2) {
+                    const startNode = buildingNodes[0];
+                    const endNode = buildingNodes[1];
+                    
+                    const route = dijkstraCalculator.calculateRoute(
+                        startNode.id, 
+                        endNode.id, 
+                        'wheelchair'
+                    );
+                    
+                    results.push(`<div class="test-result test-pass">✅ Ruta calculada: ${startNode.name} → ${endNode.name}</div>`);
+                    results.push(`<div class="test-result test-info">ℹ️ Distancia total: ${Math.round(route.totalDistance)} metros</div>`);
+                    results.push(`<div class="test-result test-info">ℹ️ Tiempo estimado: ${route.estimatedTime} minutos</div>`);
+                    results.push(`<div class="test-result test-info">ℹ️ Waypoints: ${route.waypoints.length}</div>`);
+                } else {
+                    results.push(`<div class="test-result test-fail">❌ No hay suficientes nodos para probar Dijkstra</div>`);
+                }
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error en algoritmo Dijkstra: ${error.message}</div>`);
+            }
+
+            $('#dijkstra-tests').html(results.join(''));
+        }
+
+        function testRouteValidation() {
+            const results = [];
+            
+            try {
+                const distanceCalculator = new DistanceCalculator();
+                const routeValidator = new RouteValidator();
+                routeValidator.setDistanceCalculator(distanceCalculator);
+                
+                // Crear waypoints de prueba
+                const waypoints = [
+                    { coords: [19.0698, -98.1688], name: 'Punto 1' },
+                    { coords: [19.0699, -98.1689], name: 'Punto 2' },
+                    { coords: [19.0700, -98.1690], name: 'Punto 3' }
+                ];
+                
+                const validation = routeValidator.validateRoute(waypoints, 'wheelchair');
+                
+                results.push(`<div class="test-result ${validation.isValid ? 'test-pass' : 'test-fail'}">
+                    ${validation.isValid ? '✅' : '❌'} Validación de ruta: ${validation.isValid ? 'Válida' : 'Inválida'}
+                </div>`);
+                results.push(`<div class="test-result test-info">ℹ️ Score: ${validation.score}/100</div>`);
+                results.push(`<div class="test-result test-info">ℹ️ Errores: ${validation.errors.length}</div>`);
+                results.push(`<div class="test-result test-info">ℹ️ Advertencias: ${validation.warnings.length}</div>`);
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error en validación de rutas: ${error.message}</div>`);
+            }
+
+            $('#validation-tests').html(results.join(''));
+        }
+
+        function testUnifiedNavigation() {
+            const results = [];
+            
+            try {
+                // Esperar a que el sistema unificado esté listo
+                setTimeout(() => {
+                    if (window.unifiedNav && window.unifiedNav.state.isInitialized) {
+                        const stats = window.unifiedNav.getStatistics();
+                        
+                        results.push(`<div class="test-result test-pass">✅ Sistema unificado: Inicializado</div>`);
+                        results.push(`<div class="test-result test-info">ℹ️ Modo de navegación: ${stats.navigationMode}</div>`);
+                        results.push(`<div class="test-result test-info">ℹ️ Rutas disponibles: ${stats.availableRoutes.blue + stats.availableRoutes.green + stats.availableRoutes.orange}</div>`);
+                        results.push(`<div class="test-result test-info">ℹ️ Sistema de rutas conectado: ${stats.accessibleRouteSystemConnected ? 'Sí' : 'No'}</div>`);
+                        results.push(`<div class="test-result test-info">ℹ️ Mapa conectado: ${stats.mapConnected ? 'Sí' : 'No'}</div>`);
+                        
+                        $('#navigation-tests').html(results.join(''));
+                    } else {
+                        $('#navigation-tests').html('<div class="test-result test-fail">❌ Sistema unificado no inicializado</div>');
+                    }
+                }, 2000);
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error en navegación unificada: ${error.message}</div>`);
+                $('#navigation-tests').html(results.join(''));
+            }
+        }
+
+        function testMapIntegration() {
+            try {
+                // Crear mapa de prueba
+                const map = L.map('map').setView([19.0698, -98.1688], 18);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+                
+                // Agregar marcador de prueba
+                L.marker([19.0698, -98.1688])
+                    .addTo(map)
+                    .bindPopup('Punto de prueba')
+                    .openPopup();
+                
+                console.log('✅ Mapa de prueba creado correctamente');
+                
+            } catch (error) {
+                console.error('❌ Error creando mapa de prueba:', error);
+            }
+        }
+
+        function showStatistics() {
+            const results = [];
+            
+            try {
+                // Estadísticas de CampusNodes
+                if (typeof CampusNodes !== 'undefined') {
+                    const campusNodes = new CampusNodes();
+                    const nodeStats = campusNodes.getStatistics();
+                    results.push(`<div class="test-result test-info">ℹ️ Nodos del campus: ${nodeStats.total}</div>`);
+                }
+                
+                // Estadísticas de CampusConnections
+                if (typeof CampusConnections !== 'undefined') {
+                    const campusConnections = new CampusConnections();
+                    const connectionStats = campusConnections.getStatistics();
+                    results.push(`<div class="test-result test-info">ℹ️ Conexiones del campus: ${connectionStats.total}</div>`);
+                }
+                
+                // Estadísticas de AccessibilityWeights
+                if (typeof AccessibilityWeights !== 'undefined') {
+                    const accessibilityWeights = new AccessibilityWeights();
+                    const weightStats = accessibilityWeights.getStatistics();
+                    results.push(`<div class="test-result test-info">ℹ️ Tipos de accesibilidad: ${weightStats.totalAccessibilityTypes}</div>`);
+                }
+                
+                // Estadísticas de DistanceCalculator
+                if (typeof DistanceCalculator !== 'undefined') {
+                    const distanceCalculator = new DistanceCalculator();
+                    const distanceStats = distanceCalculator.getStatistics();
+                    results.push(`<div class="test-result test-info">ℹ️ Caché de distancias: ${distanceStats.cacheSize}/${distanceStats.maxCacheSize}</div>`);
+                }
+
+            } catch (error) {
+                results.push(`<div class="test-result test-fail">❌ Error obteniendo estadísticas: ${error.message}</div>`);
+            }
+
+            $('#statistics').html(results.join(''));
+        }
+    </script>
+</body>
+</html>

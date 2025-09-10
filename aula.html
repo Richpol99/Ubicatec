@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ubica tu Aula</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body data-spy="scroll" data-target="#navbar" class="static-layout">
+
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="/">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header"
+                aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aula.html">Ubica tu Edificio</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Accesos Estudiantes</a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/">Coordinación de Lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/">Sitio Evaluación Docente</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mapa-campus-section text-center">
+        <div class="container text-center">
+            <h2 class="titulo-mapa">Mapa del Campus</h2>
+        </div>
+    </section>
+
+    <section id="mapa" class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mb-4">Ubica tu Edificio</h2>
+                    <p class="text-muted">Instrucciones: usa el buscador o los filtros para localizar el edificio que deseas consultar</p>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Ingresa el número de edificio" />
+                    <div class="filter-container">
+                        <button class="filter-button" data-filter="otros">Otros</button>
+                        <button class="filter-button" data-filter="administrativo">Administrativo</button>
+                        <button class="filter-button" data-filter="aula">Aulas</button>
+                        <button class="filter-button" data-filter="laboratorio">Laboratorios</button>
+                        <button class="filter-button" data-filter="baño">Baños</button>
+                        <button class="filter-button" data-filter="acceso">Accesos</button>
+                        <button class="filter-button" id="rutasAccesiblesBtn" style="background-color: #28a745; color: white; border: 1px solid #28a745;">♿ Rutas Accesibles</button>
+                    </div>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4 bg-dark text-white">
+        <p>&copy; 2025 UBICATEC. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/app.min.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/mapa.js"></script>
+    
+    <!-- Scripts del sistema de rutas accesibles -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+    
+    <!-- Integración del botón de rutas accesibles -->
+    <script>
+        $(document).ready(function() {
+            // Esperar a que el mapa esté listo
+            setTimeout(function() {
+                // Configurar el botón de rutas accesibles
+                $('#rutasAccesiblesBtn').on('click', function() {
+                    console.log('🔍 Verificando sistemas disponibles...');
+                    console.log('accessibleRouteSystem:', typeof window.accessibleRouteSystem);
+                    console.log('unifiedNav:', typeof window.unifiedNav);
+                    
+                    if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.state.isInitialized) {
+                        console.log('✅ Usando sistema de navegación unificado');
+                        // El sistema unificado maneja el clic del botón
+                        window.unifiedNav.handleAccessibleRoutesClick();
+                    } else if (typeof window.accessibleRouteSystem !== 'undefined') {
+                        console.log('✅ Usando sistema de rutas accesibles');
+                        // Mostrar modal de configuración de rutas accesibles
+                        alert('Sistema de rutas accesibles activado. Esta funcionalidad estará disponible en la Fase 2.');
+                    } else {
+                        console.error('❌ Ningún sistema de rutas accesibles disponible');
+                        alert('Sistema de rutas accesibles no disponible. Verifica que los scripts estén cargados correctamente.');
+                    }
+                });
+            }, 2000); // Aumentar tiempo de espera
+        });
+    </script>
+
+</body>
+
+</html>

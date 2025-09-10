@@ -1,0 +1,92 @@
+{
+  "timestamp": "2025-09-07T05:50:07.794Z",
+  "summary": {
+    "total": 59,
+    "valid": 53,
+    "invalid": 6,
+    "adjusted": 0,
+    "discrepancies": [
+      {
+        "name": "Acceso principal (Avenida Tecnologico)",
+        "current": [
+          19.069821422656712,
+          -98.17042957607508
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      },
+      {
+        "name": "Acceso Visitantes (Avenida Tecnologico, Frente a Sears)",
+        "current": [
+          19.068467599492795,
+          -98.17061388514823
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      },
+      {
+        "name": "Acceso Hangar Autobuses y Estacionamiento 3 (Avenida Tecnologico, a un costado de Benteler)",
+        "current": [
+          19.067184781628676,
+          -98.17086525607026
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      },
+      {
+        "name": "Acceso Estacionamiento 2 (Colonia Maravillas)",
+        "current": [
+          19.069943796103818,
+          -98.16710196647787
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      },
+      {
+        "name": "Acceso Estudiantes (Colonia Maravillas)",
+        "current": [
+          19.07051268473509,
+          -98.16772933097631
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      },
+      {
+        "name": "Acceso Estacionamiento 1 (Avenida Tecnologico)",
+        "current": [
+          19.070712336989462,
+          -98.1703082196594
+        ],
+        "original": null,
+        "distance": null,
+        "type": "building_not_found"
+      }
+    ]
+  },
+  "accuracy": {
+    "total": 59,
+    "highPrecision": 53,
+    "mediumPrecision": 0,
+    "lowPrecision": 0,
+    "issues": []
+  },
+  "recommendations": [
+    {
+      "type": "coordinate_accuracy",
+      "priority": "high",
+      "message": "6 edificios tienen coordenadas imprecisas",
+      "action": "Revisar y ajustar coordenadas en el sistema"
+    },
+    {
+      "type": "missing_buildings",
+      "priority": "medium",
+      "message": "Algunos edificios no se encontraron en los datos originales",
+      "action": "Verificar nombres de edificios en el sistema"
+    }
+  ]
+}

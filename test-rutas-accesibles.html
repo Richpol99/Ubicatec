@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema de Rutas Accesibles</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        #map { height: 400px; width: 100%; }
+        .log { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test del Sistema de Rutas Accesibles - PASO 1</h1>
+    
+    <div class="test-section info">
+        <h3>📋 Información del Test</h3>
+        <p>Este test verifica que el PASO 1 (clase AccessibleRouteSystem) funcione correctamente.</p>
+        <p><strong>Archivo creado:</strong> js/rutas-accesibles.js</p>
+    </div>
+
+    <div class="test-section">
+        <h3>🗺️ Mapa de Prueba</h3>
+        <p>Mapa básico para probar la integración:</p>
+        <div id="map"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 Controles de Prueba</h3>
+        <button onclick="testInitialization()">1. Probar Inicialización</button>
+        <button onclick="testState()">2. Ver Estado del Sistema</button>
+        <button onclick="testConfig()">3. Ver Configuración</button>
+        <button onclick="testEvents()">4. Probar Eventos</button>
+        <button onclick="testDistance()">5. Probar Cálculo de Distancia</button>
+        <button onclick="clearLog()">🧹 Limpiar Log</button>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 Log de Resultados</h3>
+        <div id="log" class="log">Esperando pruebas...<br></div>
+    </div>
+
+    <!-- Dependencias necesarias -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Nuestro sistema de rutas accesibles -->
+    <script src="js/rutas-accesibles.js"></script>
+
+    <script>
+        let map;
+        let accessibleRouteSystem;
+
+        // Inicializar mapa de prueba
+        function initTestMap() {
+            map = L.map('map').setView([19.0698, -98.1688], 18);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Hacer el mapa global para que el sistema lo encuentre
+            window.map = map;
+            
+            log('✅ Mapa de prueba inicializado');
+        }
+
+        // Función de logging
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log limpiado...<br>';
+        }
+
+        // Test 1: Inicialización
+        function testInitialization() {
+            log('🧪 Iniciando test de inicialización...');
+            
+            try {
+                if (typeof AccessibleRouteSystem === 'undefined') {
+                    throw new Error('Clase AccessibleRouteSystem no encontrada');
+                }
+                
+                log('✅ Clase AccessibleRouteSystem encontrada');
+                
+                // Verificar si el sistema ya está inicializado
+                if (window.accessibleRouteSystem) {
+                    log('✅ Sistema ya inicializado globalmente');
+                    accessibleRouteSystem = window.accessibleRouteSystem;
+                } else {
+                    log('⚠️ Sistema no inicializado globalmente, creando instancia...');
+                    accessibleRouteSystem = new AccessibleRouteSystem({
+                        mapContainer: 'map',
+                        debugMode: true
+                    });
+                }
+                
+                log('✅ Test de inicialización completado', 'success');
+                
+            } catch (error) {
+                log(`❌ Error en inicialización: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 2: Estado del sistema
+        function testState() {
+            log('🧪 Verificando estado del sistema...');
+            
+            if (!accessibleRouteSystem) {
+                log('❌ Sistema no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const state = accessibleRouteSystem.getState();
+            log(`📊 Estado del sistema:`);
+            log(`   - Inicializado: ${state.isInitialized}`);
+            log(`   - Calculando ruta: ${state.isCalculating}`);
+            log(`   - Ruta actual: ${state.currentRoute ? 'Sí' : 'No'}`);
+            log(`   - Ubicación usuario: ${state.userLocation ? 'Sí' : 'No'}`);
+            log(`   - Punto inicio: ${state.selectedStart ? 'Sí' : 'No'}`);
+            log(`   - Punto destino: ${state.selectedEnd ? 'Sí' : 'No'}`);
+            log(`   - Tipo accesibilidad: ${state.accessibilityType}`);
+            
+            log('✅ Estado del sistema verificado', 'success');
+        }
+
+        // Test 3: Configuración
+        function testConfig() {
+            log('🧪 Verificando configuración del sistema...');
+            
+            if (!accessibleRouteSystem) {
+                log('❌ Sistema no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const config = accessibleRouteSystem.getConfig();
+            log(`⚙️ Configuración del sistema:`);
+            log(`   - Contenedor del mapa: ${config.mapContainer}`);
+            log(`   - Geolocalización habilitada: ${config.enableGeolocation}`);
+            log(`   - Tipo accesibilidad por defecto: ${config.defaultAccessibilityType}`);
+            log(`   - Modo debug: ${config.debugMode}`);
+            
+            log('✅ Configuración del sistema verificada', 'success');
+        }
+
+        // Test 4: Eventos
+        function testEvents() {
+            log('🧪 Probando sistema de eventos...');
+            
+            if (!accessibleRouteSystem) {
+                log('❌ Sistema no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            // Agregar listener de prueba
+            accessibleRouteSystem.addEventListener('testEvent', function(data) {
+                log(`📡 Evento recibido: ${data.message}`, 'success');
+            });
+
+            // Emitir evento de prueba
+            accessibleRouteSystem.emit('testEvent', { message: '¡Evento de prueba funcionando!' });
+            
+            log('✅ Sistema de eventos funcionando', 'success');
+        }
+
+        // Test 5: Cálculo de distancia
+        function testDistance() {
+            log('🧪 Probando cálculo de distancia...');
+            
+            if (!accessibleRouteSystem) {
+                log('❌ Sistema no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            // Coordenadas de prueba (Edificio 1 y Edificio 15)
+            const coords1 = [19.0700471611661, -98.16987998532049]; // Edificio 1
+            const coords2 = [19.069281, -98.168944]; // Edificio 15
+            
+            const distance = accessibleRouteSystem.calculateDistance(coords1, coords2);
+            
+            log(`📏 Distancia calculada entre Edificio 1 y Edificio 15:`);
+            log(`   - Distancia: ${Math.round(distance)} metros`);
+            log(`   - Distancia: ${(distance / 1000).toFixed(2)} kilómetros`);
+            
+            log('✅ Cálculo de distancia funcionando', 'success');
+        }
+
+        // Inicializar cuando el DOM esté listo
+        $(document).ready(function() {
+            log('🚀 Iniciando tests del PASO 1...');
+            initTestMap();
+            log('💡 Haz clic en los botones de arriba para probar cada funcionalidad');
+        });
+    </script>
+</body>
+</html>

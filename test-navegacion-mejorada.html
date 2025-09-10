@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Navegación Mejorada - UBICATEC</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        #map { height: 400px; width: 100%; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Navegación Mejorada - UBICATEC</h1>
+        <p>Este test verifica que el sistema de navegación funcione correctamente cuando el usuario esté cerca de nodos de acceso al campus.</p>
+
+        <div class="test-section">
+            <h3>📍 Simulación de Ubicaciones</h3>
+            <p>Simula diferentes ubicaciones del usuario para probar el sistema:</p>
+            
+            <button class="test-button" onclick="testLocation('campus_center')">
+                Centro del Campus
+            </button>
+            <button class="test-button" onclick="testLocation('access_principal')">
+                Acceso Principal
+            </button>
+            <button class="test-button" onclick="testLocation('access_visitantes')">
+                Acceso Visitantes
+            </button>
+            <button class="test-button" onclick="testLocation('access_estudiantes')">
+                Acceso Estudiantes
+            </button>
+            <button class="test-button" onclick="testLocation('far_away')">
+                Muy Lejos (Error esperado)
+            </button>
+            
+            <div id="locationResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 Test de Navegación a Edificio 36</h3>
+            <p>Prueba la navegación desde diferentes ubicaciones al Edificio 36:</p>
+            
+            <button class="test-button" onclick="testNavigation('wheelchair')">
+                ♿ Silla de Ruedas
+            </button>
+            <button class="test-button" onclick="testNavigation('visual')">
+                👁️ Discapacidad Visual
+            </button>
+            <button class="test-button" onclick="testNavigation('auditory')">
+                👂 Discapacidad Auditiva
+            </button>
+            <button class="test-button" onclick="testNavigation('mobility')">
+                🚶 Discapacidad de Movilidad
+            </button>
+            
+            <div id="navigationResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🗺️ Mapa de Prueba</h3>
+            <div id="map"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Estado del Sistema</h3>
+            <button class="test-button" onclick="checkSystemStatus()">
+                Verificar Estado
+            </button>
+            <div id="statusResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Scripts del sistema -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+
+    <script>
+        let map;
+        let currentLocation = null;
+
+        // Ubicaciones de prueba
+        const testLocations = {
+            campus_center: [19.0698, -98.1688],
+            access_principal: [19.069821422656712, -98.17042957607508],
+            access_visitantes: [19.068467599492795, -98.17061388514823],
+            access_estudiantes: [19.07051268473509, -98.16772933097631],
+            far_away: [19.0000, -98.0000] // Muy lejos del campus
+        };
+
+        $(document).ready(function() {
+            initializeMap();
+            
+            // Esperar a que los sistemas se inicialicen
+            setTimeout(() => {
+                checkSystemStatus();
+            }, 3000);
+        });
+
+        function initializeMap() {
+            map = L.map('map').setView([19.0698, -98.1688], 16);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Agregar marcador del campus
+            L.marker([19.0698, -98.1688]).addTo(map)
+                .bindPopup('Centro del Campus ITP')
+                .openPopup();
+        }
+
+        function testLocation(locationKey) {
+            const coords = testLocations[locationKey];
+            if (!coords) {
+                showResult('locationResult', 'error', 'Ubicación de prueba no encontrada');
+                return;
+            }
+
+            currentLocation = coords;
+            
+            // Agregar marcador de ubicación actual
+            if (window.userMarker) {
+                map.removeLayer(window.userMarker);
+            }
+            
+            window.userMarker = L.marker(coords, {
+                icon: L.icon({
+                    iconUrl: 'Icon/user.png',
+                    iconSize: [27, 35],
+                    iconAnchor: [12, 39]
+                })
+            }).addTo(map);
+            
+            map.setView(coords, 16);
+
+            // Probar búsqueda de nodo más cercano
+            if (window.unifiedNav) {
+                try {
+                    const nearestNode = window.unifiedNav.findNearestNodeToUser(coords);
+                    if (nearestNode) {
+                        const distance = window.unifiedNav.calculateDistance(coords, nearestNode.coords);
+                        showResult('locationResult', 'success', 
+                            `✅ Ubicación simulada: ${locationKey}<br>` +
+                            `📍 Coordenadas: ${coords[0]}, ${coords[1]}<br>` +
+                            `🔍 Nodo más cercano: ${nearestNode.name}<br>` +
+                            `📏 Distancia: ${Math.round(distance)} metros`
+                        );
+                    } else {
+                        showResult('locationResult', 'error', 
+                            `❌ No se encontró ningún nodo cercano para: ${locationKey}`
+                        );
+                    }
+                } catch (error) {
+                    showResult('locationResult', 'error', 
+                        `❌ Error: ${error.message}`
+                    );
+                }
+            } else {
+                showResult('locationResult', 'error', 'Sistema de navegación no disponible');
+            }
+        }
+
+        function testNavigation(accessibilityType) {
+            if (!currentLocation) {
+                showResult('navigationResult', 'error', 'Primero selecciona una ubicación de prueba');
+                return;
+            }
+
+            if (!window.unifiedNav) {
+                showResult('navigationResult', 'error', 'Sistema de navegación no disponible');
+                return;
+            }
+
+            showResult('navigationResult', 'info', '🔄 Calculando ruta...');
+
+            // Simular navegación
+            window.unifiedNav.state.currentDestination = 'Edificio 36 (Centro de computo y lab de sistemas, WC)';
+            
+            window.unifiedNav.startNavigation(accessibilityType)
+                .then(() => {
+                    showResult('navigationResult', 'success', 
+                        `✅ Navegación ${accessibilityType} iniciada correctamente<br>` +
+                        `🎯 Destino: Edificio 36<br>` +
+                        `📍 Desde: ${currentLocation[0]}, ${currentLocation[1]}`
+                    );
+                })
+                .catch(error => {
+                    showResult('navigationResult', 'error', 
+                        `❌ Error en navegación: ${error.message}`
+                    );
+                });
+        }
+
+        function checkSystemStatus() {
+            const status = {
+                unifiedNav: typeof window.unifiedNav !== 'undefined',
+                accessibleRouteSystem: typeof window.accessibleRouteSystem !== 'undefined',
+                campusNodes: typeof window.CampusNodes !== 'undefined',
+                map: map !== null
+            };
+
+            let statusHtml = '<h4>Estado de los Sistemas:</h4>';
+            
+            Object.entries(status).forEach(([system, available]) => {
+                const statusClass = available ? 'success' : 'error';
+                const statusIcon = available ? '✅' : '❌';
+                statusHtml += `<div class="${statusClass}">${statusIcon} ${system}: ${available ? 'Disponible' : 'No disponible'}</div>`;
+            });
+
+            if (window.unifiedNav && window.unifiedNav.state) {
+                statusHtml += '<h4>Estado del Sistema de Navegación:</h4>';
+                statusHtml += `<div class="info">Inicializado: ${window.unifiedNav.state.isInitialized ? 'Sí' : 'No'}</div>`;
+                statusHtml += `<div class="info">Navegando: ${window.unifiedNav.state.isNavigating ? 'Sí' : 'No'}</div>`;
+                statusHtml += `<div class="info">Modo: ${window.unifiedNav.state.navigationMode}</div>`;
+            }
+
+            showResult('statusResult', 'info', statusHtml);
+        }
+
+        function showResult(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.className = `result ${type}`;
+            element.innerHTML = message;
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

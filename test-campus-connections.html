@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema de Conexiones del Campus</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        #map { height: 400px; width: 100%; }
+        .log { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 3px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 10px 0; }
+        .stat-card { background: #f8f9fa; padding: 10px; border-radius: 5px; text-align: center; }
+        .connection-list { max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 5px; }
+        .connection-item { padding: 5px; border-bottom: 1px solid #ddd; font-size: 12px; }
+        .connection-type { font-weight: bold; color: #007bff; }
+        .connection-weight { color: #6c757d; font-size: 10px; }
+        .connection-line { stroke-width: 2; fill: none; }
+        .connection-standard { stroke: #007bff; }
+        .connection-accessible { stroke: #28a745; }
+        .connection-ramp { stroke: #ffc107; }
+        .connection-emergency { stroke: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test del PASO 3 - Sistema de Conexiones del Campus</h1>
+    
+    <div class="test-section info">
+        <h3>📋 Información del Test</h3>
+        <p>Este test verifica que el PASO 3 (CampusConnections) funcione correctamente.</p>
+        <p><strong>Archivo creado:</strong> js/campus-connections.js</p>
+        <p><strong>Funcionalidades:</strong> Conexiones entre nodos, pesos de accesibilidad, tipos de conexión</p>
+    </div>
+
+    <div class="test-section">
+        <h3>🗺️ Mapa de Conexiones</h3>
+        <p>Mapa mostrando nodos y sus conexiones:</p>
+        <div id="map"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 Controles de Prueba</h3>
+        <button onclick="testInitialization()">1. Probar Inicialización</button>
+        <button onclick="testStatistics()">2. Ver Estadísticas</button>
+        <button onclick="testConnections()">3. Probar Conexiones</button>
+        <button onclick="testWeights()">4. Probar Pesos</button>
+        <button onclick="testBestConnection()">5. Mejor Conexión</button>
+        <button onclick="testConnectionTypes()">6. Tipos de Conexión</button>
+        <button onclick="clearLog()">🧹 Limpiar Log</button>
+    </div>
+
+    <div class="test-section">
+        <h3>📊 Estadísticas de Conexiones</h3>
+        <div id="stats" class="stats"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 Log de Resultados</h3>
+        <div id="log" class="log">Esperando pruebas...<br></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔗 Lista de Conexiones</h3>
+        <div id="connectionList" class="connection-list">Cargando conexiones...</div>
+    </div>
+
+    <!-- Dependencias necesarias -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Nuestros sistemas -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+
+    <script>
+        let map;
+        let campusNodes;
+        let campusConnections;
+        let nodeMarkers = [];
+        let connectionLines = [];
+
+        // Inicializar mapa de prueba
+        function initTestMap() {
+            map = L.map('map').setView([19.0698, -98.1688], 18);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            log('✅ Mapa de prueba inicializado');
+        }
+
+        // Función de logging
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' : 'info';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log limpiado...<br>';
+        }
+
+        // Test 1: Inicialización
+        function testInitialization() {
+            log('🧪 Iniciando test de inicialización...');
+            
+            try {
+                if (typeof CampusNodes === 'undefined') {
+                    throw new Error('Clase CampusNodes no encontrada');
+                }
+                
+                if (typeof CampusConnections === 'undefined') {
+                    throw new Error('Clase CampusConnections no encontrada');
+                }
+                
+                log('✅ Clases encontradas');
+                
+                // Crear instancias
+                campusNodes = new CampusNodes();
+                campusConnections = new CampusConnections();
+                
+                // Conectar los sistemas
+                campusConnections.setCampusNodes(campusNodes);
+                
+                const stats = campusConnections.getStatistics();
+                log(`📊 Conexiones generadas: ${stats.total}`);
+                
+                // Mostrar estadísticas
+                displayStatistics(stats);
+                
+                // Mostrar conexiones en el mapa
+                displayConnectionsOnMap();
+                
+                // Mostrar lista de conexiones
+                displayConnectionList();
+                
+                log('✅ Test de inicialización completado', 'success');
+                
+            } catch (error) {
+                log(`❌ Error en inicialización: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 2: Estadísticas
+        function testStatistics() {
+            log('🧪 Verificando estadísticas...');
+            
+            if (!campusConnections) {
+                log('❌ CampusConnections no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const stats = campusConnections.getStatistics();
+            log(`📊 Estadísticas del sistema:`);
+            log(`   - Total de conexiones: ${stats.total}`);
+            log(`   - Por tipo: ${JSON.stringify(stats.byType)}`);
+            log(`   - Accesibilidad: ${JSON.stringify(stats.byAccessibility)}`);
+            
+            displayStatistics(stats);
+            log('✅ Estadísticas verificadas', 'success');
+        }
+
+        // Test 3: Conexiones
+        function testConnections() {
+            log('🧪 Probando conexiones...');
+            
+            if (!campusConnections || !campusNodes) {
+                log('❌ Sistemas no inicializados. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            // Obtener algunos nodos de prueba
+            const buildings = campusNodes.findNodesByType('building');
+            if (buildings.length < 2) {
+                log('❌ No hay suficientes edificios para probar conexiones', 'error');
+                return;
+            }
+
+            const node1 = buildings[0];
+            const node2 = buildings[1];
+            
+            // Probar conexiones desde un nodo
+            const connectionsFrom = campusConnections.getConnectionsFrom(node1.id);
+            log(`🔗 Conexiones desde "${node1.name}": ${connectionsFrom.length}`);
+            
+            // Probar conexiones hacia un nodo
+            const connectionsTo = campusConnections.getConnectionsTo(node2.id);
+            log(`🔗 Conexiones hacia "${node2.name}": ${connectionsTo.length}`);
+            
+            // Probar conexión específica
+            const specificConnection = campusConnections.getConnectionBetween(node1.id, node2.id);
+            if (specificConnection) {
+                log(`🔗 Conexión específica encontrada: ${specificConnection.type}`);
+            } else {
+                log(`⚠️ No hay conexión directa entre estos nodos`);
+            }
+
+            log('✅ Conexiones funcionando', 'success');
+        }
+
+        // Test 4: Pesos
+        function testWeights() {
+            log('🧪 Probando pesos de conexiones...');
+            
+            if (!campusConnections) {
+                log('❌ CampusConnections no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const connections = campusConnections.exportConnections();
+            if (connections.length === 0) {
+                log('❌ No hay conexiones para probar', 'error');
+                return;
+            }
+
+            const connection = connections[0];
+            log(`⚖️ Pesos de conexión "${connection.metadata.fromName}" → "${connection.metadata.toName}":`);
+            log(`   - Silla de ruedas: ${connection.weights.wheelchair.toFixed(2)}`);
+            log(`   - Visual: ${connection.weights.visual.toFixed(2)}`);
+            log(`   - Auditiva: ${connection.weights.auditory.toFixed(2)}`);
+            log(`   - Movilidad: ${connection.weights.mobility.toFixed(2)}`);
+
+            log('✅ Pesos verificados', 'success');
+        }
+
+        // Test 5: Mejor conexión
+        function testBestConnection() {
+            log('🧪 Probando mejor conexión...');
+            
+            if (!campusConnections || !campusNodes) {
+                log('❌ Sistemas no inicializados. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const buildings = campusNodes.findNodesByType('building');
+            if (buildings.length < 2) {
+                log('❌ No hay suficientes edificios para probar', 'error');
+                return;
+            }
+
+            const node1 = buildings[0];
+            const node2 = buildings[1];
+            
+            // Probar mejor conexión para silla de ruedas
+            const bestConnection = campusConnections.getBestConnection(node1.id, node2.id, 'wheelchair');
+            if (bestConnection) {
+                const weight = campusConnections.getConnectionWeight(bestConnection.id, 'wheelchair');
+                log(`♿ Mejor conexión para silla de ruedas: ${bestConnection.type} (peso: ${weight.toFixed(2)})`);
+            } else {
+                log(`⚠️ No hay conexión entre estos nodos`);
+            }
+
+            log('✅ Mejor conexión verificada', 'success');
+        }
+
+        // Test 6: Tipos de conexión
+        function testConnectionTypes() {
+            log('🧪 Verificando tipos de conexión...');
+            
+            if (!campusConnections) {
+                log('❌ CampusConnections no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const types = ['standard', 'accessible', 'ramp', 'elevator', 'stairs', 'emergency'];
+            
+            types.forEach(type => {
+                const connections = campusConnections.getConnectionsByType(type);
+                log(`🔗 Conexiones tipo "${type}": ${connections.length}`);
+            });
+
+            log('✅ Tipos de conexión verificados', 'success');
+        }
+
+        // Mostrar estadísticas
+        function displayStatistics(stats) {
+            const statsDiv = document.getElementById('stats');
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <h4>Total</h4>
+                    <p>${stats.total}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Estándar</h4>
+                    <p>${stats.byType.standard || 0}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Accesible</h4>
+                    <p>${stats.byType.accessible || 0}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Rampa</h4>
+                    <p>${stats.byType.ramp || 0}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Emergencia</h4>
+                    <p>${stats.byType.emergency || 0}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Silla de Ruedas</h4>
+                    <p>${stats.byAccessibility.wheelchair}</p>
+                </div>
+            `;
+        }
+
+        // Mostrar conexiones en el mapa
+        function displayConnectionsOnMap() {
+            if (!campusConnections || !campusNodes) return;
+
+            // Limpiar elementos existentes
+            nodeMarkers.forEach(marker => map.removeLayer(marker));
+            connectionLines.forEach(line => map.removeLayer(line));
+            nodeMarkers = [];
+            connectionLines = [];
+
+            // Mostrar nodos
+            const allNodes = campusNodes.exportNodes();
+            const nodeMap = new Map();
+            
+            allNodes.forEach(node => {
+                const marker = L.circleMarker(node.coords, {
+                    radius: 5,
+                    fillColor: 'blue',
+                    color: 'white',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <strong>${node.name}</strong><br>
+                    Tipo: ${node.type}<br>
+                    Coordenadas: [${node.coords[0].toFixed(6)}, ${node.coords[1].toFixed(6)}]
+                `);
+
+                nodeMarkers.push(marker);
+                nodeMap.set(node.id, node);
+            });
+
+            // Mostrar conexiones
+            const connections = campusConnections.exportConnections();
+            const typeColors = {
+                standard: '#007bff',
+                accessible: '#28a745',
+                ramp: '#ffc107',
+                elevator: '#17a2b8',
+                stairs: '#6c757d',
+                emergency: '#dc3545'
+            };
+
+            connections.forEach(connection => {
+                const fromNode = nodeMap.get(connection.from);
+                const toNode = nodeMap.get(connection.to);
+                
+                if (fromNode && toNode) {
+                    const color = typeColors[connection.type] || '#000000';
+                    const line = L.polyline([fromNode.coords, toNode.coords], {
+                        color: color,
+                        weight: 2,
+                        opacity: 0.7
+                    }).addTo(map);
+
+                    line.bindPopup(`
+                        <strong>Conexión ${connection.type}</strong><br>
+                        De: ${connection.metadata.fromName}<br>
+                        A: ${connection.metadata.toName}<br>
+                        Distancia: ${Math.round(connection.distance)}m<br>
+                        Peso silla de ruedas: ${connection.weights.wheelchair.toFixed(2)}
+                    `);
+
+                    connectionLines.push(line);
+                }
+            });
+
+            log(`🗺️ ${allNodes.length} nodos y ${connections.length} conexiones mostrados en el mapa`);
+        }
+
+        // Mostrar lista de conexiones
+        function displayConnectionList() {
+            if (!campusConnections) return;
+
+            const connections = campusConnections.exportConnections();
+            const connectionListDiv = document.getElementById('connectionList');
+            
+            let html = '';
+            connections.slice(0, 20).forEach(connection => { // Mostrar solo las primeras 20
+                html += `
+                    <div class="connection-item">
+                        <span class="connection-type">${connection.type}</span> - 
+                        ${connection.metadata.fromName} → ${connection.metadata.toName}
+                        <div class="connection-weight">
+                            Distancia: ${Math.round(connection.distance)}m | 
+                            Peso: ${connection.weights.wheelchair.toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (connections.length > 20) {
+                html += `<div class="connection-item">... y ${connections.length - 20} más</div>`;
+            }
+
+            connectionListDiv.innerHTML = html;
+        }
+
+        // Inicializar cuando el DOM esté listo
+        $(document).ready(function() {
+            log('🚀 Iniciando tests del PASO 3...');
+            initTestMap();
+            log('💡 Haz clic en los botones de arriba para probar cada funcionalidad');
+        });
+    </script>
+</body>
+</html>

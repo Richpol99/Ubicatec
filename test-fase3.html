@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Prueba Fase 3 - Visualización de Rutas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        #map { height: 400px; width: 100%; border: 1px solid #ccc; border-radius: 8px; }
+        .btn-test { margin: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba Fase 3 - Visualización de Rutas</h1>
+        <p>Este archivo prueba las funcionalidades implementadas en la Fase 3 del sistema de rutas accesibles.</p>
+
+        <!-- Sección 1: Verificación de Scripts -->
+        <div class="test-section">
+            <h3>📋 1. Verificación de Scripts Cargados</h3>
+            <div id="script-tests"></div>
+        </div>
+
+        <!-- Sección 2: Prueba de RouteVisualizer -->
+        <div class="test-section">
+            <h3>🎨 2. Prueba de RouteVisualizer</h3>
+            <div id="route-visualizer-tests"></div>
+            <button class="btn btn-primary btn-test" onclick="testRouteVisualizer()">Probar RouteVisualizer</button>
+        </div>
+
+        <!-- Sección 3: Prueba de Modales Mejorados -->
+        <div class="test-section">
+            <h3>🖼️ 3. Prueba de Modales Mejorados</h3>
+            <div id="modal-tests"></div>
+            <button class="btn btn-success btn-test" onclick="testAccessibilityModal()">Probar Modal de Accesibilidad</button>
+            <button class="btn btn-info btn-test" onclick="testInfoModal()">Probar Modal de Información</button>
+        </div>
+
+        <!-- Sección 4: Prueba de Integración Completa -->
+        <div class="test-section">
+            <h3>🔗 4. Prueba de Integración Completa</h3>
+            <div id="integration-tests"></div>
+            <button class="btn btn-warning btn-test" onclick="testCompleteIntegration()">Probar Integración Completa</button>
+        </div>
+
+        <!-- Sección 5: Mapa de Prueba -->
+        <div class="test-section">
+            <h3>🗺️ 5. Mapa de Prueba</h3>
+            <div id="map"></div>
+            <button class="btn btn-secondary btn-test" onclick="testMapVisualization()">Probar Visualización en Mapa</button>
+        </div>
+
+        <!-- Sección 6: Estadísticas del Sistema -->
+        <div class="test-section">
+            <h3>📊 6. Estadísticas del Sistema</h3>
+            <div id="system-stats"></div>
+            <button class="btn btn-dark btn-test" onclick="showSystemStats()">Mostrar Estadísticas</button>
+        </div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Scripts del sistema -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+
+    <script>
+        let map;
+        let routeVisualizer;
+        let testResults = [];
+
+        // Inicializar cuando el DOM esté listo
+        $(document).ready(function() {
+            console.log('🧪 Iniciando pruebas de Fase 3...');
+            initializeMap();
+            runInitialTests();
+        });
+
+        function initializeMap() {
+            // Crear mapa centrado en el campus
+            map = L.map('map').setView([19.0700471611661, -98.16987998532049], 16);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Inicializar RouteVisualizer
+            if (typeof RouteVisualizer !== 'undefined') {
+                routeVisualizer = new RouteVisualizer(map);
+                console.log('✅ RouteVisualizer inicializado');
+            }
+        }
+
+        function runInitialTests() {
+            testScripts();
+            testRouteVisualizerClass();
+            testUnifiedNavigation();
+        }
+
+        function testScripts() {
+            const scripts = [
+                'CampusNodes',
+                'CampusConnections', 
+                'AccessibilityWeights',
+                'DistanceCalculator',
+                'RouteValidator',
+                'DijkstraRouteCalculator',
+                'RouteVisualizer',
+                'AccessibleRouteSystem',
+                'UnifiedNavigationSystem'
+            ];
+
+            let html = '<h5>Scripts Cargados:</h5><ul>';
+            let allLoaded = true;
+
+            scripts.forEach(script => {
+                const isLoaded = typeof window[script] !== 'undefined';
+                const status = isLoaded ? '✅' : '❌';
+                const color = isLoaded ? 'success' : 'error';
+                
+                html += `<li class="${color}">${status} ${script}</li>`;
+                
+                if (!isLoaded) allLoaded = false;
+            });
+
+            html += '</ul>';
+            
+            if (allLoaded) {
+                html += '<div class="test-result success">✅ Todos los scripts están cargados correctamente</div>';
+            } else {
+                html += '<div class="test-result error">❌ Algunos scripts no están cargados</div>';
+            }
+
+            document.getElementById('script-tests').innerHTML = html;
+        }
+
+        function testRouteVisualizerClass() {
+            let html = '<h5>Pruebas de RouteVisualizer:</h5>';
+            
+            if (typeof RouteVisualizer !== 'undefined') {
+                html += '<div class="test-result success">✅ Clase RouteVisualizer disponible</div>';
+                
+                // Probar instanciación
+                try {
+                    const testVisualizer = new RouteVisualizer(map);
+                    html += '<div class="test-result success">✅ RouteVisualizer se puede instanciar</div>';
+                    
+                    // Probar métodos
+                    const methods = ['visualizeRoute', 'clearCurrentRoute', 'getCurrentRouteInfo', 'getStatistics'];
+                    methods.forEach(method => {
+                        if (typeof testVisualizer[method] === 'function') {
+                            html += `<div class="test-result success">✅ Método ${method} disponible</div>`;
+                        } else {
+                            html += `<div class="test-result error">❌ Método ${method} no disponible</div>`;
+                        }
+                    });
+                    
+                } catch (error) {
+                    html += `<div class="test-result error">❌ Error al instanciar RouteVisualizer: ${error.message}</div>`;
+                }
+            } else {
+                html += '<div class="test-result error">❌ Clase RouteVisualizer no disponible</div>';
+            }
+
+            document.getElementById('route-visualizer-tests').innerHTML = html;
+        }
+
+        function testUnifiedNavigation() {
+            let html = '<h5>Pruebas de UnifiedNavigation:</h5>';
+            
+            if (typeof window.unifiedNav !== 'undefined') {
+                html += '<div class="test-result success">✅ Instancia unifiedNav disponible</div>';
+                
+                // Probar métodos de modal
+                const modalMethods = ['showAccessibleRoutesModal', 'closeAccessibilityModal', 'showAccessibilityInfo'];
+                modalMethods.forEach(method => {
+                    if (typeof window.unifiedNav[method] === 'function') {
+                        html += `<div class="test-result success">✅ Método ${method} disponible</div>`;
+                    } else {
+                        html += `<div class="test-result error">❌ Método ${method} no disponible</div>`;
+                    }
+                });
+                
+            } else {
+                html += '<div class="test-result error">❌ Instancia unifiedNav no disponible</div>';
+            }
+
+            document.getElementById('modal-tests').innerHTML = html;
+        }
+
+        function testRouteVisualizer() {
+            if (!routeVisualizer) {
+                alert('❌ RouteVisualizer no está inicializado');
+                return;
+            }
+
+            // Crear ruta de prueba
+            const testRoute = {
+                waypoints: [
+                    { coords: [19.0700471611661, -98.16987998532049], name: 'Inicio' },
+                    { coords: [19.0701471611661, -98.16997998532049], name: 'Punto 1' },
+                    { coords: [19.0702471611661, -98.17007998532049], name: 'Punto 2' },
+                    { coords: [19.0703471611661, -98.17017998532049], name: 'Destino' }
+                ],
+                accessibilityType: 'wheelchair',
+                totalDistance: 150,
+                estimatedTime: 3
+            };
+
+            try {
+                routeVisualizer.visualizeRoute(testRoute);
+                alert('✅ Ruta de prueba visualizada correctamente');
+            } catch (error) {
+                alert(`❌ Error al visualizar ruta: ${error.message}`);
+            }
+        }
+
+        function testAccessibilityModal() {
+            if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.showAccessibleRoutesModal) {
+                window.unifiedNav.showAccessibleRoutesModal();
+                alert('✅ Modal de accesibilidad mostrado');
+            } else {
+                alert('❌ No se puede mostrar el modal de accesibilidad');
+            }
+        }
+
+        function testInfoModal() {
+            if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.showAccessibilityInfo) {
+                window.unifiedNav.showAccessibilityInfo();
+                alert('✅ Modal de información mostrado');
+            } else {
+                alert('❌ No se puede mostrar el modal de información');
+            }
+        }
+
+        function testCompleteIntegration() {
+            let html = '<h5>Prueba de Integración Completa:</h5>';
+            
+            try {
+                // Verificar que todos los componentes estén disponibles
+                const components = {
+                    'RouteVisualizer': typeof RouteVisualizer !== 'undefined',
+                    'unifiedNav': typeof window.unifiedNav !== 'undefined',
+                    'map': map !== null,
+                    'campusNodes': typeof CampusNodes !== 'undefined',
+                    'campusConnections': typeof CampusConnections !== 'undefined'
+                };
+
+                let allComponents = true;
+                Object.entries(components).forEach(([name, available]) => {
+                    const status = available ? '✅' : '❌';
+                    const color = available ? 'success' : 'error';
+                    html += `<div class="test-result ${color}">${status} ${name}</div>`;
+                    if (!available) allComponents = false;
+                });
+
+                if (allComponents) {
+                    html += '<div class="test-result success">✅ Todos los componentes están integrados correctamente</div>';
+                } else {
+                    html += '<div class="test-result error">❌ Algunos componentes no están disponibles</div>';
+                }
+
+            } catch (error) {
+                html += `<div class="test-result error">❌ Error en la integración: ${error.message}</div>`;
+            }
+
+            document.getElementById('integration-tests').innerHTML = html;
+        }
+
+        function testMapVisualization() {
+            if (!routeVisualizer) {
+                alert('❌ RouteVisualizer no está inicializado');
+                return;
+            }
+
+            // Crear múltiples rutas de prueba con diferentes tipos de accesibilidad
+            const testRoutes = [
+                {
+                    waypoints: [
+                        { coords: [19.0700471611661, -98.16987998532049], name: 'Inicio' },
+                        { coords: [19.0701471611661, -98.16997998532049], name: 'Punto 1' },
+                        { coords: [19.0702471611661, -98.17007998532049], name: 'Destino' }
+                    ],
+                    accessibilityType: 'wheelchair',
+                    totalDistance: 100,
+                    estimatedTime: 2
+                }
+            ];
+
+            try {
+                // Limpiar rutas anteriores
+                routeVisualizer.clearCurrentRoute();
+                
+                // Visualizar primera ruta
+                routeVisualizer.visualizeRoute(testRoutes[0]);
+                
+                alert('✅ Visualización en mapa completada. Revisa el mapa para ver la ruta.');
+            } catch (error) {
+                alert(`❌ Error en la visualización: ${error.message}`);
+            }
+        }
+
+        function showSystemStats() {
+            let html = '<h5>Estadísticas del Sistema:</h5>';
+            
+            try {
+                if (routeVisualizer) {
+                    const stats = routeVisualizer.getStatistics();
+                    html += '<div class="test-result info"><strong>RouteVisualizer:</strong></div>';
+                    Object.entries(stats).forEach(([key, value]) => {
+                        html += `<div class="test-result info">${key}: ${value}</div>`;
+                    });
+                }
+
+                if (typeof window.unifiedNav !== 'undefined') {
+                    const navStats = window.unifiedNav.getStatistics();
+                    html += '<div class="test-result info"><strong>UnifiedNavigation:</strong></div>';
+                    Object.entries(navStats).forEach(([key, value]) => {
+                        html += `<div class="test-result info">${key}: ${value}</div>`;
+                    });
+                }
+
+            } catch (error) {
+                html += `<div class="test-result error">❌ Error al obtener estadísticas: ${error.message}</div>`;
+            }
+
+            document.getElementById('system-stats').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

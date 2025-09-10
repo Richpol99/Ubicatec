@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Búsqueda de Edificios</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        #map { height: 300px; width: 100%; border: 1px solid #ccc; }
+        .btn { margin: 5px; padding: 10px 20px; }
+        .log-container { background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto; margin-top: 10px; }
+        .search-container { margin: 10px 0; }
+        .search-container input { width: 300px; padding: 8px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Prueba Búsqueda de Edificios</h1>
+    
+    <div class="test-section">
+        <h3>1. Búsqueda de Edificios</h3>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar edificio (ej: Edificio 15, Edificio 1, etc.)" />
+            <button id="searchBtn" class="btn btn-primary">Buscar</button>
+            <button id="testAllBtn" class="btn btn-success">Probar Todos</button>
+        </div>
+        <div id="search-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Estado del Sistema</h3>
+        <div id="system-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Mapa</h3>
+        <div id="map"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Logs de Eventos</h3>
+        <div id="log-container" class="log-container"></div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Scripts del sistema de rutas accesibles -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+    
+    <!-- Script del mapa -->
+    <script src="js/mapa.js"></script>
+
+    <script>
+        // Interceptar console.log para mostrar en la página
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logContainer = document.getElementById('log-container');
+        
+        function addLog(message, type = 'log') {
+            const div = document.createElement('div');
+            div.style.color = type === 'error' ? '#dc3545' : '#28a745';
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(div);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+
+        $(document).ready(function() {
+            console.log('🚀 Iniciando prueba de búsqueda de edificios...');
+            
+            // Configurar botones
+            $('#searchBtn').on('click', function() {
+                const query = $('#searchInput').val().trim();
+                if (query) {
+                    testBuildingSearch(query);
+                }
+            });
+            
+            $('#testAllBtn').on('click', function() {
+                testAllBuildings();
+            });
+            
+            // Verificar estado del sistema
+            checkSystemStatus();
+        });
+
+        function testBuildingSearch(query) {
+            console.log(`🔍 Probando búsqueda: "${query}"`);
+            
+            if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.state.isInitialized) {
+                const building = window.unifiedNav.findBuildingByName(query);
+                
+                const resultsDiv = document.getElementById('search-results');
+                if (building) {
+                    resultsDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Edificio encontrado:<br>
+                            <strong>Nombre:</strong> ${building.nombre}<br>
+                            <strong>Coordenadas:</strong> [${building.coords[0]}, ${building.coords[1]}]<br>
+                            <strong>Tipo:</strong> ${building.tipo}
+                        </div>
+                    `;
+                    console.log('✅ Edificio encontrado:', building);
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="error">
+                            ❌ Edificio no encontrado: "${query}"
+                        </div>
+                    `;
+                    console.log('❌ Edificio no encontrado:', query);
+                }
+            } else {
+                console.error('❌ Sistema de navegación no disponible');
+                document.getElementById('search-results').innerHTML = `
+                    <div class="error">
+                        ❌ Sistema de navegación no disponible
+                    </div>
+                `;
+            }
+        }
+
+        function testAllBuildings() {
+            console.log('🧪 Probando búsqueda de todos los edificios...');
+            
+            const testBuildings = [
+                'Edificio 1',
+                'Edificio 15',
+                'Edificio 3',
+                'Sistemas',
+                'Aulas',
+                'Edificio inexistente'
+            ];
+            
+            const resultsDiv = document.getElementById('search-results');
+            resultsDiv.innerHTML = '<h4>Resultados de Prueba:</h4>';
+            
+            testBuildings.forEach(buildingName => {
+                if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.state.isInitialized) {
+                    const building = window.unifiedNav.findBuildingByName(buildingName);
+                    
+                    const div = document.createElement('div');
+                    div.className = building ? 'success' : 'error';
+                    div.innerHTML = `${building ? '✅' : '❌'} "${buildingName}": ${building ? building.nombre : 'No encontrado'}`;
+                    resultsDiv.appendChild(div);
+                }
+            });
+        }
+
+        function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            const isUnifiedNavAvailable = typeof window.unifiedNav !== 'undefined';
+            const isUnifiedNavInitialized = isUnifiedNavAvailable && window.unifiedNav.state && window.unifiedNav.state.isInitialized;
+            const isEdificiosAvailable = typeof window.edificios !== 'undefined' && Array.isArray(window.edificios);
+            const edificiosCount = isEdificiosAvailable ? window.edificios.length : 0;
+            
+            statusDiv.innerHTML = `
+                <div class="${isUnifiedNavAvailable ? 'success' : 'error'}">
+                    ${isUnifiedNavAvailable ? '✅' : '❌'} UnifiedNavigationSystem: ${isUnifiedNavAvailable ? 'Disponible' : 'No disponible'}
+                </div>
+                <div class="${isUnifiedNavInitialized ? 'success' : 'error'}">
+                    ${isUnifiedNavInitialized ? '✅' : '❌'} Sistema Inicializado: ${isUnifiedNavInitialized ? 'Sí' : 'No'}
+                </div>
+                <div class="${isEdificiosAvailable ? 'success' : 'error'}">
+                    ${isEdificiosAvailable ? '✅' : '❌'} Lista de Edificios: ${isEdificiosAvailable ? `${edificiosCount} edificios` : 'No disponible'}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

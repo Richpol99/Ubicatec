@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Validación de Coordenadas PASO 5</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        #map { height: 400px; width: 100%; }
+        .log { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 3px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 10px 0; }
+        .stat-card { background: #f8f9fa; padding: 10px; border-radius: 5px; text-align: center; }
+        .discrepancy-list { max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 5px; }
+        .discrepancy-item { padding: 5px; border-bottom: 1px solid #ddd; font-size: 12px; }
+        .discrepancy-high { border-left: 4px solid #dc3545; }
+        .discrepancy-medium { border-left: 4px solid #ffc107; }
+        .discrepancy-low { border-left: 4px solid #28a745; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test del PASO 5 - Validación de Coordenadas</h1>
+    
+    <div class="test-section info">
+        <h3>📋 Información del Test</h3>
+        <p>Este test verifica que el PASO 5 (validación de coordenadas) funcione correctamente.</p>
+        <p><strong>Archivo creado:</strong> js/coordinate-validator.js</p>
+        <p><strong>Funcionalidades:</strong> Validación de coordenadas, ajustes automáticos, reportes de precisión</p>
+    </div>
+
+    <div class="test-section">
+        <h3>🗺️ Mapa de Validación</h3>
+        <p>Mapa mostrando edificios y sus coordenadas validadas:</p>
+        <div id="map"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔧 Controles de Prueba</h3>
+        <button onclick="testInitialization()">1. Probar Inicialización</button>
+        <button onclick="testValidation()">2. Validar Coordenadas</button>
+        <button onclick="testAccuracy()">3. Verificar Precisión</button>
+        <button onclick="testAdjustments()">4. Ajustar Coordenadas</button>
+        <button onclick="testReport()">5. Generar Reporte</button>
+        <button onclick="exportReport()">6. Exportar Reporte</button>
+        <button onclick="clearLog()">🧹 Limpiar Log</button>
+    </div>
+
+    <div class="test-section">
+        <h3>📊 Estadísticas de Validación</h3>
+        <div id="stats" class="stats"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>📝 Log de Resultados</h3>
+        <div id="log" class="log">Esperando pruebas...<br></div>
+    </div>
+
+    <div class="test-section">
+        <h3>⚠️ Discrepancias Encontradas</h3>
+        <div id="discrepancyList" class="discrepancy-list">Cargando discrepancias...</div>
+    </div>
+
+    <!-- Dependencias necesarias -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Nuestros sistemas -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/coordinate-validator.js"></script>
+
+    <script>
+        let map;
+        let campusNodes;
+        let coordinateValidator;
+        let nodeMarkers = [];
+
+        // Inicializar mapa de prueba
+        function initTestMap() {
+            map = L.map('map').setView([19.0698, -98.1688], 18);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            log('✅ Mapa de prueba inicializado');
+        }
+
+        // Función de logging
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = 'Log limpiado...<br>';
+        }
+
+        // Test 1: Inicialización
+        function testInitialization() {
+            log('🧪 Iniciando test de inicialización...');
+            
+            try {
+                if (typeof CampusNodes === 'undefined') {
+                    throw new Error('Clase CampusNodes no encontrada');
+                }
+                
+                if (typeof CoordinateValidator === 'undefined') {
+                    throw new Error('Clase CoordinateValidator no encontrada');
+                }
+                
+                log('✅ Clases encontradas');
+                
+                // Crear instancias
+                campusNodes = new CampusNodes();
+                coordinateValidator = new CoordinateValidator();
+                
+                // Conectar los sistemas
+                coordinateValidator.setCampusNodes(campusNodes);
+                
+                log('✅ Sistemas conectados correctamente');
+                
+                // Mostrar nodos en el mapa
+                displayNodesOnMap();
+                
+                log('✅ Test de inicialización completado', 'success');
+                
+            } catch (error) {
+                log(`❌ Error en inicialización: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 2: Validación de coordenadas
+        function testValidation() {
+            log('🧪 Iniciando validación de coordenadas...');
+            
+            if (!coordinateValidator) {
+                log('❌ CoordinateValidator no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const results = coordinateValidator.validateAllCoordinates();
+            
+            if (results) {
+                log(`📊 Resultados de validación:`);
+                log(`   - Total edificios: ${results.total}`);
+                log(`   - Coordenadas válidas: ${results.valid}`);
+                log(`   - Coordenadas inválidas: ${results.invalid}`);
+                log(`   - Tasa de precisión: ${((results.valid / results.total) * 100).toFixed(2)}%`);
+                
+                // Mostrar estadísticas
+                displayValidationStats(results);
+                
+                // Mostrar discrepancias
+                displayDiscrepancies(results.discrepancies);
+                
+                log('✅ Validación completada', 'success');
+            } else {
+                log('❌ Error en la validación', 'error');
+            }
+        }
+
+        // Test 3: Verificar precisión
+        function testAccuracy() {
+            log('🧪 Verificando precisión de ubicaciones...');
+            
+            if (!coordinateValidator) {
+                log('❌ CoordinateValidator no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const accuracyReport = coordinateValidator.checkLocationAccuracy();
+            
+            if (accuracyReport) {
+                log(`🎯 Reporte de precisión:`);
+                log(`   - Total edificios: ${accuracyReport.total}`);
+                log(`   - Alta precisión (< 5m): ${accuracyReport.highPrecision}`);
+                log(`   - Precisión media (5-20m): ${accuracyReport.mediumPrecision}`);
+                log(`   - Baja precisión (> 20m): ${accuracyReport.lowPrecision}`);
+                
+                if (accuracyReport.issues.length > 0) {
+                    log(`⚠️ Problemas encontrados: ${accuracyReport.issues.length}`);
+                    accuracyReport.issues.forEach(issue => {
+                        log(`   - ${issue.name}: ${issue.distance.toFixed(2)}m (${issue.severity})`);
+                    });
+                }
+                
+                log('✅ Verificación de precisión completada', 'success');
+            } else {
+                log('❌ Error en la verificación de precisión', 'error');
+            }
+        }
+
+        // Test 4: Ajustar coordenadas
+        function testAdjustments() {
+            log('🧪 Ajustando coordenadas...');
+            
+            if (!coordinateValidator) {
+                log('❌ CoordinateValidator no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const statsBefore = coordinateValidator.getValidationStats();
+            log(`📊 Antes del ajuste: ${statsBefore.valid}/${statsBefore.total} válidas`);
+            
+            coordinateValidator.adjustCoordinates();
+            
+            const statsAfter = coordinateValidator.getValidationStats();
+            log(`📊 Después del ajuste: ${statsAfter.valid}/${statsAfter.total} válidas`);
+            log(`🔧 Coordenadas ajustadas: ${statsAfter.adjusted}`);
+            
+            // Actualizar visualización
+            displayNodesOnMap();
+            
+            log('✅ Ajuste de coordenadas completado', 'success');
+        }
+
+        // Test 5: Generar reporte
+        function testReport() {
+            log('🧪 Generando reporte de validación...');
+            
+            if (!coordinateValidator) {
+                log('❌ CoordinateValidator no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            const report = coordinateValidator.generateValidationReport();
+            
+            log(`📋 Reporte generado:`);
+            log(`   - Timestamp: ${report.timestamp}`);
+            log(`   - Total edificios: ${report.summary.total}`);
+            log(`   - Válidos: ${report.summary.valid}`);
+            log(`   - Inválidos: ${report.summary.invalid}`);
+            log(`   - Ajustados: ${report.summary.adjusted}`);
+            
+            if (report.recommendations.length > 0) {
+                log(`💡 Recomendaciones: ${report.recommendations.length}`);
+                report.recommendations.forEach(rec => {
+                    log(`   - [${rec.priority}] ${rec.message}`);
+                });
+            }
+            
+            log('✅ Reporte generado correctamente', 'success');
+        }
+
+        // Test 6: Exportar reporte
+        function exportReport() {
+            log('🧪 Exportando reporte...');
+            
+            if (!coordinateValidator) {
+                log('❌ CoordinateValidator no inicializado. Ejecuta primero el test de inicialización.', 'error');
+                return;
+            }
+
+            try {
+                coordinateValidator.exportReport();
+                log('✅ Reporte exportado correctamente', 'success');
+            } catch (error) {
+                log(`❌ Error al exportar reporte: ${error.message}`, 'error');
+            }
+        }
+
+        // Mostrar estadísticas de validación
+        function displayValidationStats(results) {
+            const statsDiv = document.getElementById('stats');
+            const accuracyRate = ((results.valid / results.total) * 100).toFixed(2);
+            
+            statsDiv.innerHTML = `
+                <div class="stat-card">
+                    <h4>Total</h4>
+                    <p>${results.total}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Válidas</h4>
+                    <p style="color: #28a745;">${results.valid}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Inválidas</h4>
+                    <p style="color: #dc3545;">${results.invalid}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Precisión</h4>
+                    <p>${accuracyRate}%</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Ajustadas</h4>
+                    <p>${results.adjusted}</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Discrepancias</h4>
+                    <p>${results.discrepancies.length}</p>
+                </div>
+            `;
+        }
+
+        // Mostrar discrepancias
+        function displayDiscrepancies(discrepancies) {
+            const discrepancyDiv = document.getElementById('discrepancyList');
+            
+            if (discrepancies.length === 0) {
+                discrepancyDiv.innerHTML = '<div class="discrepancy-item">✅ No se encontraron discrepancias</div>';
+                return;
+            }
+            
+            let html = '';
+            discrepancies.forEach(discrepancy => {
+                const severity = discrepancy.distance > 50 ? 'high' : discrepancy.distance > 20 ? 'medium' : 'low';
+                const className = `discrepancy-item discrepancy-${severity}`;
+                
+                html += `
+                    <div class="${className}">
+                        <strong>${discrepancy.name}</strong><br>
+                        ${discrepancy.type === 'coordinate_mismatch' ? 
+                            `Distancia: ${discrepancy.distance.toFixed(2)}m` : 
+                            'Edificio no encontrado en datos originales'
+                        }
+                    </div>
+                `;
+            });
+            
+            discrepancyDiv.innerHTML = html;
+        }
+
+        // Mostrar nodos en el mapa
+        function displayNodesOnMap() {
+            if (!campusNodes) return;
+
+            // Limpiar marcadores existentes
+            nodeMarkers.forEach(marker => map.removeLayer(marker));
+            nodeMarkers = [];
+
+            const buildings = campusNodes.findNodesByType('building');
+            
+            buildings.forEach(building => {
+                const marker = L.circleMarker(building.coords, {
+                    radius: 5,
+                    fillColor: 'blue',
+                    color: 'white',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <strong>${building.name}</strong><br>
+                    Coordenadas: [${building.coords[0].toFixed(6)}, ${building.coords[1].toFixed(6)}]<br>
+                    Tipo: ${building.buildingType}
+                `);
+
+                nodeMarkers.push(marker);
+            });
+
+            log(`🗺️ ${buildings.length} edificios mostrados en el mapa`);
+        }
+
+        // Inicializar cuando el DOM esté listo
+        $(document).ready(function() {
+            log('🚀 Iniciando tests del PASO 5...');
+            initTestMap();
+            log('💡 Haz clic en los botones de arriba para probar cada funcionalidad');
+        });
+    </script>
+</body>
+</html>

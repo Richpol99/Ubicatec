@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Simple - Sistema de Rutas Accesibles</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        #map { height: 300px; width: 100%; border: 1px solid #ccc; }
+        .btn { margin: 5px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Prueba Simple - Sistema de Rutas Accesibles</h1>
+    
+    <div class="test-section">
+        <h3>1. Verificación de Scripts</h3>
+        <div id="script-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Botón de Prueba</h3>
+        <button id="testBtn" class="btn btn-success">♿ Probar Rutas Accesibles</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Mapa de Prueba</h3>
+        <div id="map"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Consola de Logs</h3>
+        <div id="console-logs" style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Scripts del sistema de rutas accesibles -->
+    <script src="js/campus-nodes.js"></script>
+    <script src="js/campus-connections.js"></script>
+    <script src="js/accessibility-weights.js"></script>
+    <script src="js/distance-calculator.js"></script>
+    <script src="js/route-validator.js"></script>
+    <script src="js/dijkstra-route-calculator.js"></script>
+    <script src="js/rutas-accesibles.js"></script>
+    <script src="js/unified-navigation.js"></script>
+
+    <script>
+        // Interceptar console.log para mostrar en la página
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logContainer = document.getElementById('console-logs');
+        
+        function addLog(message, type = 'log') {
+            const div = document.createElement('div');
+            div.style.color = type === 'error' ? '#dc3545' : '#28a745';
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(div);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+
+        $(document).ready(function() {
+            console.log('🚀 Iniciando prueba simple...');
+            
+            // Verificar scripts
+            checkScripts();
+            
+            // Crear mapa simple
+            createSimpleMap();
+            
+            // Configurar botón de prueba
+            $('#testBtn').on('click', function() {
+                console.log('🔍 Probando botón de rutas accesibles...');
+                testAccessibleRoutes();
+            });
+        });
+
+        function checkScripts() {
+            const scripts = [
+                { name: 'CampusNodes', check: 'CampusNodes' },
+                { name: 'CampusConnections', check: 'CampusConnections' },
+                { name: 'AccessibilityWeights', check: 'AccessibilityWeights' },
+                { name: 'DistanceCalculator', check: 'DistanceCalculator' },
+                { name: 'RouteValidator', check: 'RouteValidator' },
+                { name: 'DijkstraRouteCalculator', check: 'DijkstraRouteCalculator' },
+                { name: 'AccessibleRouteSystem', check: 'AccessibleRouteSystem' },
+                { name: 'UnifiedNavigationSystem', check: 'UnifiedNavigationSystem' },
+                { name: 'unifiedNav (instancia)', check: 'unifiedNav' }
+            ];
+            
+            const statusDiv = document.getElementById('script-status');
+            let allLoaded = true;
+            
+            scripts.forEach(script => {
+                const isLoaded = typeof window[script.check] !== 'undefined';
+                const div = document.createElement('div');
+                div.className = isLoaded ? 'success' : 'error';
+                div.textContent = `${isLoaded ? '✅' : '❌'} ${script.name}: ${isLoaded ? 'Cargado' : 'No encontrado'}`;
+                statusDiv.appendChild(div);
+                
+                if (!isLoaded) allLoaded = false;
+            });
+            
+            if (allLoaded) {
+                console.log('✅ Todos los scripts cargados correctamente');
+            } else {
+                console.error('❌ Algunos scripts no se cargaron');
+            }
+        }
+
+        function createSimpleMap() {
+            try {
+                const map = L.map('map').setView([19.0698, -98.1688], 18);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+                
+                // Agregar marcador de prueba
+                L.marker([19.0698, -98.1688])
+                    .addTo(map)
+                    .bindPopup('Punto de prueba')
+                    .openPopup();
+                
+                console.log('✅ Mapa creado correctamente');
+            } catch (error) {
+                console.error('❌ Error creando mapa:', error);
+            }
+        }
+
+        function testAccessibleRoutes() {
+            console.log('🔍 Verificando sistemas disponibles...');
+            console.log('accessibleRouteSystem:', typeof window.accessibleRouteSystem);
+            console.log('unifiedNav:', typeof window.unifiedNav);
+            
+            if (typeof window.unifiedNav !== 'undefined') {
+                console.log('✅ Sistema de navegación unificado disponible');
+                if (window.unifiedNav.state && window.unifiedNav.state.isInitialized) {
+                    console.log('✅ Sistema unificado inicializado');
+                    window.unifiedNav.handleAccessibleRoutesClick();
+                } else {
+                    console.log('⏳ Sistema unificado no inicializado, esperando...');
+                    setTimeout(() => {
+                        if (window.unifiedNav.state && window.unifiedNav.state.isInitialized) {
+                            window.unifiedNav.handleAccessibleRoutesClick();
+                        } else {
+                            console.error('❌ Sistema unificado no se inicializó');
+                        }
+                    }, 3000);
+                }
+            } else if (typeof window.accessibleRouteSystem !== 'undefined') {
+                console.log('✅ Sistema de rutas accesibles disponible');
+                alert('Sistema de rutas accesibles activado. Esta funcionalidad estará disponible en la Fase 2.');
+            } else {
+                console.error('❌ Ningún sistema de rutas accesibles disponible');
+                alert('Sistema de rutas accesibles no disponible. Verifica que los scripts estén cargados correctamente.');
+            }
+        }
+    </script>
+</body>
+</html>
