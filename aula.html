@@ -109,6 +109,34 @@
             font-weight: 400;
         }
         
+        /* Botón de búsqueda para móviles */
+        .search-btn {
+            display: none;
+            width: 50px;
+            height: 50px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .search-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+        
+        .search-btn:active {
+            transform: translateY(0);
+        }
+        
         /* Estilos para el contenedor de búsqueda con icono */
         .search-input-container {
             position: relative;
@@ -227,6 +255,10 @@
             .modern-search {
                 padding: 12px 15px;
                 font-size: 14px;
+            }
+            
+            .search-btn {
+                display: flex;
             }
             
             .filter-container {
@@ -617,6 +649,9 @@
                     <div class="search-wrapper">
                         <div class="search-input-container">
                             <input type="text" id="searchInput" class="modern-search" placeholder="Ingresa el número de edificio" />
+                            <button type="button" id="searchBtn" class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="filter-container">
@@ -792,6 +827,65 @@
                     behavior: 'smooth'
                 });
             });
+            
+            // Event listener para Enter en el campo de búsqueda
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        buscarEdificio(query);
+                    }
+                }
+            });
+            
+            // Event listener para el botón de búsqueda
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    buscarEdificio(query);
+                }
+            });
+            
+            // Función para buscar edificio
+            function buscarEdificio(query) {
+                if (!window.markersData || !map) {
+                    return;
+                }
+                
+                var edificioEncontrado = null;
+                var queryLower = query.toLowerCase();
+                
+                // Buscar edificio
+                window.markersData.forEach(function (data) {
+                    var nombreEdificio = data.name.toLowerCase();
+                    
+                    // Extraer número del edificio
+                    var match = nombreEdificio.match(/edificio (\d+)/);
+                    if (match) {
+                        var numeroEdificio = match[1];
+                        
+                        if (numeroEdificio === queryLower) {
+                            edificioEncontrado = data;
+                        }
+                    }
+                });
+                
+                if (edificioEncontrado) {
+                    // Centrar mapa
+                    var coords = edificioEncontrado.marker.getLatLng();
+                    map.setView(coords, 19, {
+                        animate: true,
+                        duration: 1.5
+                    });
+                    
+                    // Mostrar solo este edificio
+                    window.edificioMarkers.clearLayers();
+                    window.edificioMarkers.addLayer(edificioEncontrado.marker);
+                    
+                    // Abrir popup
+                    edificioEncontrado.marker.openPopup();
+                }
+            }
             
             // Abrir modal al hacer click en la pestaña
             leyendaTab.addEventListener('click', function() {

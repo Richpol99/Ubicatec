@@ -331,8 +331,10 @@ $(document).ready(function() {
         }
     }
 
-    // Función para centrar el mapa en un edificio específico
-    function centrarEnEdificio(query) {
+    // Función para centrar el mapa en un edificio específico (global)
+    window.centrarEnEdificio = function(query) {
+        console.log('Buscando edificio:', query);
+        
         if (!window.markersData || !map) {
             console.log('Mapa o marcadores no están listos aún');
             return;
@@ -340,28 +342,34 @@ $(document).ready(function() {
 
         var edificioEncontrado = null;
         var queryLower = query.toLowerCase();
+        
+        console.log('Datos de marcadores disponibles:', window.markersData.length);
 
         // Buscar coincidencia exacta primero
         window.markersData.forEach(function (data) {
             var nombreEdificio = data.name.toLowerCase();
+            console.log('Comparando con:', nombreEdificio);
             
-            // Buscar coincidencia exacta del número
-            if (nombreEdificio.includes('edificio ' + queryLower)) {
-                edificioEncontrado = data;
-            }
-            // Si no hay coincidencia exacta, buscar por número al inicio
-            else if (nombreEdificio.includes(queryLower + ' ')) {
-                edificioEncontrado = data;
-            }
-            // Buscar por nombre completo
-            else if (nombreEdificio.includes(queryLower)) {
-                edificioEncontrado = data;
+            // Extraer el número del edificio del nombre
+            var match = nombreEdificio.match(/edificio (\d+)/);
+            if (match) {
+                var numeroEdificio = match[1];
+                console.log('Número extraído:', numeroEdificio);
+                
+                if (numeroEdificio === queryLower) {
+                    console.log('Coincidencia exacta encontrada:', nombreEdificio);
+                    edificioEncontrado = data;
+                }
             }
         });
 
         if (edificioEncontrado) {
+            console.log('Edificio encontrado:', edificioEncontrado.name);
+            
             // Centrar el mapa en el edificio encontrado
             var coords = edificioEncontrado.marker.getLatLng();
+            console.log('Coordenadas:', coords);
+            
             map.setView(coords, 19, {
                 animate: true,
                 duration: 1.5
@@ -374,12 +382,12 @@ $(document).ready(function() {
             // Abrir popup del marcador
             edificioEncontrado.marker.openPopup();
 
-            console.log('Centrando en:', edificioEncontrado.name);
+            console.log('Mapa centrado en:', edificioEncontrado.name);
         } else {
             console.log('Edificio no encontrado:', query);
-            // Mostrar mensaje de error o mantener búsqueda actual
+            alert('Edificio no encontrado: ' + query);
         }
-    }
+    };
     
     // Event listener para el campo de búsqueda
     document.getElementById('searchInput').addEventListener('input', function () {
@@ -397,10 +405,14 @@ $(document).ready(function() {
 
     // Event listener para Enter en el campo de búsqueda
     document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        console.log('Tecla presionada:', e.key);
         if (e.key === 'Enter') {
             var query = this.value.trim();
+            console.log('Enter presionado, búsqueda:', query);
             if (query) {
                 centrarEnEdificio(query);
+            } else {
+                console.log('Campo de búsqueda vacío');
             }
         }
     });
