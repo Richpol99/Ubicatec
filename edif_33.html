@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edificio 33</title>
+    <meta name="description" content="Roxy">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/lightcase/lightcase.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4.8.1/dist/photo-sphere-viewer.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin=""/>
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+
+    <script>
+        $(document).ready(function() {
+            var mapaEmergente = $('#mapaEmergente');
+            var mapaDiv = $('#mapa');
+            var cerrarMapaBtn = $('#cerrarMapaBtn');
+            var verUbicacionBtn = $('#verUbicacionBtn');
+            var mapa;
+            var marcadorDestino;
+            var marcadorUsuario;
+            var destinoLatitud = 19.068213; // Coordenada de latitud del Edificio 36
+            var destinoLongitud = -98.169197; // Coordenada de longitud del Edificio 36
+            var distanciaEnMapaElement = $('#distanciaEnMapa'); // Nuevo elemento para la distancia
+            var sonidoNotificacion = document.getElementById('notificacionLlegada'); // Elemento de audio
+            var llegadaNotificada = false; // Bandera para evitar notificaciones repetidas
+
+            // Elementos para la ventana modal
+            var avisoModal = $('#avisoModal');
+            var cerrarAvisoBtn = $('#cerrarAvisoBtn');
+            var continuarBtn = $('#continuarBtn');
+            var llegadaModal = $('#llegadaModal');
+            console.log("Elemento llegadaModal:", llegadaModal);
+            var cerrarLlegadaBtn = $('#cerrarLlegadaBtn');
+            var cerrarLlegadaOkBtn = $('#cerrarLlegadaOkBtn');
+
+            // Cerrar el modal de llegada al hacer clic en la "x"
+            cerrarLlegadaBtn.on('click', function() {
+                llegadaModal.hide();
+            });
+
+// Cerrar el modal de llegada al hacer clic en "Ok"
+cerrarLlegadaOkBtn.on('click', function() {
+    llegadaModal.hide();
+});
+
+            verUbicacionBtn.on('click', function() {
+                avisoModal.show(); // Mostrar la ventana de aviso
+            });
+
+            cerrarAvisoBtn.on('click', function() {
+                avisoModal.hide();
+            });
+
+            continuarBtn.on('click', function() {
+                avisoModal.hide();
+                mapaEmergente.show();
+                inicializarMapa();
+                llegadaNotificada = false; // Reiniciar la bandera al abrir el mapa
+            });
+
+
+            cerrarMapaBtn.on('click', function() {
+                mapaEmergente.hide();
+                if (mapa) {
+                    mapa.remove(); // Limpiar el mapa al cerrar
+                    mapa = null;
+                    marcadorDestino = null;
+                    marcadorUsuario = null;
+                }
+            });
+
+            function inicializarMapa() {
+                mapa = L.map('mapa').setView([19.0733, -98.2889], 20); // Coordenadas iniciales (Tec de Puebla) y zoom
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(mapa);
+
+                // Marcador del destino final (Edificio 36)
+                marcadorDestino = L.marker([destinoLatitud, destinoLongitud]).addTo(mapa)
+                    .bindPopup('<b>Edificio 33</b>').openPopup();
+                
+
+                // Crear un icono personalizado para el usuario
+                var iconoUsuario = L.icon({
+                    iconUrl: 'Icon/user.png', // Reemplaza 'img/persona.png' con la ruta a tu imagen
+                    iconSize: [27, 35],     // Tamaño del icono (ancho, alto) en píxeles. Ajusta si es necesario.
+                    iconAnchor: [12, 39],   // Punto del icono que corresponde a la ubicación. Ajusta si es necesario.
+                    popupAnchor: [1, -34]    // Punto donde se abrirá el popup. Ajusta si es necesario.
+                });
+
+                // Opciones para el seguimiento de la ubicación
+                var opcionesSeguimiento = {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                };
+
+                function exitoUbicacion(pos) {
+                    var latitudUsuario = pos.coords.latitude;
+                    var longitudUsuario = pos.coords.longitude;
+
+                    if (marcadorUsuario) {
+                        marcadorUsuario.setLatLng([latitudUsuario, longitudUsuario]);
+                    } else {
+                        marcadorUsuario = L.marker([latitudUsuario, longitudUsuario], {icon: iconoUsuario}).addTo(mapa)
+                            .bindPopup('Tu ubicación actual').openPopup();
+                    }
+                    
+                    mapa.panTo(new L.LatLng(latitudUsuario, longitudUsuario));
+
+                    // Calcular la distancia restante y actualizar el elemento en el mapa
+                    var distancia = calcularDistancia(latitudUsuario, longitudUsuario, destinoLatitud, destinoLongitud);
+                    distanciaEnMapaElement.html('<b>Distancia Restante: ' + Math.round(distancia) + ' Metros</b>');
+
+                    // Verificar si se ha llegado al destino (distancia menor a 10 metros)
+                    var distanciaUmbral = 10; // Metros
+                    if (distancia <= distanciaUmbral && !llegadaNotificada) {
+                        sonidoNotificacion.play();
+                        llegadaModal.show(); // Mostrar el modal de llegada
+                        llegadaNotificada = true;
+                        destinoAlcanzado = true;
+                        llegadaNotificada = true; // Marcar como notificado para no repetir el sonido
+                    }
+                }
+
+                function errorUbicacion(err) {
+                    console.warn('ERROR(' + err.code + '): ' + err.message);
+                    alert('No se pudo obtener la ubicación.');
+                }
+
+                navigator.geolocation.watchPosition(exitoUbicacion, errorUbicacion, opcionesSeguimiento);
+
+                mapa.invalidateSize();
+            }
+
+            // Función para calcular la distancia entre dos puntos (en metros) usando la fórmula Haversine
+            function calcularDistancia(lat1, lon1, lat2, lon2) {
+                const R = 6371e3; // Radio de la Tierra en metros
+                const φ1 = lat1 * Math.PI / 180; // φ, λ en radianes
+                const φ2 = lat2 * Math.PI / 180;
+                const Δφ = (lat2 - lat1) * Math.PI / 180;
+                const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                          Math.cos(φ1) * Math.cos(φ2) *
+                          Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                const distancia = R * c; // en metros
+                return distancia;
+            }
+        });
+    </script>
+
+    <style>
+        /* Estilos para la ventana modal de advertencia */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Estilos para la ventana modal de llegada */
+        #llegadaModal.modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1002; /* Asegúrate de que sea mayor que el z-index del mapa (1000) */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* Estilo para el texto de la distancia en el mapa */
+        #distanciaEnMapa {
+            padding: 10px;
+            text-align: center;
+            color: #000; /* Cambia el color del texto a negro */
+            font-weight: bold; /* Asegura que siga en negritas */
+        }
+    </style>
+
+</head>
+<body data-spy="scroll" data-target="#navbar" class="static-layout">
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="/">
+                <img src="img/navbar.png" alt="UBICATEC logo" style="height: 25px;"/> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aula.html">Ubica tu Edificio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accesos Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/">Coordinacion de lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/">Sitio Evaluacion Docente</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mapa-campus-section text-center">
+        <div class="container text-center">
+            <h2 class="titulo-mapa">Edificio 33</h2>
+        </div>
+    </section>
+
+    <section id="ficha-edificio" class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center" data-aos="fade-up">
+                    <p class="section-sub-title">Ubicación: Campus Tec</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="img/edificios/edificio 36.jpg" alt="Edificio 36"
+                        class="img-fluid" style="border-radius: 8px; margin-bottom: 20px;">
+                    <button id="verUbicacionBtn" class="btn btn-primary mt-3" style="margin-bottom: 35px;">Haz clic para ir ahi</button>
+                </div>
+                <div class="col-md-6 text-left"> <h4>Descripción:</h4>
+                    <p>El Edificio 36 alberga el Laboratorio de Ingenieria en Tecnologias de la Informacion y comunicaciones,
+                        es un espacio especializado diseñado para el desarrollo práctico de competencias en áreas clave como redes
+                        de computadoras, programación, bases de datos, telecomunicaciones, ciberseguridad, sistemas embebidos e
+                        internet de las cosas (IoT).
+                    </p>
+                    <p>Cuenta con estaciones de trabajo equipadas con hardware actualizado y software especializado, incluyendo entornos
+                        de desarrollo integrados (IDEs), simuladores de redes como Cisco Packet Tracer, plataformas de virtualización,
+                        servidores y dispositivos de red reales (routers, switches, puntos de acceso).</p>
+                        <h4>Instalaciones:</h4>
+                        <ul>
+                            <li><i class="fas fa-network-wired"></i> Laboratorio de redes y telecomunicaciones con equipos Cisco y simuladores como Packet Tracer.</li>
+                            <li><i class="fas fa-desktop"></i> Sala de cómputo equipada con software de desarrollo, programación y análisis de datos.</li>
+                            <li><i class="fas fa-chalkboard-teacher"></i> Aulas teóricas con proyector y pizarras digitales para clases magistrales.</li>
+                            <li><i class="fas fa-wifi"></i> Conectividad inalámbrica de alta velocidad en todo el laboratorio.</li>
+                        </ul>
+                        <h4>Horarios de apertura:</h4>
+                        <p>De lunes a viernes, de 7:00 AM a 6:00 PM. Los fines de semana sólo con previa autorizacion.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="llegadaModal" class="modal">
+            <div class="modal-content">
+                <span id="cerrarLlegadaBtn" class="close-button">&times;</span>
+                <h3>
+                    <svg width="24" height="24" style="margin-right: 0.1em; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                    ¡Llegaste!
+                </h3>
+                <p>Has llegado a tu destino: Edificio 33.</p>
+                <button id="cerrarLlegadaOkBtn" class="btn btn-success mt-3">Ok</button>
+            </div>
+        </div>
+        
+        <div id="mapaEmergente" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 80%; background-color: white; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 1000; display: none;">
+            <div id="distanciaEnMapa" style="padding: 10px; text-align: center;"></div>
+            <div id="mapa" style="width: 100%; height: 85%;"></div>
+            <button id="cerrarMapaBtn" class="btn btn-secondary mt-2" style="width: 100%; box-sizing: border-box;">Cerrar</button>
+        </div>
+        
+        <div id="avisoModal" class="modal">
+        <div class="modal-content">
+        <span id="cerrarAvisoBtn" class="close-button">&times;</span>
+        <h3>
+            <svg width="24" height="24" style="margin-right: 0.1em; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+            </svg>
+            Aviso
+        </h3>
+        <p>Es importante que active su ubicación en su dispositivo y otorgue los permisos necesarios para un funcionamiento óptimo.</p>
+        <button id="continuarBtn" class="btn btn-primary mt-3">Continuar</button>
+    </div>
+
+</div>
+        
+    </section>
+
+    <audio id="notificacionLlegada" src="mp3/llegada.mp3" preload="auto"></audio>
+
+    <section id="visor-360" class="py-5 bg-dark">
+        <div class="container text-center text-white mb-4">
+            <h2>Explora alrededor del edificio en 360°</h2>
+            <p>arrastra para mirar alrededor</p>
+        </div>
+        <div class="container">
+            <div id="viewer" style="width: 100%; height: 500px; border-radius: 8px;"></div>
+        </div>
+    </section>
+
+    <script src="vendor/bootstrap/popper.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="vendor/stellar/jquery.stellar.js"></script>
+    <script src="vendor/isotope/isotope.min.js"></script>
+    <script src="vendor/lightcase/lightcase.js"></script>
+    <script src="vendor/waypoints/waypoint.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@egjs/hammerjs@2.0.17/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4.8.1/dist/photo-sphere-viewer.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewer = new PhotoSphereViewer.Viewer({
+                container: document.querySelector('#viewer'),
+                panorama: '/img/360/Edificio_36.jpg',
+            });
+        });
+    </script>
+
+    <script src="js/app.min.js"></script>
+
+</body>
+
+</html>

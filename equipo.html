@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Equipo de Desarrollo - UBICATEC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdn.linearicons.com">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+    <link rel="preconnect" href="https://unpkg.com">
+
+    <link rel="preload" as="image" href="img/logo/logo.svg">
+
+    <!-- CSS crítico - carga síncrona -->
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- CSS no crítico - carga asíncrona -->
+    <link rel="preload" href="vendor/select2/select2.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/owlcarousel/owl.carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/lightcase/lightcase.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <!-- Estilos críticos inline para evitar FOUC -->
+    <style>
+        /* Estilos críticos mínimos para evitar FOUC */
+        body {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Ocultar contenido hasta que se cargue el CSS completo */
+        .fouc-hidden {
+            visibility: hidden;
+        }
+        
+        /* Mostrar contenido una vez que el CSS esté cargado */
+        .fouc-loaded {
+            visibility: visible !important;
+        }
+
+        /* Estilos para las cards del equipo */
+        .team-member {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+
+</head>
+
+<body data-spy="scroll" data-target="#navbar" class="static-layout fouc-hidden">
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="index.html">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aula.html">Ubica tu Edificio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accesos Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
+                            <a class="dropdown-item" href="https://www.facebook.com/DesarrolloAcademicoItPuebla" rel="noopener noreferrer" target="_blank">Desarrollo Academico (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/profile.php?id=100063864618184" rel="noopener noreferrer" target="_blank">Actividades Extraescolares (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/TECNMcampusPuebla" rel="noopener noreferrer" target="_blank">TecNM Puebla (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/cesacampuspuebla" rel="noopener noreferrer" target="_blank">CESA Puebla (Facebook) </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="equipo.html">Equipo de desarrollo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 100px 0; color: white;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 mb-4">Equipo de Desarrollo</h1>
+                    <p class="lead">Conoce a las personas detrás de UBICATEC</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="bg-light py-5">
+        <div class="container">
+            <div class="section-content text-center">
+                <div class="title-wrap mb-5">
+                    <h2 class="section-title"><b>¿Quienes están detrás de UBICATEC?</b></h2>
+                    <p class="section-sub-title">Conoce a las personas detrás de esto</p>
+                </div>
+                <div class="d-flex flex-wrap justify-content-center">
+                    <div class="card team-member m-3" style="width: 300px; min-height: 200px;" data-aos="fade-up">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <div class="member-icon mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #667eea;"></i>
+                            </div>
+                            <h5 class="card-title">Luis David Solis Martínez</h5>
+                            <p class="card-text text-muted">Desarrollador Backend</p>
+                        </div>
+                    </div>
+
+                    <div class="card team-member m-3" style="width: 300px; min-height: 200px;" data-aos="fade-up">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <div class="member-icon mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #667eea;"></i>
+                            </div>
+                            <h5 class="card-title">Miguel Angel Vargas Garcia</h5>
+                            <p class="card-text text-muted">Desarrollador Backend</p>
+                        </div>
+                    </div>
+
+                    <div class="card team-member m-3" style="width: 300px; min-height: 200px;" data-aos="fade-up">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <div class="member-icon mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #667eea;"></i>
+                            </div>
+                            <h5 class="card-title">Liliana Miranda Jiménez</h5>
+                            <p class="card-text text-muted">Desarrollador UI</p>
+                        </div>
+                    </div>
+
+                    <div class="card team-member m-3" style="width: 300px; min-height: 200px;" data-aos="fade-up">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <div class="member-icon mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #667eea;"></i>
+                            </div>
+                            <h5 class="card-title">Ricardo Armando Polanco Villa</h5>
+                            <p class="card-text text-muted">Desarrollador UX</p>
+                        </div>
+                    </div>
+
+                    <div class="card team-member m-3" style="width: 300px; min-height: 200px;" data-aos="fade-up">
+                        <div class="card-body text-center d-flex flex-column justify-content-center">
+                            <div class="member-icon mb-3">
+                                <i class="fas fa-user-circle" style="font-size: 4rem; color: #667eea;"></i>
+                            </div>
+                            <h5 class="card-title">Nahomi Tapia Gil</h5>
+                            <p class="card-text text-muted">Ayudante Administrativo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>UBICATEC</h5>
+                    <p>Tu guía para navegar por el campus del TECNM</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <p>&copy; 2024 UBICATEC. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" defer></script>
+    <script src="vendor/bootstrap/popper.min.js" defer></script>
+    <script src="vendor/bootstrap/bootstrap.min.js" defer></script>
+    <script src="vendor/select2/select2.min.js " defer></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js" defer></script>
+    <script src="vendor/stellar/jquery.stellar.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="vendor/isotope/isotope.min.js" defer></script>
+    <script src="vendor/lightcase/lightcase.js" defer></script>
+    <script src="vendor/waypoints/waypoint.min.js" defer></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script src="js/app.min.js " defer></script>
+
+    <!-- Script para eliminar FOUC -->
+    <script>
+        // Función para mostrar el contenido una vez que el CSS esté cargado
+        function showContent() {
+            document.body.classList.remove('fouc-hidden');
+            document.body.classList.add('fouc-loaded');
+        }
+        
+        // Mostrar contenido cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pequeño delay para asegurar que el CSS esté cargado
+            setTimeout(showContent, 100);
+        });
+        
+        // Fallback: mostrar contenido después de un tiempo máximo
+        setTimeout(showContent, 1000);
+        
+        // Mostrar contenido cuando todas las imágenes estén cargadas
+        window.addEventListener('load', function() {
+            showContent();
+        });
+    </script>
+
+</body>
+</html>

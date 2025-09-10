@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bienvenido a UBICATEC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdn.linearicons.com">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+    <link rel="preconnect" href="https://unpkg.com">
+
+    <link rel="preload" as="image" href="img/logo/logo.svg">
+
+    <!-- CSS crítico - carga síncrona -->
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- CSS no crítico - carga asíncrona -->
+    <link rel="preload" href="vendor/select2/select2.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/owlcarousel/owl.carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/lightcase/lightcase.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <!-- Estilos críticos inline para evitar FOUC -->
+    <style>
+        /* Estilos críticos mínimos para evitar FOUC */
+        body {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Ocultar contenido hasta que se cargue el CSS completo */
+        .fouc-hidden {
+            visibility: hidden;
+        }
+        
+        /* Mostrar contenido una vez que el CSS esté cargado */
+        .fouc-loaded {
+            visibility: visible !important;
+        }
+
+        /* Estilos para la navbar con transparencia */
+        #header-navbar {
+            background-color: rgba(12, 56, 114, 0.55) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        /* Estilos para el texto de los botones de la navbar */
+        #header-navbar .nav-link {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        #header-navbar .dropdown-toggle {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        /* Estilos para el logo de UBICATEC */
+        #header-navbar .navbar-brand img {
+            height: 35px !important;
+        }
+
+    </style>
+
+    <!-- Estilos para el banner de avisos -->
+    <style>
+        .banner-avisos {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 320px;
+            min-width: 280px;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid #e9ecef;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .banner-avisos.mostrar {
+            transform: translateX(0);
+        }
+
+        .banner-avisos .banner-header {
+            background: #f8f9fa;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .banner-avisos .banner-title {
+            font-weight: 500;
+            font-size: 15px;
+            margin: 0;
+            color: #495057;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .banner-avisos .banner-close {
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 2px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            transition: all 0.15s ease;
+        }
+
+        .banner-avisos .banner-close:hover {
+            background: #dee2e6;
+            color: #495057;
+        }
+
+        .banner-avisos .banner-content {
+            font-size: 13px;
+            line-height: 1.4;
+            margin: 0;
+            color: #6c757d;
+            font-weight: 400;
+            padding: 16px 20px 20px;
+        }
+
+        .banner-avisos .banner-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            z-index: 1001;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-avisos .banner-toggle:hover {
+            background: #0056b3;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
+        }
+
+        .banner-avisos .banner-toggle:active {
+            transform: scale(0.98);
+        }
+
+        /* Ocultar en móviles */
+        @media (max-width: 768px) {
+            .banner-avisos,
+            .banner-toggle {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+<body data-spy="scroll" data-target="#navbar" class="static-layout fouc-hidden">
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center text-white" href="/">
+            <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-menu"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-nav-header">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="aula.html">Ubica tu Edificio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Accesos Estudiantes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                        <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
+                        <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
+                        <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
+                        <a class="dropdown-item" href="https://www.facebook.com/DesarrolloAcademicoItPuebla" rel="noopener noreferrer" target="_blank">Desarrollo Academico (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/profile.php?id=100063864618184" rel="noopener noreferrer" target="_blank">Actividades Extraescolares (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/TECNMcampusPuebla" rel="noopener noreferrer" target="_blank">TecNM Puebla (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/cesacampuspuebla" rel="noopener noreferrer" target="_blank">CESA Puebla (Facebook) </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="equipo.html">Equipo de desarrollo</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="video-bienvenida-container">
+    <div class="overlay2"></div>
+    <div class="logo-bienvenida">
+        <object data="img/logo/logo.svg" type="image/svg+xml" alt="Logo de Bienvenida"></object>
+    </div>
+</div>
+
+    <section id="section-featurettes" class="featurettes overlay bg-fixed" style="background-image: url(img/fondo.avif);">
+    <div class="container">
+        <div class="section-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row align-items-center text-white">
+
+                        <div class="col-md-6 offset-md-1 col-sm-6" data-aos="fade-right">
+                            <h4 class="mb-4" style="font-weight: bold; font-size: 36px;">Descubre UBICATEC: Tu Guía Inteligente del Campus</h4>
+                            <p style="font-size: 20px;">Transforma tu experiencia en el campus con <strong>UBICATEC</strong>, la solución innovadora que revoluciona la navegación universitaria. Nuestra plataforma utiliza tecnología de vanguardia con <strong>imágenes 360°</strong> y <strong>geolocalización precisa</strong> para llevarte exactamente donde necesitas estar.</p>
+                            
+                            <p style="font-size: 18px; margin-top: 20px;">• <strong>Encuentra instantáneamente:</strong> Aulas, laboratorios, bibliotecas, espacios deportivos y servicios administrativos</p>
+                            <p style="font-size: 18px;">• <strong>Ahorra tiempo:</strong> Navegación optimizada que reduce tus traslados y mejora tu productividad</p>
+                            <p style="font-size: 18px;">• <strong>Acceso universal:</strong> Disponible en cualquier campus del TECNM y adaptable a otros espacios educativos</p>
+                        </div>
+                        <div class="col-md-4 offset-md-1 col-sm-6" data-aos="flip-right">
+                            <img class="my-5" src="img/marcador.png" alt="" style="border-radius: 15px; margin-left: 30px; width: 60%; height: auto; display: block; margin: auto;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</footer>
+
+<!-- Banner de avisos -->
+<button class="banner-toggle" id="bannerToggle" title="Ver avisos">
+    <i class="fas fa-bell"></i>
+</button>
+
+<div class="banner-avisos" id="bannerAvisos">
+    <div class="banner-header">
+        <h4 class="banner-title">Aviso Δ</h4>
+        <button class="banner-close" id="bannerClose">&times;</button>
+    </div>
+    <div class="banner-content">
+        <p><strong>¡Nueva función Disponible!</strong></p>
+    </div>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" defer></script>
+    <script src="vendor/bootstrap/popper.min.js" defer></script>
+    <script src="vendor/bootstrap/bootstrap.min.js" defer></script>
+    <script src="vendor/select2/select2.min.js " defer></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js" defer></script>
+    <script src="vendor/stellar/jquery.stellar.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="vendor/isotope/isotope.min.js" defer></script>
+    <script src="vendor/lightcase/lightcase.js" defer></script>
+    <script src="vendor/waypoints/waypoint.min.js" defer></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+
+    <script src="js/app.min.js " defer></script>
+    <script src="//localhost:35729/livereload.js" defer></script>
+
+    <!-- Script para eliminar FOUC -->
+    <script>
+        // Función para mostrar el contenido una vez que el CSS esté cargado
+        function showContent() {
+            document.body.classList.remove('fouc-hidden');
+            document.body.classList.add('fouc-loaded');
+        }
+        
+        // Mostrar contenido cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pequeño delay para asegurar que el CSS esté cargado
+            setTimeout(showContent, 100);
+        });
+        
+        // Fallback: mostrar contenido después de un tiempo máximo
+        setTimeout(showContent, 1000);
+        
+        // Mostrar contenido cuando todas las imágenes estén cargadas
+        window.addEventListener('load', function() {
+            showContent();
+        });
+
+        // Funcionalidad del banner de avisos
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerToggle = document.getElementById('bannerToggle');
+            const bannerAvisos = document.getElementById('bannerAvisos');
+            const bannerClose = document.getElementById('bannerClose');
+            
+            let autoHideTimeout;
+            
+            function showBanner() {
+                if (bannerAvisos && !bannerAvisos.classList.contains('mostrar')) {
+                    bannerAvisos.classList.add('mostrar');
+                    
+                    // Limpiar timeout anterior si existe
+                    if (autoHideTimeout) {
+                        clearTimeout(autoHideTimeout);
+                    }
+                    
+                    // Ocultar banner automáticamente después de 3 segundos
+                    autoHideTimeout = setTimeout(function() {
+                        if (bannerAvisos) {
+                            bannerAvisos.classList.remove('mostrar');
+                        }
+                    }, 3000);
+                }
+            }
+            
+            function hideBanner() {
+                if (bannerAvisos) {
+                    bannerAvisos.classList.remove('mostrar');
+                    if (autoHideTimeout) {
+                        clearTimeout(autoHideTimeout);
+                    }
+                }
+            }
+            
+            // Mostrar banner automáticamente después de 0.2 segundos
+            setTimeout(function() {
+                showBanner();
+            }, 200);
+            
+            // Mostrar banner al pasar el ratón sobre el botón toggle
+            if (bannerToggle) {
+                bannerToggle.addEventListener('mouseenter', function() {
+                    showBanner();
+                });
+            }
+            
+            // Mostrar banner al pasar el ratón sobre el banner mismo
+            if (bannerAvisos) {
+                bannerAvisos.addEventListener('mouseenter', function() {
+                    if (autoHideTimeout) {
+                        clearTimeout(autoHideTimeout);
+                    }
+                });
+                
+                bannerAvisos.addEventListener('mouseleave', function() {
+                    autoHideTimeout = setTimeout(function() {
+                        if (bannerAvisos) {
+                            bannerAvisos.classList.remove('mostrar');
+                        }
+                    }, 1000);
+                });
+            }
+            
+            // Cerrar banner solo con la X
+            if (bannerClose) {
+                bannerClose.addEventListener('click', function() {
+                    hideBanner();
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

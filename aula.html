@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ubica tu Aula</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="css/markers.css">
+    
+    <style>
+        /* Estilos modernos para el campo de búsqueda */
+        .search-wrapper {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modern-search {
+            width: 100%;
+            max-width: 1200px;
+            padding: 18px 25px 18px 55px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            position: relative;
+        }
+        
+        .modern-search::before {
+            content: "🔍";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            color: #3498db;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        
+        
+        .modern-search:hover {
+            border-color: #3498db;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .modern-search:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .modern-search::placeholder {
+            color: #6c757d;
+            font-weight: 400;
+        }
+        
+        /* Estilos para el contenedor de búsqueda con icono */
+        .search-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        
+        /* Estilos modernos para el contenedor de filtros */
+        .filter-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .filter-wrapper {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        /* Estilos para el select moderno */
+        .modern-select {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 50px;
+        }
+        
+        .modern-select:hover {
+            border-color: #3498db;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .modern-select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .modern-select option {
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+            background-color: #ffffff;
+            border: none;
+        }
+        
+        .modern-select option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .modern-select option:checked {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Efecto de animación al cargar */
+        .filter-wrapper {
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .search-wrapper {
+                margin: 15px 0;
+                padding: 0 15px;
+            }
+            
+            .modern-search {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .filter-container {
+                margin: 20px 0;
+                padding: 0 15px;
+            }
+            
+            .filter-wrapper {
+                max-width: 100%;
+            }
+            
+            .modern-select {
+                padding: 12px 15px;
+                font-size: 14px;
+                background-position: right 12px center;
+                background-size: 18px;
+                padding-right: 40px;
+            }
+            
+            .filter-label {
+                font-size: 14px;
+            }
+        }
+        
+        /* Efecto de pulso para indicar interactividad */
+        .modern-select:not(:focus):hover {
+            animation: gentlePulse 2s infinite;
+        }
+        
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            50% {
+                box-shadow: 0 6px 20px rgba(52, 152, 219, 0.2);
+            }
+        }
+        
+        /* Estilos para iconos de la leyenda */
+        .leyenda-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .leyenda-icon {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target="#navbar" class="static-layout">
+
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="/">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header"
+                aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aula.html">Ubica tu Edificio</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Accesos Estudiantes</a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/">Coordinación de Lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/">Sitio Evaluación Docente</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mapa-campus-section text-center">
+        <div class="container text-center">
+            <h2 class="titulo-mapa">Mapa del Campus</h2>
+        </div>
+    </section>
+
+    <section id="mapa" class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mb-4">Ubica tu Edificio</h2>
+                    <p class="text-muted">Instrucciones: usa el buscador o los filtros para localizar el edificio que deseas consultar</p>
+                    <div class="search-wrapper">
+                        <div class="search-input-container">
+                            <input type="text" id="searchInput" class="modern-search" placeholder="Ingresa el número de edificio" />
+                        </div>
+                    </div>
+                    <div class="filter-container">
+                        <div class="filter-wrapper">
+                            <label for="filterSelect" class="filter-label">Filtrar por tipo:</label>
+                            <select id="filterSelect" class="modern-select">
+                            <option value="todos">Todos los edificios</option>
+                                <option value="aula">Aulas</option>
+                                <option value="laboratorio">Laboratorios</option>
+                                <option value="administrativo">Administrativo</option>
+                                <option value="baño">Baños</option>
+                                <option value="acceso">Accesos</option>
+                                <option value="otros">Otros</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                    
+                    <!-- Leyenda de colores -->
+                    <div class="leyenda-marcadores">
+                        <h4>Leyenda de Marcadores</h4>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #3498db; border-color: #2980b9;">
+                                <img src="Icon/tabler/school.svg" alt="Aulas" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Aulas</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #27ae60; border-color: #229954;">
+                                <img src="Icon/tabler/microscope.svg" alt="Laboratorios" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Laboratorios</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e67e22; border-color: #d35400;">
+                                <img src="Icon/tabler/building.svg" alt="Administrativo" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Administrativo</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #9b59b6; border-color: #8e44ad;">
+                                <img src="Icon/tabler/toilet-paper.svg" alt="Baños" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Baños</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e74c3c; border-color: #c0392b;">
+                                <img src="Icon/tabler/door.svg" alt="Accesos" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Accesos</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #95a5a6; border-color: #7f8c8d;">
+                                <img src="Icon/tabler/tools.svg" alt="Otros" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Otros</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4 bg-dark text-white">
+        <p>&copy; 2025 UBICATEC. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/app.min.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/mapa.js"></script>
+
+</body>
+
+</html>
