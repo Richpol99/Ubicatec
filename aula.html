@@ -642,7 +642,7 @@
                     </div>
                     
                     <!-- Botón de scroll hacia arriba -->
-                    <button class="scroll-to-top" id="scrollToTop" style="display: none;">
+                    <button class="scroll-to-top" id="scrollToTop" style="display: flex; background: #007bff; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; position: fixed; bottom: 80px; right: 20px; z-index: 1000; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);">
                         <i class="fas fa-arrow-up"></i>
                     </button>
                     
@@ -772,21 +772,13 @@
             checkScreenSize();
             window.addEventListener('resize', checkScreenSize);
             
-            // Detectar scroll para mostrar botón
+            // Mostrar botón inmediatamente
+            handleScroll();
+            
+            // Mostrar botón en todas las pantallas
             function handleScroll() {
-                if (window.innerWidth <= 768) {
-                    // Mostrar botón cuando el usuario haya hecho scroll hacia abajo
-                    const scrollY = window.scrollY;
-                    const shouldShow = scrollY > 200; // Aparece después de 200px de scroll
-                    
-                    if (shouldShow) {
-                        scrollToTop.classList.add('show');
-                    } else {
-                        scrollToTop.classList.remove('show');
-                    }
-                } else {
-                    scrollToTop.classList.remove('show');
-                }
+                // Mostrar botón siempre (móvil y desktop)
+                scrollToTop.classList.add('show');
             }
             
             // Escuchar eventos de scroll
@@ -794,13 +786,11 @@
             
             // Scroll hacia arriba al hacer click en el botón
             scrollToTop.addEventListener('click', function() {
-                const searchSection = document.querySelector('.search-section');
-                if (searchSection) {
-                    searchSection.scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                // Ir al principio de la página
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             });
             
             // Abrir modal al hacer click en la pestaña
