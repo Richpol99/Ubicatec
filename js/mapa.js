@@ -330,6 +330,56 @@ $(document).ready(function() {
             });
         }
     }
+
+    // Función para centrar el mapa en un edificio específico
+    function centrarEnEdificio(query) {
+        if (!window.markersData || !map) {
+            console.log('Mapa o marcadores no están listos aún');
+            return;
+        }
+
+        var edificioEncontrado = null;
+        var queryLower = query.toLowerCase();
+
+        // Buscar coincidencia exacta primero
+        window.markersData.forEach(function (data) {
+            var nombreEdificio = data.name.toLowerCase();
+            
+            // Buscar coincidencia exacta del número
+            if (nombreEdificio.includes('edificio ' + queryLower)) {
+                edificioEncontrado = data;
+            }
+            // Si no hay coincidencia exacta, buscar por número al inicio
+            else if (nombreEdificio.includes(queryLower + ' ')) {
+                edificioEncontrado = data;
+            }
+            // Buscar por nombre completo
+            else if (nombreEdificio.includes(queryLower)) {
+                edificioEncontrado = data;
+            }
+        });
+
+        if (edificioEncontrado) {
+            // Centrar el mapa en el edificio encontrado
+            var coords = edificioEncontrado.marker.getLatLng();
+            map.setView(coords, 19, {
+                animate: true,
+                duration: 1.5
+            });
+
+            // Mostrar solo este marcador
+            window.edificioMarkers.clearLayers();
+            window.edificioMarkers.addLayer(edificioEncontrado.marker);
+
+            // Abrir popup del marcador
+            edificioEncontrado.marker.openPopup();
+
+            console.log('Centrando en:', edificioEncontrado.name);
+        } else {
+            console.log('Edificio no encontrado:', query);
+            // Mostrar mensaje de error o mantener búsqueda actual
+        }
+    }
     
     // Event listener para el campo de búsqueda
     document.getElementById('searchInput').addEventListener('input', function () {
@@ -343,6 +393,16 @@ $(document).ready(function() {
         
         var selectedFilter = filterSelect.value;
         updateMarkers(query, selectedFilter);
+    });
+
+    // Event listener para Enter en el campo de búsqueda
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            var query = this.value.trim();
+            if (query) {
+                centrarEnEdificio(query);
+            }
+        }
     });
 
     // Event listener para el selector de filtros
