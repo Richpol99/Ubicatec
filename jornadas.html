@@ -714,6 +714,19 @@
         /* Estilos para el modal de eventos */
         .modal {
             z-index: 9999 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+        }
+        
+        .modal-dialog {
+            margin: 0 !important;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .modal-backdrop {
@@ -725,6 +738,8 @@
             border: none;
             box-shadow: var(--shadow-xl);
             z-index: 10000 !important;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-header {
@@ -870,7 +885,13 @@
         /* Responsive para el modal */
         @media (max-width: 768px) {
             .modal-dialog {
-                margin: 10px;
+                margin: 10px !important;
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+            
+            .modal-content {
+                max-height: 95vh;
             }
             
             .evento-header {
@@ -887,6 +908,18 @@
             
             .info-label {
                 min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-dialog {
+                margin: 5px !important;
+                max-width: 98vw;
+                max-height: 98vh;
+            }
+            
+            .modal-content {
+                max-height: 98vh;
             }
         }
 
@@ -1315,7 +1348,7 @@
                                     <div class="card-company">INAOE - Puebla</div>
                                     <span class="card-category">IA</span>
                                 </div>
-                            </div>
+                                </div>
                         </div>
                     </div>
                     
@@ -1327,7 +1360,7 @@
                         
                         <div class="sessions-grid">
                             <!-- Los eventos se agregarán aquí uno por uno -->
-                        </div>
+                            </div>
                     </div>
                 </div>
                 
@@ -1354,8 +1387,8 @@
                         
                         <div class="sessions-grid">
                             <!-- Los eventos se agregarán aquí uno por uno -->
-                        </div>
-                    </div>
+                            </div>
+                            </div>
                 </div>
             </div>
             
@@ -1366,8 +1399,8 @@
                 
                 <div class="workshop-grid">
                     <!-- Los talleres se agregarán aquí uno por uno -->
-                </div>
-            </div>
+                    </div>
+                    </div>
         </div>
     </div>
 
