@@ -711,6 +711,176 @@
             background: var(--primary-color);
         }
 
+        /* Estilos para el modal de eventos */
+        .modal-content {
+            border-radius: var(--border-radius-lg);
+            border: none;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            border: none;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .modal-title i {
+            margin-right: 8px;
+        }
+
+        .close {
+            color: white;
+            opacity: 0.8;
+            font-size: 1.5rem;
+        }
+
+        .close:hover {
+            opacity: 1;
+            color: white;
+        }
+
+        .evento-detalle {
+            padding: 0;
+        }
+
+        .evento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        .evento-tipo {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .evento-hora {
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .evento-titulo {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .evento-info {
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 8px;
+            min-width: 80px;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .evento-descripcion {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .evento-descripcion h6 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .evento-descripcion p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .modal-footer .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-footer .btn-primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .modal-footer .btn-primary:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        /* Responsive para el modal */
+        @media (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+            }
+            
+            .evento-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .info-label {
+                min-width: auto;
+            }
+        }
+
         /* Responsive Design - Eticket Style */
         @media (max-width: 1200px) {
             .sessions-grid, .workshop-grid {
@@ -1595,7 +1765,7 @@
             const sessionCards = document.querySelectorAll('.session-card');
             sessionCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    centrarMapaEnEdificio53();
+                    mostrarModalEvento(card);
                 });
             });
 
@@ -1603,7 +1773,7 @@
             const workshopCards = document.querySelectorAll('.workshop-card');
             workshopCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    centrarMapaEnEdificio53();
+                    mostrarModalEvento(card);
                 });
             });
 
@@ -1664,8 +1834,120 @@
                     desactivarGeolocalizacion();
                 });
             }
+
+            // Event listener para el botón "Ir al Auditorio"
+            const btnIrAuditorio = document.getElementById('btnIrAuditorio');
+            if (btnIrAuditorio) {
+                btnIrAuditorio.addEventListener('click', function() {
+                    $('#eventoModal').modal('hide');
+                    centrarMapaEnEdificio53();
+                });
+            }
         });
+
+        // Función para mostrar el modal con detalles del evento
+        function mostrarModalEvento(card) {
+            // Obtener datos del evento desde la card
+            const tipo = card.querySelector('.card-header span:first-child').textContent.trim();
+            const hora = card.querySelector('.card-time').textContent.trim();
+            const titulo = card.querySelector('.card-title').textContent.trim();
+            const ponente = card.querySelector('.card-speaker').textContent.trim();
+            const empresa = card.querySelector('.card-company').textContent.trim();
+            const categoria = card.querySelector('.card-category').textContent.trim();
+            
+            // Determinar auditorio basado en la sección
+            const auditorioSection = card.closest('.auditorium-section');
+            const auditorioTitle = auditorioSection.querySelector('.auditorium-title');
+            const esAuditorio1 = auditorioTitle.textContent.includes('Auditorio 1');
+            const ubicacion = esAuditorio1 ? 'Auditorio 1 - Edificio 53' : 'Auditorio 2 - Edificio 53';
+            
+            // Actualizar contenido del modal
+            document.getElementById('modalEventoTipo').textContent = tipo;
+            document.getElementById('modalEventoHora').textContent = hora;
+            document.getElementById('modalEventoTitulo').textContent = titulo;
+            document.getElementById('modalEventoPonente').textContent = ponente;
+            document.getElementById('modalEventoEmpresa').textContent = empresa;
+            document.getElementById('modalEventoUbicacion').textContent = ubicacion;
+            document.getElementById('modalEventoCategoria').textContent = categoria;
+            
+            // Generar descripción basada en el tipo de evento
+            let descripcion = '';
+            if (tipo === 'PONENCIA') {
+                descripcion = `Esta ponencia aborda temas relacionados con ${categoria.toLowerCase()}, presentada por ${ponente} de ${empresa}. Una excelente oportunidad para aprender sobre las últimas tendencias y desarrollos en el campo.`;
+            } else if (tipo === 'TALLER') {
+                descripcion = `Taller práctico sobre ${categoria.toLowerCase()}, dirigido por ${ponente} de ${empresa}. Los participantes tendrán la oportunidad de aplicar conocimientos prácticos y desarrollar habilidades en un ambiente colaborativo.`;
+            }
+            document.getElementById('modalEventoDescripcion').textContent = descripcion;
+            
+            // Mostrar el modal
+            $('#eventoModal').modal('show');
+        }
     </script>
+
+    <!-- Modal para detalles del evento -->
+    <div id="eventoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="eventoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventoModalLabel">
+                        <i class="fas fa-microphone"></i> Detalles del Evento
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="evento-detalle">
+                        <div class="evento-header">
+                            <div class="evento-tipo" id="modalEventoTipo">PONENCIA</div>
+                            <div class="evento-hora" id="modalEventoHora">9:00 - 10:00</div>
+                        </div>
+                        
+                        <h4 class="evento-titulo" id="modalEventoTitulo">Título del Evento</h4>
+                        
+                        <div class="evento-info">
+                            <div class="info-item">
+                                <i class="fas fa-user"></i>
+                                <span class="info-label">Ponente:</span>
+                                <span class="info-value" id="modalEventoPonente">Nombre del Ponente</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <i class="fas fa-building"></i>
+                                <span class="info-label">Empresa:</span>
+                                <span class="info-value" id="modalEventoEmpresa">Nombre de la Empresa</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span class="info-label">Ubicación:</span>
+                                <span class="info-value" id="modalEventoUbicacion">Auditorio 1 - Edificio 53</span>
+                            </div>
+                            
+                            <div class="info-item">
+                                <i class="fas fa-tag"></i>
+                                <span class="info-label">Categoría:</span>
+                                <span class="info-value" id="modalEventoCategoria">IA</span>
+                            </div>
+                        </div>
+                        
+                        <div class="evento-descripcion">
+                            <h6>Descripción:</h6>
+                            <p id="modalEventoDescripcion">Descripción detallada del evento aparecerá aquí...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnIrAuditorio">
+                        <i class="fas fa-map-marker-alt"></i> Ir al Auditorio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
