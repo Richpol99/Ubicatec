@@ -712,10 +712,19 @@
         }
 
         /* Estilos para el modal de eventos */
+        .modal {
+            z-index: 9999 !important;
+        }
+        
+        .modal-backdrop {
+            z-index: 9998 !important;
+        }
+        
         .modal-content {
             border-radius: var(--border-radius-lg);
             border: none;
             box-shadow: var(--shadow-xl);
+            z-index: 10000 !important;
         }
 
         .modal-header {
