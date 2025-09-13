@@ -457,9 +457,9 @@
             return {
                 tipo: urlParams.get('tipo') || 'PONENCIA',
                 hora: urlParams.get('hora') || '9:00 - 10:00',
-                titulo: urlParams.get('titulo') || 'Título del Evento',
-                ponente: urlParams.get('ponente') || 'Nombre del Ponente',
-                empresa: urlParams.get('empresa') || 'Nombre de la Empresa',
+                titulo: urlParams.get('titulo') || 'Análisis de señales Fetales con inteligencia Artificial y fusión de datos multimodal',
+                ponente: urlParams.get('ponente') || 'Sócrates Reyes Romero',
+                empresa: urlParams.get('empresa') || 'INAOE - Puebla',
                 ubicacion: urlParams.get('ubicacion') || 'Auditorio 1 - Edificio 53',
                 categoria: urlParams.get('categoria') || 'IA'
             };
@@ -486,7 +486,7 @@
             // Generar descripción
             let descripcion = '';
             if (params.tipo === 'PONENCIA') {
-                descripcion = `Esta ponencia aborda temas relacionados con ${params.categoria.toLowerCase()}, presentada por ${params.ponente} de ${params.empresa}. Una excelente oportunidad para aprender sobre las últimas tendencias y desarrollos en el campo.`;
+                descripcion = `Esta ponencia aborda el fascinante campo del análisis de señales fetales utilizando técnicas avanzadas de inteligencia artificial y fusión de datos multimodal. El Dr. ${params.ponente} de ${params.empresa} presentará los últimos avances en el procesamiento de señales biomédicas, mostrando cómo la IA puede mejorar el diagnóstico y monitoreo fetal. La presentación incluirá casos de estudio reales y demostraciones prácticas de las tecnologías implementadas, ofreciendo una perspectiva única sobre la aplicación de la inteligencia artificial en el campo de la medicina fetal.`;
             } else if (params.tipo === 'TALLER') {
                 descripcion = `Taller práctico sobre ${params.categoria.toLowerCase()}, dirigido por ${params.ponente} de ${params.empresa}. Los participantes tendrán la oportunidad de aplicar conocimientos prácticos y desarrollar habilidades en un ambiente colaborativo.`;
             }
