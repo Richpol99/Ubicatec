@@ -1831,7 +1831,7 @@
             const sessionCards = document.querySelectorAll('.session-card');
             sessionCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    mostrarModalEvento(card);
+                    mostrarDetalleEvento(card);
                 });
             });
 
@@ -1839,7 +1839,7 @@
             const workshopCards = document.querySelectorAll('.workshop-card');
             workshopCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    mostrarModalEvento(card);
+                    mostrarDetalleEvento(card);
                 });
             });
 
@@ -1911,8 +1911,8 @@
             }
         });
 
-        // Función para mostrar el modal con detalles del evento
-        function mostrarModalEvento(card) {
+        // Función para redirigir a la página de detalle del evento
+        function mostrarDetalleEvento(card) {
             // Obtener datos del evento desde la card
             const tipo = card.querySelector('.card-header span:first-child').textContent.trim();
             const hora = card.querySelector('.card-time').textContent.trim();
@@ -1927,26 +1927,19 @@
             const esAuditorio1 = auditorioTitle.textContent.includes('Auditorio 1');
             const ubicacion = esAuditorio1 ? 'Auditorio 1 - Edificio 53' : 'Auditorio 2 - Edificio 53';
             
-            // Actualizar contenido del modal
-            document.getElementById('modalEventoTipo').textContent = tipo;
-            document.getElementById('modalEventoHora').textContent = hora;
-            document.getElementById('modalEventoTitulo').textContent = titulo;
-            document.getElementById('modalEventoPonente').textContent = ponente;
-            document.getElementById('modalEventoEmpresa').textContent = empresa;
-            document.getElementById('modalEventoUbicacion').textContent = ubicacion;
-            document.getElementById('modalEventoCategoria').textContent = categoria;
+            // Crear URL con parámetros
+            const params = new URLSearchParams({
+                tipo: tipo,
+                hora: hora,
+                titulo: titulo,
+                ponente: ponente,
+                empresa: empresa,
+                ubicacion: ubicacion,
+                categoria: categoria
+            });
             
-            // Generar descripción basada en el tipo de evento
-            let descripcion = '';
-            if (tipo === 'PONENCIA') {
-                descripcion = `Esta ponencia aborda temas relacionados con ${categoria.toLowerCase()}, presentada por ${ponente} de ${empresa}. Una excelente oportunidad para aprender sobre las últimas tendencias y desarrollos en el campo.`;
-            } else if (tipo === 'TALLER') {
-                descripcion = `Taller práctico sobre ${categoria.toLowerCase()}, dirigido por ${ponente} de ${empresa}. Los participantes tendrán la oportunidad de aplicar conocimientos prácticos y desarrollar habilidades en un ambiente colaborativo.`;
-            }
-            document.getElementById('modalEventoDescripcion').textContent = descripcion;
-            
-            // Mostrar el modal
-            $('#eventoModal').modal('show');
+            // Redirigir a la página de detalle
+            window.location.href = `detalle-evento.html?${params.toString()}`;
         }
     </script>
 

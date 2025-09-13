@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Detalle del Evento - UBICATEC</title>
+    <meta name="description" content="Detalle completo del evento de las Jornadas de TICS">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/lightcase/lightcase.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons-sprite.svg">
+    <script src="https://unpkg.com/@tabler/icons@latest/icons-sprite.js"></script>
+    
+    <style>
+        :root {
+            /* Eticket exact color scheme */
+            --primary-color: #1e40af;
+            --secondary-color: #1e3a8a;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #111827;
+            --text-secondary: #374151;
+            --text-muted: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 100px 0 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+            line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* Event Detail Card */
+        .event-detail-card {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin: -50px auto 50px auto;
+            max-width: 800px;
+            position: relative;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .event-type {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .event-time {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .event-title {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .event-body {
+            padding: 40px;
+        }
+
+        .event-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-item i {
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .info-content h6 {
+            margin: 0 0 5px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-content p {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .event-description {
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 30px;
+        }
+
+        .event-description h5 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .event-description p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Mapa Section */
+        .mapa-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+        }
+
+        .mapa-container {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+        }
+
+        #mapa-evento {
+            height: 500px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .mapa-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .mapa-status {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .mapa-status small {
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .event-detail-card {
+                margin: -30px 15px 30px 15px;
+            }
+            
+            .event-body {
+                padding: 25px;
+            }
+            
+            .event-info-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4" style="background-color: rgba(12, 56, 114, 0.55); backdrop-filter: blur(10px);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="index.html">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="aula.html">Ubica tu Edificio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accesos Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="eventos.html">Eventos</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
+                            <a class="dropdown-item" href="https://www.facebook.com/DesarrolloAcademicoItPuebla" rel="noopener noreferrer" target="_blank">Desarrollo Academico (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/profile.php?id=100063864618184" rel="noopener noreferrer" target="_blank">Actividades Extraescolares (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/TECNMcampusPuebla" rel="noopener noreferrer" target="_blank">TecNM Puebla (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/cesacampuspuebla" rel="noopener noreferrer" target="_blank">CESA Puebla (Facebook) </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="equipo.html">Equipo de desarrollo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title" id="evento-titulo">Cargando evento...</h1>
+                <p class="hero-subtitle" id="evento-subtitulo">Jornadas de TICS - Septiembre 2024</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Detail Card -->
+    <div class="container">
+        <div class="event-detail-card">
+            <div class="event-header">
+                <div class="event-type" id="evento-tipo">PONENCIA</div>
+                <div class="event-time" id="evento-hora">9:00 - 10:00</div>
+                <h2 class="event-title" id="evento-titulo-detalle">Título del Evento</h2>
+            </div>
+            
+            <div class="event-body">
+                <div class="event-info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <div class="info-content">
+                            <h6>Ponente</h6>
+                            <p id="evento-ponente">Nombre del Ponente</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-building"></i>
+                        <div class="info-content">
+                            <h6>Empresa</h6>
+                            <p id="evento-empresa">Nombre de la Empresa</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info-content">
+                            <h6>Ubicación</h6>
+                            <p id="evento-ubicacion">Auditorio 1 - Edificio 53</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-tag"></i>
+                        <div class="info-content">
+                            <h6>Categoría</h6>
+                            <p id="evento-categoria">IA</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-description">
+                    <h5>Descripción del Evento</h5>
+                    <p id="evento-descripcion">Descripción detallada del evento aparecerá aquí...</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="btn-ir-auditorio">
+                        <i class="fas fa-map-marker-alt"></i> Ir al Auditorio
+                    </button>
+                    <a href="jornadas.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a Jornadas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapa Section -->
+    <section class="mapa-section" id="mapa-section" style="display: none;">
+        <div class="container">
+            <div class="mapa-container">
+                <h3 class="text-center mb-4">Ubicación del Auditorio</h3>
+                <p class="text-center text-muted mb-4">Edificio 53 - Ciencias básicas, WC</p>
+                <div id="mapa-evento"></div>
+                
+                <div class="mapa-controls">
+                    <button id="activar-geolocalizacion" class="btn btn-primary">
+                        <i class="fas fa-map-marker-alt"></i> Mi Ubicación
+                    </button>
+                    <button id="desactivar-geolocalizacion" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-stop"></i> Detener Seguimiento
+                    </button>
+                    <button id="ocultar-mapa" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cerrar Mapa
+                    </button>
+                </div>
+                
+                <div class="mapa-status" id="estado-geolocalizacion" style="display: none;">
+                    <small>
+                        <i class="fas fa-circle text-success"></i> 
+                        <span id="texto-estado">Geolocalización activa</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="vendor/bootstrap/popper.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="vendor/stellar/jquery.stellar.js"></script>
+    <script src="vendor/isotope/isotope.min.js"></script>
+    <script src="vendor/lightcase/lightcase.js"></script>
+    <script src="vendor/waypoints/waypoint.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/app.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script>
+        // Variables globales para el mapa
+        let mapaEvento = null;
+        let marcadorAuditorio = null;
+        let marcadorUbicacionActual = null;
+        let watchId = null;
+        let geolocalizacionActiva = false;
+
+        // Función para obtener parámetros de la URL
+        function obtenerParametrosURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                tipo: urlParams.get('tipo') || 'PONENCIA',
+                hora: urlParams.get('hora') || '9:00 - 10:00',
+                titulo: urlParams.get('titulo') || 'Título del Evento',
+                ponente: urlParams.get('ponente') || 'Nombre del Ponente',
+                empresa: urlParams.get('empresa') || 'Nombre de la Empresa',
+                ubicacion: urlParams.get('ubicacion') || 'Auditorio 1 - Edificio 53',
+                categoria: urlParams.get('categoria') || 'IA'
+            };
+        }
+
+        // Función para cargar datos del evento
+        function cargarDatosEvento() {
+            const params = obtenerParametrosURL();
+            
+            // Actualizar título de la página
+            document.title = `${params.titulo} - UBICATEC`;
+            
+            // Actualizar contenido
+            document.getElementById('evento-titulo').textContent = params.titulo;
+            document.getElementById('evento-subtitulo').textContent = `${params.tipo} - ${params.hora}`;
+            document.getElementById('evento-tipo').textContent = params.tipo;
+            document.getElementById('evento-hora').textContent = params.hora;
+            document.getElementById('evento-titulo-detalle').textContent = params.titulo;
+            document.getElementById('evento-ponente').textContent = params.ponente;
+            document.getElementById('evento-empresa').textContent = params.empresa;
+            document.getElementById('evento-ubicacion').textContent = params.ubicacion;
+            document.getElementById('evento-categoria').textContent = params.categoria;
+            
+            // Generar descripción
+            let descripcion = '';
+            if (params.tipo === 'PONENCIA') {
+                descripcion = `Esta ponencia aborda temas relacionados con ${params.categoria.toLowerCase()}, presentada por ${params.ponente} de ${params.empresa}. Una excelente oportunidad para aprender sobre las últimas tendencias y desarrollos en el campo.`;
+            } else if (params.tipo === 'TALLER') {
+                descripcion = `Taller práctico sobre ${params.categoria.toLowerCase()}, dirigido por ${params.ponente} de ${params.empresa}. Los participantes tendrán la oportunidad de aplicar conocimientos prácticos y desarrollar habilidades en un ambiente colaborativo.`;
+            }
+            document.getElementById('evento-descripcion').textContent = descripcion;
+        }
+
+        // Función para inicializar el mapa
+        function inicializarMapaEvento() {
+            if (mapaEvento) return;
+            
+            const coordenadasAuditorio = [19.070901, -98.169714];
+            
+            mapaEvento = L.map('mapa-evento').setView(coordenadasAuditorio, 20);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mapaEvento);
+            
+            marcadorAuditorio = L.marker(coordenadasAuditorio, {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background: #007bff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/><path d="M18 12h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg></div>',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            }).addTo(mapaEvento);
+            
+            marcadorAuditorio.bindPopup(`
+                <div style="text-align: center;">
+                    <h4 style="color: #007bff; margin-bottom: 10px;">Auditorio 1</h4>
+                    <p style="margin-bottom: 8px;"><strong>Edificio 53</strong></p>
+                    <p style="margin-bottom: 0; font-size: 14px; color: #666;">Ciencias básicas, WC</p>
+                </div>
+            `).openPopup();
+        }
+
+        // Función para mostrar el mapa
+        function mostrarMapa() {
+            const mapaSection = document.getElementById('mapa-section');
+            mapaSection.style.display = 'block';
+            
+            mapaSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            setTimeout(() => {
+                inicializarMapaEvento();
+                activarGeolocalizacion();
+            }, 500);
+        }
+
+        // Función para calcular distancia
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return R * c;
+        }
+
+        // Función para actualizar contador de distancia
+        function actualizarContadorDistancia(lat, lng) {
+            const auditorioLat = 19.070901;
+            const auditorioLng = -98.169714;
+            
+            const distancia = calcularDistancia(lat, lng, auditorioLat, auditorioLng);
+            const distanciaKm = (distancia / 1000).toFixed(2);
+            const distanciaM = Math.round(distancia);
+            
+            let mensajeDistancia = '';
+            if (distanciaM < 1000) {
+                mensajeDistancia = `${distanciaM} metros restantes`;
+            } else {
+                mensajeDistancia = `${distanciaKm} km restantes`;
+            }
+            
+            actualizarEstadoGeolocalizacion(`Geolocalización activa - ${mensajeDistancia}`, 'success');
+        }
+
+        // Función para activar geolocalización
+        function activarGeolocalizacion() {
+            if (!navigator.geolocation) {
+                alert('La geolocalización no está soportada por este navegador.');
+                return;
+            }
+
+            actualizarEstadoGeolocalizacion('Obteniendo ubicación...', 'warning');
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    if (marcadorUbicacionActual) {
+                        marcadorUbicacionActual.setLatLng([lat, lng]);
+                    } else {
+                        marcadorUbicacionActual = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background: #28a745; color: white; border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); animation: pulse 2s infinite;"><svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>',
+                                iconSize: [25, 25],
+                                iconAnchor: [12, 12]
+                            })
+                        }).addTo(mapaEvento);
+                    }
+
+                    marcadorUbicacionActual.bindPopup(`
+                        <div style="text-align: center;">
+                            <h4 style="color: #28a745; margin-bottom: 10px;">Tu Ubicación</h4>
+                            <p style="margin-bottom: 0; font-size: 12px; color: #666;">
+                                Lat: ${lat.toFixed(6)}<br>
+                                Lng: ${lng.toFixed(6)}
+                            </p>
+                        </div>
+                    `);
+
+                    watchId = navigator.geolocation.watchPosition(
+                        function(position) {
+                            const newLat = position.coords.latitude;
+                            const newLng = position.coords.longitude;
+
+                            marcadorUbicacionActual.setLatLng([newLat, newLng]);
+                            actualizarContadorDistancia(newLat, newLng);
+                        },
+                        function(error) {
+                            console.error('Error en seguimiento:', error);
+                            actualizarEstadoGeolocalizacion('Error en seguimiento', 'danger');
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 5000
+                        }
+                    );
+
+                    geolocalizacionActiva = true;
+                    actualizarBotonesGeolocalizacion();
+                    actualizarContadorDistancia(lat, lng);
+                },
+                function(error) {
+                    let mensaje = 'Error al obtener la ubicación: ';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            mensaje += 'Permiso denegado por el usuario.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            mensaje += 'Ubicación no disponible.';
+                            break;
+                        case error.TIMEOUT:
+                            mensaje += 'Tiempo de espera agotado.';
+                            break;
+                        default:
+                            mensaje += 'Error desconocido.';
+                            break;
+                    }
+                    alert(mensaje);
+                    actualizarEstadoGeolocalizacion('Error en geolocalización', 'danger');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        // Función para desactivar geolocalización
+        function desactivarGeolocalizacion() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+
+            if (marcadorUbicacionActual) {
+                mapaEvento.removeLayer(marcadorUbicacionActual);
+                marcadorUbicacionActual = null;
+            }
+
+            geolocalizacionActiva = false;
+            actualizarBotonesGeolocalizacion();
+            actualizarEstadoGeolocalizacion('Geolocalización desactivada', 'secondary');
+        }
+
+        // Función para actualizar botones
+        function actualizarBotonesGeolocalizacion() {
+            const btnActivar = document.getElementById('activar-geolocalizacion');
+            const btnDesactivar = document.getElementById('desactivar-geolocalizacion');
+            
+            if (geolocalizacionActiva) {
+                btnActivar.style.display = 'none';
+                btnDesactivar.style.display = 'inline-block';
+            } else {
+                btnActivar.style.display = 'inline-block';
+                btnDesactivar.style.display = 'none';
+            }
+        }
+
+        // Función para actualizar estado
+        function actualizarEstadoGeolocalizacion(mensaje, tipo) {
+            const estadoDiv = document.getElementById('estado-geolocalizacion');
+            const textoEstado = document.getElementById('texto-estado');
+            const icono = estadoDiv.querySelector('i');
+            
+            if (estadoDiv && textoEstado && icono) {
+                textoEstado.textContent = mensaje;
+                estadoDiv.style.display = 'block';
+                icono.className = `fas fa-circle text-${tipo}`;
+            }
+        }
+
+        // Inicializar página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarDatosEvento();
+            
+            // Event listeners
+            document.getElementById('btn-ir-auditorio').addEventListener('click', mostrarMapa);
+            document.getElementById('activar-geolocalizacion').addEventListener('click', activarGeolocalizacion);
+            document.getElementById('desactivar-geolocalizacion').addEventListener('click', desactivarGeolocalizacion);
+            document.getElementById('ocultar-mapa').addEventListener('click', function() {
+                document.getElementById('mapa-section').style.display = 'none';
+                if (geolocalizacionActiva) {
+                    desactivarGeolocalizacion();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
