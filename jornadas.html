@@ -1500,6 +1500,7 @@
         let marcadorUbicacionActual = null;
         let watchId = null;
         let geolocalizacionActiva = false;
+        let contadorDistancia = null;
 
         // Función para inicializar el mapa
         function inicializarMapaJornadas() {
@@ -1561,6 +1562,9 @@
             // Inicializar el mapa si no está inicializado
             setTimeout(() => {
                 inicializarMapaJornadas();
+                
+                // Activar geolocalización automáticamente
+                activarGeolocalizacion();
                 
                 // Mostrar mensaje de confirmación
                 mostrarMensajeCentrado('Edificio 53 (Ciencias básicas, WC)');
@@ -1640,8 +1644,8 @@
                                 </div>
                             `);
 
-                            // Actualizar estado
-                            actualizarEstadoGeolocalizacion(`Ubicación actualizada (${Math.round(newPrecision)}m)`, 'success');
+                    // Actualizar contador de distancia
+                    actualizarContadorDistancia(newLat, newLng);
                         },
                         function(error) {
                             console.error('Error en seguimiento de ubicación:', error);
@@ -1656,7 +1660,7 @@
 
                     geolocalizacionActiva = true;
                     actualizarBotonesGeolocalizacion();
-                    actualizarEstadoGeolocalizacion('Geolocalización activa', 'success');
+                    actualizarContadorDistancia(lat, lng);
 
                     // Mostrar mensaje de confirmación
                     mostrarMensajeCentrado('Geolocalización activada');
@@ -1735,6 +1739,42 @@
                 // Actualizar color del icono
                 icono.className = `fas fa-circle text-${tipo}`;
             }
+        }
+
+        // Función para calcular distancia entre dos puntos
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Radio de la Tierra en metros
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return R * c; // Distancia en metros
+        }
+
+        // Función para actualizar contador de distancia
+        function actualizarContadorDistancia(lat, lng) {
+            const edificio53Lat = 19.070834;
+            const edificio53Lng = -98.169673;
+            
+            const distancia = calcularDistancia(lat, lng, edificio53Lat, edificio53Lng);
+            const distanciaKm = (distancia / 1000).toFixed(2);
+            const distanciaM = Math.round(distancia);
+            
+            let mensajeDistancia = '';
+            if (distanciaM < 1000) {
+                mensajeDistancia = `${distanciaM} metros restantes`;
+            } else {
+                mensajeDistancia = `${distanciaKm} km restantes`;
+            }
+            
+            // Actualizar el estado de geolocalización con la distancia
+            actualizarEstadoGeolocalizacion(`Geolocalización activa - ${mensajeDistancia}`, 'success');
         }
 
         // Función para mostrar mensaje de confirmación
