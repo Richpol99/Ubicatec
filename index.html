@@ -47,6 +47,280 @@
         .fouc-loaded {
             visibility: visible !important;
         }
+        
+        /* Estilos para el banner de eventos en el video de bienvenida */
+        .floating-event-banner {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 380px;
+            min-width: 320px;
+            background: linear-gradient(135deg, #1C2B33 0%, #2C3E50 100%);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+            overflow: hidden;
+            z-index: 15;
+        }
+
+        .floating-event-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(155, 89, 182, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(3px);
+            }
+        }
+        
+        .floating-banner-content {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            min-height: 120px;
+            position: relative;
+            color: white;
+        }
+
+        .floating-banner-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            margin-left: -10px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-banner-text {
+            flex: 1;
+            padding: 20px 20px 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-banner-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 4px 0;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .floating-banner-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 0 8px 0;
+            font-weight: 500;
+        }
+
+        .floating-banner-description {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+        }
+        
+        @keyframes floatingPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            }
+            50% {
+                transform: scale(1.4);
+                opacity: 0.8;
+                box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            }
+        }
+        
+        .floating-btn-primary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .floating-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .floating-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 3;
+            opacity: 1;
+        }
+        
+        .floating-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .floating-banner-body {
+            margin-bottom: 12px;
+        }
+        
+        .floating-banner-body p {
+            margin: 0 0 4px 0;
+            font-weight: 500;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+        
+        .floating-banner-body small {
+            opacity: 0.9;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .floating-banner-footer {
+            text-align: center;
+        }
+        
+        .floating-btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .floating-event-banner {
+                bottom: 20px;
+                left: 15px;
+                right: 15px;
+                transform: none;
+                max-width: none;
+                min-width: auto;
+                z-index: 15;
+                animation: fadeInUp 0.8s ease-out;
+            }
+            
+            @keyframes slideInBottom {
+                0% {
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            .floating-banner-content {
+                padding: 12px;
+            }
+            
+            .floating-banner-title {
+                font-size: 0.85rem;
+            }
+            
+            .floating-banner-body p {
+                font-size: 0.85rem;
+            }
+            
+            .floating-banner-body small {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-event-banner {
+                bottom: 15px;
+                left: 10px;
+                right: 10px;
+                z-index: 15;
+            }
+            
+            .floating-banner-content {
+                padding: 10px;
+            }
+            
+            .floating-pulse-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
 
         /* Estilos para la navbar con transparencia */
         #header-navbar {
@@ -102,7 +376,7 @@
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             position: relative;
             animation: modalSlideIn 0.3s ease-out;
@@ -196,7 +470,7 @@
     <div id="modalAnuncio" class="modal-anuncio">
         <div class="modal-anuncio-content">
             <span class="modal-anuncio-close" id="cerrarAnuncio">&times;</span>
-            <img src="img/Flyers/FLYER JORNADAS DE TICS.jpeg" alt="Anuncio de Jornadas de TICS">
+            <img src="img/Flyers/jornadas.jpg" alt="Anuncio de Jornadas de TICS">
             <button class="modal-anuncio-boton" id="masInformacion">Más Información</button>
         </div>
     </div>
@@ -222,6 +496,8 @@
                         Accesos Estudiantes
                     </a>
                     <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                        <a class="dropdown-item" href="eventos.html">Eventos</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
                         <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
                         <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
@@ -238,10 +514,29 @@
         </div>
     </div>
 </nav>
+
 <div class="video-bienvenida-container">
     <div class="overlay2"></div>
     <div class="logo-bienvenida">
         <object data="img/logo/logo.svg" type="image/svg+xml" alt="Logo de Bienvenida"></object>
+    </div>
+    
+    <!-- Banner de eventos en curso en el video de bienvenida -->
+    <div id="floating-event-banner" class="floating-event-banner" style="display: none;">
+        <div class="floating-banner-content">
+            <div class="floating-banner-image">
+                <span id="floating-banner-icon">🎯</span>
+            </div>
+            <div class="floating-banner-text">
+                <h3 class="floating-banner-title" id="floating-banner-title">Evento de Prueba</h3>
+                <p class="floating-banner-subtitle" id="floating-banner-subtitle">Ponencia</p>
+                <p class="floating-banner-description" id="floating-banner-description">Comienza en 5 min</p>
+                <button class="floating-btn-primary" onclick="window.location.href='jornadas.html'">
+                    Ver detalles
+                </button>
+            </div>
+            <button class="floating-close-btn" onclick="ocultarBannerFlotante()">&times;</button>
+        </div>
     </div>
 </div>
 
@@ -269,7 +564,10 @@
         </div>
     </div>
 </section>
+
+
 </footer>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" defer></script>
     <script src="vendor/bootstrap/popper.min.js" defer></script>
@@ -283,6 +581,193 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
 
     <script src="js/app.min.js " defer></script>
+    
+    <!-- Script para verificar eventos en curso -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Datos de las jornadas (fechas y horarios)
+            const jornadasData = {
+                fecha: '2025-09-11', // Ajustar según la fecha real
+                eventos: [
+                    { hora: '21:15', titulo: 'Evento de Prueba', tipo: 'ponencia' },
+                    { hora: '22:30', titulo: 'Taller de Desarrollo', tipo: 'taller' }
+                ]
+            };
+
+            function verificarEventosEnCurso() {
+                const ahora = new Date();
+                const hoy = ahora.toISOString().split('T')[0];
+                
+                console.log('=== VERIFICAR EVENTOS ===');
+                console.log('Hoy:', hoy);
+                console.log('Fecha jornadas:', jornadasData.fecha);
+                console.log('Hora actual:', ahora.getHours() + ':' + ahora.getMinutes());
+                
+                // Verificar si es el día de las jornadas
+                if (hoy !== jornadasData.fecha) {
+                    console.log('❌ No es el día de las jornadas');
+                    return null;
+                }
+
+                let eventoProximo = null;
+                let minutosParaEvento = 0;
+                let minutosTranscurridos = 0;
+                let estado = null; // 'countdown', 'en_curso', 'finalizado'
+
+                jornadasData.eventos.forEach(evento => {
+                    const [hora, minutos] = evento.hora.split(':');
+                    const horaEvento = new Date();
+                    horaEvento.setHours(parseInt(hora), parseInt(minutos), 0, 0);
+                    
+                    const diferenciaMs = ahora - horaEvento;
+                    const diferenciaMinutos = Math.floor(diferenciaMs / (1000 * 60));
+                    
+                    console.log('Evento:', evento.titulo, 'Hora:', evento.hora);
+                    console.log('Diferencia minutos:', diferenciaMinutos);
+                    
+                    // Si el evento está en curso (0 a 60 minutos después)
+                    if (diferenciaMinutos >= 0 && diferenciaMinutos < 60) {
+                        console.log('✅ Evento en curso detectado');
+                        if (!eventoProximo || diferenciaMinutos < minutosTranscurridos) {
+                            eventoProximo = evento;
+                            minutosTranscurridos = diferenciaMinutos;
+                            estado = 'en_curso';
+                        }
+                    }
+                    // Si el evento está próximo (30 minutos antes a 0 minutos)
+                    else if (diferenciaMinutos >= -30 && diferenciaMinutos < 0) {
+                        console.log('⏰ Evento próximo detectado');
+                        if (!eventoProximo) {
+                            eventoProximo = evento;
+                            minutosParaEvento = Math.abs(diferenciaMinutos);
+                            estado = 'countdown';
+                        }
+                    } else {
+                        console.log('❌ Evento fuera de rango:', diferenciaMinutos);
+                    }
+                });
+
+                if (eventoProximo) {
+                    const resultado = { 
+                        ...eventoProximo, 
+                        minutosTranscurridos, 
+                        minutosParaEvento, 
+                        estado 
+                    };
+                    console.log('✅ Evento próximo encontrado:', resultado);
+                    return resultado;
+                }
+
+                console.log('❌ No hay eventos próximos');
+                return null;
+            }
+
+            function actualizarBanner() {
+                // Asegurar que solo hay un banner
+                const banners = document.querySelectorAll('#floating-event-banner');
+                if (banners.length > 1) {
+                    // Remover banners duplicados
+                    for (let i = 1; i < banners.length; i++) {
+                        banners[i].remove();
+                    }
+                }
+
+                const ahora = new Date();
+                const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+                
+                const banner = document.getElementById('floating-event-banner');
+                if (!banner) return; // Si no existe el banner, salir
+                
+                const bannerTitle = document.getElementById('floating-banner-title');
+                const bannerSubtitle = document.getElementById('floating-banner-subtitle');
+                const bannerDescription = document.getElementById('floating-banner-description');
+                const bannerIcon = document.getElementById('floating-banner-icon');
+
+                let eventoActivo = null;
+                let mejorPrioridad = -1;
+
+                // Buscar el evento más relevante
+                jornadasData.eventos.forEach(evento => {
+                    const [hora, minutos] = evento.hora.split(':');
+                    const tiempoEvento = parseInt(hora) * 60 + parseInt(minutos);
+                    const diferencia = horaActual - tiempoEvento;
+                    
+                    let prioridad = 0;
+                    let estado = '';
+                    
+                    // Evento en curso (mayor prioridad)
+                    if (diferencia >= 0 && diferencia < 60) {
+                        prioridad = 3;
+                        estado = 'en_curso';
+                    }
+                    // Evento próximo (prioridad media)
+                    else if (diferencia >= -30 && diferencia < 0) {
+                        prioridad = 2;
+                        estado = 'countdown';
+                    }
+                    // Evento futuro lejano (prioridad baja)
+                    else if (diferencia >= -60 && diferencia < -30) {
+                        prioridad = 1;
+                        estado = 'futuro';
+                    }
+                    
+                    if (prioridad > mejorPrioridad) {
+                        mejorPrioridad = prioridad;
+                        eventoActivo = { ...evento, diferencia, estado };
+                    }
+                });
+
+                // Mostrar/ocultar banner según corresponda
+                if (eventoActivo && mejorPrioridad > 0) {
+                    banner.style.display = 'block';
+                    
+                    const tipoTexto = eventoActivo.tipo === 'ponencia' ? 'Ponencia' : 'Taller';
+                    bannerTitle.textContent = eventoActivo.titulo;
+                    bannerSubtitle.textContent = tipoTexto;
+                    
+                    if (eventoActivo.estado === 'en_curso') {
+                        bannerIcon.textContent = '🎯';
+                        bannerDescription.textContent = `Comenzó hace ${eventoActivo.diferencia} min`;
+                    } else if (eventoActivo.estado === 'countdown') {
+                        bannerIcon.textContent = '⏰';
+                        bannerDescription.textContent = `Comienza en ${Math.abs(eventoActivo.diferencia)} min`;
+                    } else if (eventoActivo.estado === 'futuro') {
+                        bannerIcon.textContent = '⏰';
+                        bannerDescription.textContent = `Comienza en ${Math.abs(eventoActivo.diferencia)} min`;
+                    }
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
+
+            // Limpiar banners duplicados al cargar
+            function limpiarBannersDuplicados() {
+                const banners = document.querySelectorAll('#floating-event-banner');
+                if (banners.length > 1) {
+                    for (let i = 1; i < banners.length; i++) {
+                        banners[i].remove();
+                    }
+                }
+            }
+
+            // Verificar eventos al cargar la página
+            limpiarBannersDuplicados();
+            actualizarBanner();
+
+            // Actualizar cada minuto
+            setInterval(() => {
+                limpiarBannersDuplicados();
+                actualizarBanner();
+            }, 60000);
+
+            // Función para ocultar el banner
+            window.ocultarBannerFlotante = function() {
+                const banner = document.getElementById('floating-event-banner');
+                banner.style.display = 'none';
+            };
+        });
+    </script>
+    
     <script src="//localhost:35729/livereload.js" defer></script>
 
     <!-- Script para eliminar FOUC -->

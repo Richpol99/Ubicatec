@@ -143,8 +143,53 @@ $(document).ready(function() {
         return;
     }
 
+    // Función para obtener parámetros de URL
+    function obtenerParametrosURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return {
+            edificio: urlParams.get('edificio'),
+            coords: urlParams.get('coords')
+        };
+    }
+
+    // Función para centrar el mapa en coordenadas específicas
+    function centrarMapaEnCoordenadas(coords, edificio) {
+        if (coords && map) {
+            const [lat, lng] = coords.split(',').map(coord => parseFloat(coord.trim()));
+            
+            // Centrar el mapa en las coordenadas
+            map.setView([lat, lng], 19, {
+                animate: true,
+                duration: 1.5
+            });
+
+            // Buscar y mostrar el marcador del edificio
+            if (window.markersData && edificio) {
+                const edificioEncontrado = window.markersData.find(data => {
+                    const nombreEdificio = data.name.toLowerCase();
+                    const match = nombreEdificio.match(/edificio (\d+)/);
+                    return match && match[1] === edificio.toString();
+                });
+
+                if (edificioEncontrado) {
+                    // Mostrar solo este marcador
+                    window.edificioMarkers.clearLayers();
+                    window.edificioMarkers.addLayer(edificioEncontrado.marker);
+                    
+                    // Abrir popup del marcador
+                    edificioEncontrado.marker.openPopup();
+                    
+                    console.log('Mapa centrado en:', edificioEncontrado.name);
+                }
+            }
+        }
+    }
+
     // Crear el mapa con un pequeño delay para asegurar que el DOM esté listo
     setTimeout(function() {
+        // Obtener parámetros de URL
+        const params = obtenerParametrosURL();
+        
         var map = L.map('map', {
             zoomControl: false,
             scrollWheelZoom: false,
@@ -174,6 +219,14 @@ $(document).ready(function() {
         
         // Crear marcadores después de que el mapa esté listo
         crearMarcadores(map);
+        
+        // Si hay parámetros de URL, centrar el mapa
+        if (params.coords && params.edificio) {
+            // Esperar un poco más para que los marcadores estén listos
+            setTimeout(function() {
+                centrarMapaEnCoordenadas(params.coords, params.edificio);
+            }, 500);
+        }
     }, 100);
 
     var edificios = [

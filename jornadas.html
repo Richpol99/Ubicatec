@@ -13,19 +13,91 @@
     <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
     <link rel="stylesheet" href="vendor/lightcase/lightcase.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons-sprite.svg">
+    <script src="https://unpkg.com/@tabler/icons@latest/icons-sprite.js"></script>
     
     <style>
-        /* Estilos para el hero section */
+        :root {
+            /* Eticket exact color scheme */
+            --primary-color: #1e40af;
+            --secondary-color: #1e3a8a;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #111827;
+            --text-secondary: #374151;
+            --text-muted: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-primary);
+            margin: 0 0 1rem 0;
+        }
+
+        /* Estilos para Tabler Icons */
+        .tabler-icon {
+            width: 1em;
+            height: 1em;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tabler-icon-sm {
+            width: 0.875em;
+            height: 0.875em;
+        }
+
+        .tabler-icon-xs {
+            width: 0.75em;
+            height: 0.75em;
+        }
+
+        /* Hero Section - Enhanced Eticket Style */
         .hero-section {
-            background-color: #042962;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 120px 0 80px 0;
+            padding: 100px 0 80px 0;
             position: relative;
             overflow: hidden;
         }
@@ -37,77 +109,222 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        /* Animación de código binario */
+        .binary-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .binary-column {
+            position: absolute;
+            top: -100%;
+            color: rgba(255, 255, 255, 0.25);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.3;
+            white-space: pre;
+            animation: binaryFall linear infinite;
+            user-select: none;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .binary-column:nth-child(1) { left: 2%; animation-duration: 6s; animation-delay: 0s; }
+        .binary-column:nth-child(2) { left: 8%; animation-duration: 8s; animation-delay: 0.5s; }
+        .binary-column:nth-child(3) { left: 14%; animation-duration: 10s; animation-delay: 1s; }
+        .binary-column:nth-child(4) { left: 20%; animation-duration: 7s; animation-delay: 1.5s; }
+        .binary-column:nth-child(5) { left: 26%; animation-duration: 9s; animation-delay: 2s; }
+        .binary-column:nth-child(6) { left: 32%; animation-duration: 11s; animation-delay: 0.3s; }
+        .binary-column:nth-child(7) { left: 38%; animation-duration: 8s; animation-delay: 2.5s; }
+        .binary-column:nth-child(8) { left: 44%; animation-duration: 12s; animation-delay: 1.8s; }
+        .binary-column:nth-child(9) { left: 50%; animation-duration: 6s; animation-delay: 3s; }
+        .binary-column:nth-child(10) { left: 56%; animation-duration: 9s; animation-delay: 0.8s; }
+        .binary-column:nth-child(11) { left: 62%; animation-duration: 7s; animation-delay: 2.2s; }
+        .binary-column:nth-child(12) { left: 68%; animation-duration: 10s; animation-delay: 1.2s; }
+        .binary-column:nth-child(13) { left: 74%; animation-duration: 8s; animation-delay: 2.8s; }
+        .binary-column:nth-child(14) { left: 80%; animation-duration: 9s; animation-delay: 0.6s; }
+        .binary-column:nth-child(15) { left: 86%; animation-duration: 11s; animation-delay: 1.9s; }
+        .binary-column:nth-child(16) { left: 92%; animation-duration: 7s; animation-delay: 3.2s; }
+
+        @keyframes binaryFall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.8;
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
         }
 
         .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
             position: relative;
             z-index: 2;
+            margin-top: 20px;
         }
 
         .hero-title {
             font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+            line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.02em;
         }
 
         .hero-subtitle {
-            font-size: 1.3rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            opacity: 0.9;
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .hero-date {
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-lg);
+            display: inline-block;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .event-info {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
+            border-radius: var(--border-radius-xl);
+            padding: 2.5rem;
+            margin-top: 3rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .event-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #fff;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .event-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
         }
 
         .event-detail {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: var(--border-radius-lg);
+            transition: var(--transition);
+            color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .event-detail:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .event-detail i {
-            font-size: 1.2rem;
-            color: #4fc3f7;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            min-width: 24px;
         }
 
-        /* Estilos para el contenido principal */
+        .event-detail span {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Contenido Principal con Glassmorphism */
         .main-content {
             padding: 80px 0;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            position: relative;
         }
 
-        .schedule-section {
-            background: white;
-            border-radius: 15px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(49, 130, 206, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(99, 179, 237, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .schedule-section, .workshops-section {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .schedule-section::before, .workshops-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        }
+
+        .workshops-section::before {
+            background: var(--danger-color);
         }
 
         .schedule-day {
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .schedule-day:last-child {
@@ -115,211 +332,464 @@
         }
 
         .day-title {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-size: 2rem;
             font-weight: 600;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
+            padding: 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 1px;
         }
 
         .auditorium-section {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .auditorium-title {
-            background: #e9ecef;
-            color: #495057;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1.2rem;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--primary-color);
+            color: var(--text-primary);
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 1rem;
-            border-left: 4px solid #007bff;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
         }
 
-        .session-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
+        .auditorium-title i {
+            margin-right: 10px;
+            color: var(--accent-color);
         }
 
-        .session-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #007bff;
-        }
-
-        .session-time {
-            font-weight: 600;
-            color: #007bff;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .session-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #212529;
-            margin-bottom: 0.5rem;
-        }
-
-        .session-speaker {
-            color: #6c757d;
-            font-style: italic;
-            margin-bottom: 0.3rem;
-        }
-
-        .session-company {
-            color: #007bff;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .session-category {
-            display: inline-block;
-            background: #007bff;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-top: 0.5rem;
-        }
-
-        .workshops-section {
-            background: white;
-            border-radius: 15px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .workshop-grid {
+        /* Grid Eticket Style */
+        .sessions-grid, .workshop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
         }
 
-        .workshop-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
+        /* Event Cards - Eticket Exact Style */
+        .session-card, .workshop-card {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius);
+            padding: 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .workshop-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border-color: #28a745;
+        .session-card:hover, .workshop-card:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
         }
 
-        .workshop-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #212529;
-            margin-bottom: 0.8rem;
-            line-height: 1.4;
+        .session-card::before, .workshop-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color) 0%, var(--accent-light) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .workshop-instructor {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+        .workshop-card::before {
+            background: linear-gradient(90deg, #e53e3e 0%, #fc8181 100%);
         }
 
-        .workshop-company {
-            color: #28a745;
-            font-weight: 500;
-            font-size: 0.85rem;
+        .session-card:hover::before, .workshop-card:hover::before {
+            opacity: 1;
         }
 
-        .cta-section {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+        /* Card Header - Eticket Style */
+        .card-header {
+            background: var(--primary-color);
             color: white;
-            padding: 4rem 0;
-            text-align: center;
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .cta-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .workshop-card .card-header {
+            background: var(--danger-color);
         }
 
-        .cta-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+        .card-time {
+            font-size: 0.8rem;
             opacity: 0.9;
         }
 
-        .cta-buttons {
+        /* Card Body - Eticket Style */
+        .card-body {
+            padding: 16px;
+            flex: 1;
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-speaker {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .card-company {
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .workshop-card .card-company {
+            color: var(--danger-color);
+        }
+
+        .card-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: auto;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: fit-content;
+        }
+
+        .session-category .tabler-icon,         .workshop-badge .tabler-icon {
+            font-size: 0.8rem;
+        }
+
+        /* Botones - Eticket Style */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-outline-danger:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-cta {
-            background: white;
-            color: #007bff;
-            border: 2px solid white;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius-lg);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-cta:hover {
-            background: transparent;
+            background: var(--secondary-color);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-cta-outline {
             background: transparent;
-            color: white;
-            border: 2px solid white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
         }
 
         .btn-cta-outline:hover {
-            background: white;
-            color: #007bff;
+            background: var(--primary-color);
+            color: white;
         }
 
-        /* Responsive */
+        /* CTA Section - Eticket Style */
+        .cta-section {
+            background: var(--bg-primary);
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Estilos para eventos en curso */
+        .evento-en-curso {
+            position: relative;
+        }
+
+        .evento-en-curso::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .evento-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 8px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .evento-status .tabler-icon {
+            font-size: 0.7rem;
+        }
+
+        /* Animaciones Sutiles */
+        .session-card, .workshop-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .session-card:nth-child(2) { animation-delay: 0.1s; }
+        .session-card:nth-child(3) { animation-delay: 0.2s; }
+        .session-card:nth-child(4) { animation-delay: 0.3s; }
+
+        .workshop-card:nth-child(2) { animation-delay: 0.1s; }
+        .workshop-card:nth-child(3) { animation-delay: 0.2s; }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Responsive Design - Eticket Style */
+        @media (max-width: 1200px) {
+            .sessions-grid, .workshop-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            
+            .cta-buttons {
+                gap: 15px;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
             }
             
             .hero-subtitle {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+            }
+            
+            .hero-section {
+                padding: 80px 0 60px 0;
+            }
+            
+            .event-info {
+                padding: 2rem;
+                margin-top: 2rem;
+            }
+            
+            .event-info h3 {
+                font-size: 1.5rem;
             }
             
             .event-details {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
             
-            .schedule-section,
-            .workshops-section {
-                padding: 2rem 1.5rem;
+            .event-detail {
+                padding: 0.875rem 1rem;
+            }
+            
+            .day-title {
+                font-size: 1.5rem;
+            }
+            
+            .auditorium-title {
+                font-size: 1.1rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .sessions-grid, .workshop-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .session-card, .workshop-card {
+                padding: 16px;
+                margin-bottom: 15px;
+            }
+            
+            .schedule-section, .workshops-section {
+                padding: 20px 15px;
+                margin: 20px 0;
+            }
+            
+            .cta-section {
+                padding: 40px 0;
+            }
+            
+            .cta-title {
+                font-size: 1.5rem;
             }
             
             .cta-buttons {
                 flex-direction: column;
                 align-items: center;
+                gap: 12px;
             }
             
             .btn-cta {
@@ -328,7 +798,221 @@
                 justify-content: center;
             }
         }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .hero-section {
+                padding: 70px 0 50px 0;
+            }
+            
+            .event-info {
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+            }
+            
+            .event-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .event-detail {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+            
+            .event-detail i {
+                font-size: 1.25rem;
+            }
+            
+            .event-detail span {
+                font-size: 0.9rem;
+            }
+            
+            .day-title {
+                font-size: 1.25rem;
+            }
+            
+            .session-card, .workshop-card {
+                padding: 12px;
+            }
+            
+            .session-title, .workshop-title {
+                font-size: 1rem;
+            }
+            
+            .session-time, .workshop-time {
+                font-size: 0.8rem;
+            }
+            
+            .session-speaker, .workshop-instructor {
+                font-size: 0.8rem;
+            }
+            
+            .session-company, .workshop-company {
+                font-size: 0.75rem;
+            }
+            
+            .schedule-section, .workshops-section {
+                padding: 15px 10px;
+                margin: 15px 0;
+            }
+            
+            .cta-title {
+                font-size: 1.25rem;
+            }
+            
+            .cta-subtitle {
+                font-size: 0.9rem;
+            }
+        }
     </style>
+    
+    <!-- Script para reemplazar emojis con iconos de Tabler y verificar eventos en curso -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reemplazar todos los elementos de tiempo
+            const timeElements = document.querySelectorAll('.session-time, .workshop-time');
+            timeElements.forEach(element => {
+                if (!element.querySelector('.tabler-icon')) {
+                    const time = element.textContent.trim();
+                    element.innerHTML = `
+                        <svg class="tabler-icon tabler-icon-sm"><use href="#tabler-clock"></use></svg>
+                        ${time}
+                    `;
+                }
+            });
+
+            // Reemplazar todos los elementos de speaker/instructor
+            const speakerElements = document.querySelectorAll('.session-speaker, .workshop-instructor');
+            speakerElements.forEach(element => {
+                if (!element.querySelector('.tabler-icon')) {
+                    const speaker = element.textContent.trim();
+                    const icon = element.classList.contains('workshop-instructor') ? 'tabler-school' : 'tabler-user';
+                    element.innerHTML = `
+                        <svg class="tabler-icon tabler-icon-sm"><use href="#${icon}"></use></svg>
+                        ${speaker}
+                    `;
+                }
+            });
+
+            // Reemplazar todos los elementos de company
+            const companyElements = document.querySelectorAll('.session-company, .workshop-company');
+            companyElements.forEach(element => {
+                if (!element.querySelector('.tabler-icon')) {
+                    const company = element.textContent.trim();
+                    element.innerHTML = `
+                        <svg class="tabler-icon tabler-icon-sm"><use href="#tabler-building"></use></svg>
+                        ${company}
+                    `;
+                }
+            });
+
+            // Reemplazar todos los elementos de category/badge
+            const categoryElements = document.querySelectorAll('.session-category, .workshop-badge');
+            categoryElements.forEach(element => {
+                if (!element.querySelector('.tabler-icon')) {
+                    const category = element.textContent.trim();
+                    const icon = element.classList.contains('workshop-badge') ? 'tabler-tools' : 'tabler-tag';
+                    element.innerHTML = `
+                        <svg class="tabler-icon tabler-icon-xs"><use href="#${icon}"></use></svg>
+                        ${category}
+                    `;
+                }
+            });
+
+            // Función para verificar eventos en curso
+            function verificarEventosEnCurso() {
+                const ahora = new Date();
+                const horaActual = ahora.getHours();
+                const minutoActual = ahora.getMinutes();
+                const tiempoActual = horaActual * 60 + minutoActual;
+
+                // Buscar todas las cards de eventos
+                const sessionCards = document.querySelectorAll('.session-card');
+                const workshopCards = document.querySelectorAll('.workshop-card');
+
+                [...sessionCards, ...workshopCards].forEach(card => {
+                    // Remover clases anteriores
+                    card.classList.remove('evento-en-curso');
+                    const statusExistente = card.querySelector('.evento-status');
+                    if (statusExistente) {
+                        statusExistente.remove();
+                    }
+
+                    // Obtener el tiempo del evento
+                    const timeElement = card.querySelector('.session-time, .workshop-time');
+                    if (!timeElement) return;
+
+                    const timeText = timeElement.textContent.trim();
+                    const timeMatch = timeText.match(/(\d{1,2}):(\d{2})/);
+                    if (!timeMatch) return;
+
+                    const horaEvento = parseInt(timeMatch[1]);
+                    const minutoEvento = parseInt(timeMatch[2]);
+                    const tiempoEvento = horaEvento * 60 + minutoEvento;
+
+                    // Calcular diferencia en minutos
+                    const diferenciaMinutos = tiempoActual - tiempoEvento;
+
+                    // Si el evento comenzó hace menos de 60 minutos, está en curso
+                    if (diferenciaMinutos >= 0 && diferenciaMinutos < 60) {
+                        card.classList.add('evento-en-curso');
+                        
+                        // Agregar etiqueta de estado
+                        const statusElement = document.createElement('div');
+                        statusElement.className = 'evento-status';
+                        statusElement.innerHTML = `
+                            <svg class="tabler-icon"><use href="#tabler-clock"></use></svg>
+                            Comenzó hace ${diferenciaMinutos} min
+                        `;
+                        
+                        // Insertar después del último elemento de la card
+                        const lastElement = card.querySelector('.session-category, .workshop-category');
+                        if (lastElement) {
+                            lastElement.parentNode.insertBefore(statusElement, lastElement.nextSibling);
+                        } else {
+                            // Si no encuentra el elemento específico, agregar al final de la card
+                            card.appendChild(statusElement);
+                        }
+                    }
+                });
+            }
+
+            // Función de prueba para verificar eventos
+            window.probarEventos = function() {
+                console.log('=== VERIFICAR EVENTOS ===');
+                const ahora = new Date();
+                const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+                console.log('Hora actual:', ahora.getHours() + ':' + ahora.getMinutes());
+                console.log('Tiempo actual (min):', horaActual);
+                
+                const sessionCards = document.querySelectorAll('.session-card');
+                const workshopCards = document.querySelectorAll('.workshop-card');
+                console.log('Session cards:', sessionCards.length);
+                console.log('Workshop cards:', workshopCards.length);
+                
+                [...sessionCards, ...workshopCards].forEach((card, index) => {
+                    const timeElement = card.querySelector('.session-time, .workshop-time');
+                    if (timeElement) {
+                        const timeText = timeElement.textContent.trim();
+                        console.log(`Card ${index + 1}: ${timeText}`);
+                    }
+                });
+            };
+
+            // Verificar eventos al cargar la página
+            verificarEventosEnCurso();
+
+            // Actualizar cada minuto
+            setInterval(verificarEventosEnCurso, 60000);
+        });
+    </script>
 </head>
 
 <body>
@@ -371,6 +1055,23 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
+        <div class="binary-animation">
+            <div class="binary-column">1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0</div>
+            <div class="binary-column">1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1</div>
+            <div class="binary-column">1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0</div>
+            <div class="binary-column">0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0</div>
+            <div class="binary-column">1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1</div>
+            <div class="binary-column">1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1</div>
+            <div class="binary-column">1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0</div>
+            <div class="binary-column">1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1</div>
+            <div class="binary-column">0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1</div>
+            <div class="binary-column">1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0</div>
+        </div>
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Jornadas de TICS</h1>
@@ -418,36 +1119,46 @@
                             <i class="fas fa-microphone"></i> Ponencias - Auditorio 1
                         </div>
                         
-                        <div class="session-item">
-                            <div class="session-time">9:00 - 10:00</div>
-                            <div class="session-title">Análisis de señales fetales con inteligencia artificial y fusión de datos multimodal</div>
-                            <div class="session-speaker">Socrates Reyes Romero</div>
-                            <div class="session-company">INAOE - PUEBLA</div>
-                            <span class="session-category">IA</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">10:00 - 11:00</div>
-                            <div class="session-title">Seguridad y ética en el uso de la IA</div>
-                            <div class="session-speaker">Ángel de Jesús</div>
-                            <div class="session-company">PWO MEXICO</div>
-                            <span class="session-category">IA</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">11:00 - 12:00</div>
-                            <div class="session-title">PostgreSQL en la Inteligencia Artificial</div>
-                            <div class="session-speaker">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
-                            <div class="session-company">PGDAY MEXICO</div>
-                            <span class="session-category">IA</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">12:00 - 13:00</div>
-                            <div class="session-title">Inteligencia Artificial para la enseñanza</div>
-                            <div class="session-speaker">Roberto Andrade Fonseca</div>
-                            <div class="session-company">PGDAY MEXICO</div>
-                            <span class="session-category">IA</span>
+                        <div class="sessions-grid">
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">22:30 - 23:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Seguridad y ética en el uso de la IA</div>
+                                    <div class="card-speaker">Ángel de Jesús</div>
+                                    <div class="card-company">PWO MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">23:00 - 24:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">PostgreSQL en la Inteligencia Artificial</div>
+                                    <div class="card-speaker">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
+                                    <div class="card-company">PGDAY MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">24:00 - 25:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Inteligencia Artificial para la enseñanza</div>
+                                    <div class="card-speaker">Roberto Andrade Fonseca</div>
+                                    <div class="card-company">PGDAY MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -457,36 +1168,58 @@
                             <i class="fas fa-tools"></i> Talleres - Auditorio 2
                         </div>
                         
-                        <div class="session-item">
-                            <div class="session-time">9:00 - 10:00</div>
-                            <div class="session-title">No olvides que el software es un negocio</div>
-                            <div class="session-speaker">Carlos Amin Espinoza</div>
-                            <div class="session-company">MICROSOFT</div>
-                            <span class="session-category">Product Design</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">10:00 - 11:00</div>
-                            <div class="session-title">Del servicio al producto</div>
-                            <div class="session-speaker">Alejandro Miguel Escalante Medina</div>
-                            <div class="session-company">AUDELABS.COM</div>
-                            <span class="session-category">Product Design</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">11:00 - 12:00</div>
-                            <div class="session-title">El poder de AWS a tu alcance</div>
-                            <div class="session-speaker">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
-                            <div class="session-company">AWS USER GROUP MIXTLI</div>
-                            <span class="session-category">AWS</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">12:00 - 13:00</div>
-                            <div class="session-title">Construyendo un futuro exitoso: El poder de las Bases en Tecnologías de la Información</div>
-                            <div class="session-speaker">Atanacio Mauricio Noyola Corona</div>
-                            <div class="session-company">ORACLE DBA</div>
-                            <span class="session-category">Product Design</span>
+                        <div class="sessions-grid">
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">No olvides que el software es un negocio</div>
+                                    <div class="card-speaker">Carlos Amin Espinoza</div>
+                                    <div class="card-company">MICROSOFT</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Del servicio al producto</div>
+                                    <div class="card-speaker">Alejandro Miguel Escalante Medina</div>
+                                    <div class="card-company">AUDELABS.COM</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">El poder de AWS a tu alcance</div>
+                                    <div class="card-speaker">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
+                                    <div class="card-company">AWS USER GROUP MIXTLI</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Construyendo un futuro exitoso: El poder de las Bases en Tecnologías de la Información</div>
+                                    <div class="card-speaker">Atanacio Mauricio Noyola Corona</div>
+                                    <div class="card-company">ORACLE DBA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -501,36 +1234,58 @@
                             <i class="fas fa-microphone"></i> Ponencias - Auditorio 1
                         </div>
                         
-                        <div class="session-item">
-                            <div class="session-time">9:00 - 10:00</div>
-                            <div class="session-title">AWS Lambda: Menos estrés, más ServerLESS</div>
-                            <div class="session-speaker">Israel Jesús García Osorio</div>
-                            <div class="session-company">AWS PUEBLA</div>
-                            <span class="session-category">AWS</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">10:00 - 11:00</div>
-                            <div class="session-title">How time and space complexity impacts your infrastructure</div>
-                            <div class="session-speaker">Edwin Alan Moedano Cardiel</div>
-                            <div class="session-company">CAYLENT</div>
-                            <span class="session-category">AWS</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">11:00 - 12:00</div>
-                            <div class="session-title">Primeros pasos en AWS</div>
-                            <div class="session-speaker">Luis Gerardo Guerra Garrido</div>
-                            <div class="session-company">CAYLENT</div>
-                            <span class="session-category">AWS</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">12:00 - 13:00</div>
-                            <div class="session-title">Serverless vs Anonymous. La nube al rescate</div>
-                            <div class="session-speaker">David Jonathan Sol Llaven</div>
-                            <div class="session-company">PYTHON CDMX, AWS AJOLOTES, CAYLENT</div>
-                            <span class="session-category">AWS</span>
+                        <div class="sessions-grid">
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">AWS Lambda: Menos estrés, más ServerLESS</div>
+                                    <div class="card-speaker">Israel Jesús García Osorio</div>
+                                    <div class="card-company">AWS PUEBLA</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">How time and space complexity impacts your infrastructure</div>
+                                    <div class="card-speaker">Edwin Alan Moedano Cardiel</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Primeros pasos en AWS</div>
+                                    <div class="card-speaker">Luis Gerardo Guerra Garrido</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Serverless vs Anonymous. La nube al rescate</div>
+                                    <div class="card-speaker">David Jonathan Sol Llaven</div>
+                                    <div class="card-company">PYTHON CDMX, AWS AJOLOTES, CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -540,36 +1295,58 @@
                             <i class="fas fa-tools"></i> Talleres - Auditorio 2
                         </div>
                         
-                        <div class="session-item">
-                            <div class="session-time">9:00 - 10:00</div>
-                            <div class="session-title">UX: El ingrediente secreto del software que sí conecta más allá de funciones</div>
-                            <div class="session-speaker">Jesús Javier García Osorio</div>
-                            <div class="session-company">AWS PUEBLA</div>
-                            <span class="session-category">Product Design</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">10:00 - 11:00</div>
-                            <div class="session-title">El arte de construir castillos de datos al viento</div>
-                            <div class="session-speaker">Héctor Iván Castañeda Nazario</div>
-                            <div class="session-company">PYTHON CDMX</div>
-                            <span class="session-category">Product Design</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">11:00 - 12:00</div>
-                            <div class="session-title">Transformación digital</div>
-                            <div class="session-speaker">Jesús López Domínguez</div>
-                            <div class="session-company">INTERCOVAMEX</div>
-                            <span class="session-category">Product Design</span>
-                        </div>
-                        
-                        <div class="session-item">
-                            <div class="session-time">12:00 - 13:00</div>
-                            <div class="session-title">¡Sin romper el cochinito! Construyendo tu aplicación con herramientas de software libre</div>
-                            <div class="session-speaker">Mario Meza</div>
-                            <div class="session-company">CAYLENT PUEBLA</div>
-                            <span class="session-category">Product Design</span>
+                        <div class="sessions-grid">
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">UX: El ingrediente secreto del software que sí conecta más allá de funciones</div>
+                                    <div class="card-speaker">Jesús Javier García Osorio</div>
+                                    <div class="card-company">AWS PUEBLA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">El arte de construir castillos de datos al viento</div>
+                                    <div class="card-speaker">Héctor Iván Castañeda Nazario</div>
+                                    <div class="card-company">PYTHON CDMX</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Transformación digital</div>
+                                    <div class="card-speaker">Jesús López Domínguez</div>
+                                    <div class="card-company">INTERCOVAMEX</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">¡Sin romper el cochinito! Construyendo tu aplicación con herramientas de software libre</div>
+                                    <div class="card-speaker">Mario Meza</div>
+                                    <div class="card-company">CAYLENT PUEBLA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -581,117 +1358,275 @@
                 <p class="text-center text-muted mb-4">Todos los talleres se realizarán en el Edificio 36</p>
                 
                 <div class="workshop-grid">
-                    <div class="workshop-item">
-                        <div class="workshop-title">Introducción a redes neuronales con Python en plataforma Google Colab y uso de aplicaciones en IA</div>
-                        <div class="workshop-instructor">Socrates Reyes Romero</div>
-                        <div class="workshop-company">INAOE - PUEBLA</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Introducción a redes neuronales con Python en plataforma Google Colab y uso de aplicaciones en IA</div>
+                            <div class="card-speaker">Socrates Reyes Romero</div>
+                            <div class="card-company">INAOE - PUEBLA</div>
+                            <span class="card-category">IA</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Programa tu primer aplicación Web Serverless con AWS</div>
-                        <div class="workshop-instructor">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
-                        <div class="workshop-company">AWS USER GROUP MIXTLI</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Programa tu primer aplicación Web Serverless con AWS</div>
+                            <div class="card-speaker">Ana María Reyna R. y Mariano Alberto Rodríguez D.</div>
+                            <div class="card-company">AWS USER GROUP MIXTLI</div>
+                            <span class="card-category">AWS</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Videojuegos con APP Inventor</div>
-                        <div class="workshop-instructor">Jesús Hernández Guillén</div>
-                        <div class="workshop-company">I. T. TLAHUAC</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Videojuegos con APP Inventor</div>
+                            <div class="card-speaker">Jesús Hernández Guillén</div>
+                            <div class="card-company">I. T. TLAHUAC</div>
+                            <span class="card-category">Desarrollo</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Animación y ciencia</div>
-                        <div class="workshop-instructor">Ricardo Irving López Beristain</div>
-                        <div class="workshop-company">Universidad Autónoma Metropolitana</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Animación y ciencia</div>
+                            <div class="card-speaker">Ricardo Irving López Beristain</div>
+                            <div class="card-company">Universidad Autónoma Metropolitana</div>
+                            <span class="card-category">Multimedia</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Instalación de PostgreSQL</div>
-                        <div class="workshop-instructor">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
-                        <div class="workshop-company">PGDAY MEXICO</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Instalación de PostgreSQL</div>
+                            <div class="card-speaker">Bryan Heriberto Camacho C. y Alfredo Rodríguez C. (DrokoRod)</div>
+                            <div class="card-company">PGDAY MEXICO</div>
+                            <span class="card-category">Base de Datos</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Desarrollo con NodeJS</div>
-                        <div class="workshop-instructor">Alejandro Miguel Escalante Medina</div>
-                        <div class="workshop-company">AUDELABS.COM</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Desarrollo con NodeJS</div>
+                            <div class="card-speaker">Alejandro Miguel Escalante Medina</div>
+                            <div class="card-company">AUDELABS.COM</div>
+                            <span class="card-category">Desarrollo</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Construye APIs Serverless con Python y AWS</div>
-                        <div class="workshop-instructor">Cristian Jesús Abrajan Fortis</div>
-                        <div class="workshop-company">SOFTTEK</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Construye APIs Serverless con Python y AWS</div>
+                            <div class="card-speaker">Cristian Jesús Abrajan Fortis</div>
+                            <div class="card-company">SOFTTEK</div>
+                            <span class="card-category">AWS</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Crea tu primer app low code con Oracle Apex</div>
-                        <div class="workshop-instructor">Carlos Francisco Huerta del Niño de Rivera</div>
-                        <div class="workshop-company">Oracle</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Crea tu primer app low code con Oracle Apex</div>
+                            <div class="card-speaker">Carlos Francisco Huerta del Niño de Rivera</div>
+                            <div class="card-company">Oracle</div>
+                            <span class="card-category">Low Code</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Ship Fast, Think Smart: CI/CD for GenAI with AWS & GitHub</div>
-                        <div class="workshop-instructor">Edwin Alan Moedano Cardiel</div>
-                        <div class="workshop-company">CAYLENT</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Ship Fast, Think Smart: CI/CD for GenAI with AWS & GitHub</div>
+                            <div class="card-speaker">Edwin Alan Moedano Cardiel</div>
+                            <div class="card-company">CAYLENT</div>
+                            <span class="card-category">DevOps</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Tu primer despliegue en la Nube</div>
-                        <div class="workshop-instructor">Mario Meza</div>
-                        <div class="workshop-company">CAYLENT PUEBLA</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Tu primer despliegue en la Nube</div>
+                            <div class="card-speaker">Mario Meza</div>
+                            <div class="card-company">CAYLENT PUEBLA</div>
+                            <span class="card-category">Cloud</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Front End Inteligente: Diseño fundamental con HTML/HTML5, CSS Y JS. Diseño con Frameworks React, Angular y Vue</div>
-                        <div class="workshop-instructor">Marco Antonio Hernández Sánchez</div>
-                        <div class="workshop-company">THYSSENKRUPP</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Front End Inteligente: Diseño fundamental con HTML/HTML5, CSS Y JS. Diseño con Frameworks React, Angular y Vue</div>
+                            <div class="card-speaker">Marco Antonio Hernández Sánchez</div>
+                            <div class="card-company">THYSSENKRUPP</div>
+                            <span class="card-category">Frontend</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Taller Sistema ERP Odoo</div>
-                        <div class="workshop-instructor">Jesús López D. y José Ángel Bacilio D.</div>
-                        <div class="workshop-company">INTERCOVAMEX</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Taller Sistema ERP Odoo</div>
+                            <div class="card-speaker">Jesús López D. y José Ángel Bacilio D.</div>
+                            <div class="card-company">INTERCOVAMEX</div>
+                            <span class="card-category">ERP</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Potencializa tu desarrollo de software con Kiro AI</div>
-                        <div class="workshop-instructor">Luis Gerardo Guerra Garrido</div>
-                        <div class="workshop-company">CAYLENT</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Potencializa tu desarrollo de software con Kiro AI</div>
+                            <div class="card-speaker">Luis Gerardo Guerra Garrido</div>
+                            <div class="card-company">CAYLENT</div>
+                            <span class="card-category">IA</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">UX/UI para desarrolladores: Crear interfaces intuitivas</div>
-                        <div class="workshop-instructor">Guadalupe Sarai Calixto M.</div>
-                        <div class="workshop-company">SEBN MX</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">UX/UI para desarrolladores: Crear interfaces intuitivas</div>
+                            <div class="card-speaker">Guadalupe Sarai Calixto M.</div>
+                            <div class="card-company">SEBN MX</div>
+                            <span class="card-category">UX/UI</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Instalación de Linux</div>
-                        <div class="workshop-instructor">Pablo Carmona</div>
-                        <div class="workshop-company">TEC PUEBLA</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Instalación de Linux</div>
+                            <div class="card-speaker">Pablo Carmona</div>
+                            <div class="card-company">TEC PUEBLA</div>
+                            <span class="card-category">Sistemas</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Instalación básica de ArchLinux</div>
-                        <div class="workshop-instructor">Yael Hernández Espinosa</div>
-                        <div class="workshop-company">Instituto Politécnico Nacional, Unidad Profesional Interdisciplinaria de Ingeniería Campus Tlaxcala</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Instalación básica de ArchLinux</div>
+                            <div class="card-speaker">Yael Hernández Espinosa</div>
+                            <div class="card-company">Instituto Politécnico Nacional, Unidad Profesional Interdisciplinaria de Ingeniería Campus Tlaxcala</div>
+                            <span class="card-category">Sistemas</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">GitHub Foundations en 5 horas o menos</div>
-                        <div class="workshop-instructor">Daniel Paredes Z. y Galilea Márquez S.</div>
-                        <div class="workshop-company">SUDO FCIENCIAS UNAM</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">GitHub Foundations en 5 horas o menos</div>
+                            <div class="card-speaker">Daniel Paredes Z. y Galilea Márquez S.</div>
+                            <div class="card-company">SUDO FCIENCIAS UNAM</div>
+                            <span class="card-category">Git</span>
+                        </div>
                     </div>
                     
-                    <div class="workshop-item">
-                        <div class="workshop-title">Arduino Básico</div>
-                        <div class="workshop-instructor">IEEE Sección Puebla</div>
-                        <div class="workshop-company">IEEE SECCIÓN PUEBLA, WIE IEEE SECCION PUEBLA</div>
+                    <div class="workshop-card">
+                        <div class="card-header">
+                            <span>TALLER</span>
+                            <span class="card-time">14:00 - 19:00</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">Arduino Básico</div>
+                            <div class="card-speaker">IEEE Sección Puebla</div>
+                            <div class="card-company">IEEE SECCIÓN PUEBLA, WIE IEEE SECCION PUEBLA</div>
+                            <span class="card-category">Electrónica</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Mapa Section (oculto inicialmente) -->
+    <section id="mapa-section" class="mapa-campus-section" style="display: none; padding: 80px 0; background: #f8f9fa;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mb-4">Ubicación del Edificio 53</h2>
+                    <p class="text-muted mb-4">Ciencias básicas, WC - Edificio donde se realizarán las jornadas</p>
+                    <div id="mapa-jornadas" style="height: 500px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative;"></div>
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <button id="ocultar-mapa" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cerrar Mapa
+                            </button>
+                            <button id="activar-geolocalizacion" class="btn btn-primary">
+                                <i class="fas fa-map-marker-alt"></i> Mi Ubicación
+                            </button>
+                            <button id="desactivar-geolocalizacion" class="btn btn-outline-danger" style="display: none;">
+                                <i class="fas fa-stop"></i> Detener Seguimiento
+                            </button>
+                        </div>
+                        <div id="estado-geolocalizacion" class="mt-3 text-center" style="display: none;">
+                            <small class="text-muted">
+                                <i class="fas fa-circle text-success"></i> 
+                                <span id="texto-estado">Geolocalización activa</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
@@ -723,8 +1658,30 @@
     <script src="vendor/waypoints/waypoint.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="js/app.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <script>
+        // Generar código binario dinámico
+        function generateBinaryCode() {
+            const binaryColumns = document.querySelectorAll('.binary-column');
+            binaryColumns.forEach(column => {
+                let binaryString = '';
+                for (let i = 0; i < 25; i++) {
+                    binaryString += Math.random() > 0.5 ? '1' : '0';
+                    if (i < 24) binaryString += '<br>';
+                }
+                column.innerHTML = binaryString;
+            });
+        }
+
+        // Inicializar animación binaria
+        document.addEventListener('DOMContentLoaded', function() {
+            generateBinaryCode();
+            
+            // Regenerar código cada 3 segundos
+            setInterval(generateBinaryCode, 3000);
+        });
+
         // Inicializar AOS
         AOS.init({
             duration: 1000,
@@ -743,6 +1700,374 @@
                     });
                 }
             });
+        });
+
+        // Variables globales para el mapa
+        let mapaJornadas = null;
+        let marcadorEdificio53 = null;
+        let marcadorUbicacionActual = null;
+        let watchId = null;
+        let geolocalizacionActiva = false;
+
+        // Función para inicializar el mapa
+        function inicializarMapaJornadas() {
+            if (mapaJornadas) return; // Ya está inicializado
+            
+            // Coordenadas del Edificio 53: [19.070834, -98.169673]
+            const coordenadasEdificio53 = [19.070834, -98.169673];
+            
+            // Crear el mapa
+            mapaJornadas = L.map('mapa-jornadas').setView(coordenadasEdificio53, 19);
+            
+            // Agregar capa de tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mapaJornadas);
+            
+            // Crear marcador del Edificio 53
+            marcadorEdificio53 = L.marker(coordenadasEdificio53, {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background: #007bff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"><svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/><path d="M18 12h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg></div>',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            }).addTo(mapaJornadas);
+            
+            // Agregar popup al marcador del edificio
+            marcadorEdificio53.bindPopup(`
+                <div style="text-align: center;">
+                    <h4 style="color: #007bff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                        <svg style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/><path d="M18 12h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2"/></svg>
+                        Edificio 53
+                    </h4>
+                    <p style="margin-bottom: 8px;"><strong>Ciencias básicas, WC</strong></p>
+                    <p style="margin-bottom: 0; font-size: 14px; color: #666;">
+                        <svg style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; display: inline; vertical-align: middle;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg> Ubicación donde se realizarán las Jornadas de TICS
+                    </p>
+                </div>
+            `).openPopup();
+            
+            // Hacer el mapa global para que esté disponible
+            window.map = mapaJornadas;
+            
+            console.log('Mapa de jornadas inicializado correctamente');
+        }
+
+        // Función para centrar el mapa en el edificio 53
+        function centrarMapaEnEdificio53() {
+            // Mostrar la sección del mapa
+            const mapaSection = document.getElementById('mapa-section');
+            mapaSection.style.display = 'block';
+            
+            // Scroll suave hacia el mapa
+            mapaSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Inicializar el mapa si no está inicializado
+            setTimeout(() => {
+                inicializarMapaJornadas();
+                
+                // Mostrar mensaje de confirmación
+                mostrarMensajeCentrado('Edificio 53 (Ciencias básicas, WC)');
+            }, 500);
+        }
+
+        // Función para activar la geolocalización
+        function activarGeolocalizacion() {
+            if (!navigator.geolocation) {
+                alert('La geolocalización no está soportada por este navegador.');
+                return;
+            }
+
+            // Mostrar indicador de carga
+            actualizarEstadoGeolocalizacion('Obteniendo ubicación...', 'warning');
+
+            // Obtener ubicación actual
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const precision = position.coords.accuracy;
+
+                    // Crear o actualizar marcador de ubicación actual
+                    if (marcadorUbicacionActual) {
+                        marcadorUbicacionActual.setLatLng([lat, lng]);
+                    } else {
+                        marcadorUbicacionActual = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background: #28a745; color: white; border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3); animation: pulse 2s infinite;"><svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>',
+                                iconSize: [25, 25],
+                                iconAnchor: [12, 12]
+                            })
+                        }).addTo(mapaJornadas);
+                    }
+
+                    // Agregar popup al marcador de ubicación
+                    marcadorUbicacionActual.bindPopup(`
+                        <div style="text-align: center;">
+                            <h4 style="color: #28a745; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                                <svg style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                Tu Ubicación
+                            </h4>
+                            <p style="margin-bottom: 8px;"><strong>Coordenadas:</strong></p>
+                            <p style="margin-bottom: 0; font-size: 12px; color: #666;">
+                                Lat: ${lat.toFixed(6)}<br>
+                                Lng: ${lng.toFixed(6)}<br>
+                                Precisión: ±${Math.round(precision)}m
+                            </p>
+                        </div>
+                    `);
+
+                    // Iniciar seguimiento en tiempo real
+                    watchId = navigator.geolocation.watchPosition(
+                        function(position) {
+                            const newLat = position.coords.latitude;
+                            const newLng = position.coords.longitude;
+                            const newPrecision = position.coords.accuracy;
+
+                            // Actualizar marcador
+                            marcadorUbicacionActual.setLatLng([newLat, newLng]);
+                            
+                            // Actualizar popup
+                            marcadorUbicacionActual.setPopupContent(`
+                                <div style="text-align: center;">
+                                    <h4 style="color: #28a745; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                                        <svg style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        Tu Ubicación
+                                    </h4>
+                                    <p style="margin-bottom: 8px;"><strong>Coordenadas:</strong></p>
+                                    <p style="margin-bottom: 0; font-size: 12px; color: #666;">
+                                        Lat: ${newLat.toFixed(6)}<br>
+                                        Lng: ${newLng.toFixed(6)}<br>
+                                        Precisión: ±${Math.round(newPrecision)}m
+                                    </p>
+                                </div>
+                            `);
+
+                            // Actualizar estado
+                            actualizarEstadoGeolocalizacion(`Ubicación actualizada (${Math.round(newPrecision)}m)`, 'success');
+                        },
+                        function(error) {
+                            console.error('Error en seguimiento de ubicación:', error);
+                            actualizarEstadoGeolocalizacion('Error en seguimiento', 'danger');
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 5000
+                        }
+                    );
+
+                    geolocalizacionActiva = true;
+                    actualizarBotonesGeolocalizacion();
+                    actualizarEstadoGeolocalizacion('Geolocalización activa', 'success');
+
+                    // Mostrar mensaje de confirmación
+                    mostrarMensajeCentrado('Geolocalización activada');
+                },
+                function(error) {
+                    let mensaje = 'Error al obtener la ubicación: ';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            mensaje += 'Permiso denegado por el usuario.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            mensaje += 'Ubicación no disponible.';
+                            break;
+                        case error.TIMEOUT:
+                            mensaje += 'Tiempo de espera agotado.';
+                            break;
+                        default:
+                            mensaje += 'Error desconocido.';
+                            break;
+                    }
+                    alert(mensaje);
+                    actualizarEstadoGeolocalizacion('Error en geolocalización', 'danger');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        // Función para desactivar la geolocalización
+        function desactivarGeolocalizacion() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+
+            if (marcadorUbicacionActual) {
+                mapaJornadas.removeLayer(marcadorUbicacionActual);
+                marcadorUbicacionActual = null;
+            }
+
+            geolocalizacionActiva = false;
+            actualizarBotonesGeolocalizacion();
+            actualizarEstadoGeolocalizacion('Geolocalización desactivada', 'secondary');
+            
+            // Mostrar mensaje de confirmación
+            mostrarMensajeCentrado('Geolocalización desactivada');
+        }
+
+        // Función para actualizar los botones de geolocalización
+        function actualizarBotonesGeolocalizacion() {
+            const btnActivar = document.getElementById('activar-geolocalizacion');
+            const btnDesactivar = document.getElementById('desactivar-geolocalizacion');
+            
+            if (geolocalizacionActiva) {
+                btnActivar.style.display = 'none';
+                btnDesactivar.style.display = 'inline-block';
+            } else {
+                btnActivar.style.display = 'inline-block';
+                btnDesactivar.style.display = 'none';
+            }
+        }
+
+        // Función para actualizar el estado de geolocalización
+        function actualizarEstadoGeolocalizacion(mensaje, tipo) {
+            const estadoDiv = document.getElementById('estado-geolocalizacion');
+            const textoEstado = document.getElementById('texto-estado');
+            const icono = estadoDiv.querySelector('i');
+            
+            if (estadoDiv && textoEstado && icono) {
+                textoEstado.textContent = mensaje;
+                estadoDiv.style.display = 'block';
+                
+                // Actualizar color del icono
+                icono.className = `fas fa-circle text-${tipo}`;
+            }
+        }
+
+        // Función para mostrar mensaje de confirmación
+        function mostrarMensajeCentrado(nombreEdificio) {
+            // Crear elemento de mensaje temporal
+            const mensaje = document.createElement('div');
+            mensaje.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #007bff, #0056b3);
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);
+                    z-index: 10000;
+                    font-weight: 600;
+                    text-align: center;
+                    animation: fadeInOut 3s ease-in-out;
+                ">
+                    <div style="font-size: 18px; margin-bottom: 8px;">📍 Mapa centrado en:</div>
+                    <div style="font-size: 16px;">${nombreEdificio}</div>
+                </div>
+                <style>
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                        20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                        80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                        100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                    }
+                    @keyframes pulse {
+                        0% { transform: scale(1); opacity: 1; }
+                        50% { transform: scale(1.2); opacity: 0.7; }
+                        100% { transform: scale(1); opacity: 1; }
+                    }
+                </style>
+            `;
+            
+            document.body.appendChild(mensaje);
+            
+            // Remover el mensaje después de 3 segundos
+            setTimeout(() => {
+                if (mensaje.parentNode) {
+                    mensaje.parentNode.removeChild(mensaje);
+                }
+            }, 3000);
+        }
+
+        // Agregar event listeners a todas las cards de sesiones
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cards de sesiones
+            const sessionCards = document.querySelectorAll('.session-card');
+            sessionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    centrarMapaEnEdificio53();
+                });
+            });
+
+            // Cards de talleres
+            const workshopCards = document.querySelectorAll('.workshop-card');
+            workshopCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    centrarMapaEnEdificio53();
+                });
+            });
+
+            // Agregar efecto visual al hacer clic
+            function agregarEfectoClic(elementos) {
+                elementos.forEach(elemento => {
+                    elemento.addEventListener('mousedown', function() {
+                        this.style.transform = 'translateY(-4px) scale(0.98)';
+                    });
+                    
+                    elemento.addEventListener('mouseup', function() {
+                        this.style.transform = 'translateY(-8px) scale(1)';
+                    });
+                    
+                    elemento.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    });
+                });
+            }
+
+            agregarEfectoClic(sessionCards);
+            agregarEfectoClic(workshopCards);
+
+            // Event listener para el botón de cerrar mapa
+            const ocultarMapaBtn = document.getElementById('ocultar-mapa');
+            if (ocultarMapaBtn) {
+                ocultarMapaBtn.addEventListener('click', function() {
+                    const mapaSection = document.getElementById('mapa-section');
+                    mapaSection.style.display = 'none';
+                    
+                    // Desactivar geolocalización si está activa
+                    if (geolocalizacionActiva) {
+                        desactivarGeolocalizacion();
+                    }
+                    
+                    // Limpiar el mapa si está inicializado
+                    if (mapaJornadas) {
+                        mapaJornadas.remove();
+                        mapaJornadas = null;
+                        marcadorEdificio53 = null;
+                        marcadorUbicacionActual = null;
+                        window.map = null;
+                    }
+                });
+            }
+
+            // Event listeners para geolocalización
+            const activarGeolocalizacionBtn = document.getElementById('activar-geolocalizacion');
+            if (activarGeolocalizacionBtn) {
+                activarGeolocalizacionBtn.addEventListener('click', function() {
+                    activarGeolocalizacion();
+                });
+            }
+
+            const desactivarGeolocalizacionBtn = document.getElementById('desactivar-geolocalizacion');
+            if (desactivarGeolocalizacionBtn) {
+                desactivarGeolocalizacionBtn.addEventListener('click', function() {
+                    desactivarGeolocalizacion();
+                });
+            }
         });
     </script>
 </body>
