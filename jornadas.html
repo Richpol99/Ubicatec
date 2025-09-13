@@ -1506,8 +1506,8 @@
         function inicializarMapaJornadas() {
             if (mapaJornadas) return; // Ya está inicializado
             
-            // Coordenadas del Edificio 53: [19.070834, -98.169673]
-            const coordenadasEdificio53 = [19.070834, -98.169673];
+            // Coordenadas del Edificio 53 (Auditorio 1): [19.07667, -98.16069]
+            const coordenadasEdificio53 = [19.07667, -98.16069];
             
             // Crear el mapa
             mapaJornadas = L.map('mapa-jornadas').setView(coordenadasEdificio53, 19);
@@ -1759,8 +1759,8 @@
 
         // Función para actualizar contador de distancia
         function actualizarContadorDistancia(lat, lng) {
-            const edificio53Lat = 19.070834;
-            const edificio53Lng = -98.169673;
+            const edificio53Lat = 19.07667;
+            const edificio53Lng = -98.16069;
             
             const distancia = calcularDistancia(lat, lng, edificio53Lat, edificio53Lng);
             const distanciaKm = (distancia / 1000).toFixed(2);
