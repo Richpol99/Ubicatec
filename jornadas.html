@@ -721,13 +721,11 @@
         }
         
         .modal-dialog {
-            margin: 0 !important;
-            max-width: 90vw;
-            max-height: 90vh;
+            margin: 1.75rem auto !important;
+            max-width: 500px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            min-height: calc(100% - 3.5rem);
         }
         
         .modal-content {
@@ -735,8 +733,6 @@
             border: none;
             box-shadow: var(--shadow-xl);
             z-index: 10000 !important;
-            max-height: 90vh;
-            overflow-y: auto;
             width: 100%;
         }
 
