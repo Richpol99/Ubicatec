@@ -788,26 +788,47 @@ class RouteVisualizer {
             console.error('❌ Error agregando marcador de destino:', error);
         }
         
-        // Marcadores de waypoints intermedios (si hay muchos)
-        if (route.waypoints.length > 2) {
-            for (let i = 1; i < route.waypoints.length - 1; i++) {
-                const waypoint = route.waypoints[i];
-                const waypointMarker = L.marker(waypoint.coords, {
-                    icon: this.icons.waypoint
-                }).bindPopup(`
-                    <div class="route-marker">
-                        <h6>📍 Punto Intermedio</h6>
-                        <p><strong>${waypoint.name}</strong></p>
-                        <p>${waypoint.coords[0].toFixed(6)}, ${waypoint.coords[1].toFixed(6)}</p>
-                    </div>
-                `);
-                
-                try {
-                    this.routeLayerGroup.addLayer(waypointMarker);
-                    this.markers.push(waypointMarker);
-                } catch (error) {
-                    console.error('❌ Error agregando marcador intermedio:', error);
+        // Marcadores de TODOS los nodos de la ruta (no solo waypoints principales)
+        console.log(`📍 Creando marcadores para ${route.waypoints.length} nodos de la ruta...`);
+        
+        for (let i = 1; i < route.waypoints.length - 1; i++) {
+            const waypoint = route.waypoints[i];
+            
+            // Determinar el tipo de marcador según el tipo de nodo
+            let icon = this.icons.waypoint;
+            let title = '📍 Punto Intermedio';
+            
+            if (waypoint.type === 'building') {
+                icon = this.icons.start; // Usar icono de edificio
+                title = '🏢 Edificio';
+            } else if (waypoint.metadata?.route) {
+                // Es un nodo de ruta (naranja, verde, azul)
+                const routeType = waypoint.metadata.route;
+                if (routeType === 'naranja') {
+                    title = '🟠 Ruta Naranja';
+                } else if (routeType === 'verde') {
+                    title = '🟢 Ruta Verde';
+                } else if (routeType === 'azul') {
+                    title = '🔵 Ruta Azul';
                 }
+            }
+            
+            const waypointMarker = L.marker(waypoint.coords, {
+                icon: icon
+            }).bindPopup(`
+                <div class="route-marker">
+                    <h6>${title}</h6>
+                    <p><strong>${waypoint.name}</strong></p>
+                    <p>${waypoint.coords[0].toFixed(6)}, ${waypoint.coords[1].toFixed(6)}</p>
+                    ${waypoint.metadata?.route ? `<p><strong>Ruta:</strong> ${waypoint.metadata.route} (${waypoint.metadata.index})</p>` : ''}
+                </div>
+            `);
+            
+            try {
+                this.routeLayerGroup.addLayer(waypointMarker);
+                this.markers.push(waypointMarker);
+            } catch (error) {
+                console.error('❌ Error agregando marcador intermedio:', error);
             }
         }
         

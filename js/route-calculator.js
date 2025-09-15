@@ -86,6 +86,14 @@ class RouteCalculator {
                     return;
                 }
 
+                // LÓGICA MEJORADA: Verificar si es un salto dentro de la misma ruta
+                // Solo bloquear saltos si no es necesario para conectar edificios
+                if (this.isJumpWithinSameRoute(currentNodeId, neighborId) && 
+                    !this.isNecessaryForBuildingConnection(currentNodeId, neighborId, endNodeId)) {
+                    console.log(`⚠️ Saltando conexión ${currentNodeId} → ${neighborId} (salto dentro de la misma ruta)`);
+                    return;
+                }
+
                 // Calcular peso de la conexión según accesibilidad
                 const connectionWeight = connection.weights[accessibilityType] || connection.distance;
                 
@@ -207,6 +215,69 @@ class RouteCalculator {
             console.error('Error calculando rutas alternativas:', error);
             return [];
         }
+    }
+
+    /**
+     * Verifica si una conexión es un salto dentro de la misma ruta
+     * @param {string} fromNodeId - ID del nodo origen
+     * @param {string} toNodeId - ID del nodo destino
+     * @returns {boolean} True si es un salto dentro de la misma ruta
+     */
+    isJumpWithinSameRoute(fromNodeId, toNodeId) {
+        const fromNode = this.graph.getNode(fromNodeId);
+        const toNode = this.graph.getNode(toNodeId);
+
+        // Si no tienen metadata de ruta, no es un salto
+        if (!fromNode?.metadata?.route || !toNode?.metadata?.route) {
+            return false;
+        }
+
+        // Si son de rutas diferentes, no es un salto
+        if (fromNode.metadata.route !== toNode.metadata.route) {
+            return false;
+        }
+
+        // Si son de la misma ruta, verificar si hay un salto en el índice
+        const fromIndex = fromNode.metadata.index;
+        const toIndex = toNode.metadata.index;
+        const indexDiff = Math.abs(toIndex - fromIndex);
+
+        // Si la diferencia de índice es mayor a 1, es un salto
+        return indexDiff > 1;
+    }
+
+    /**
+     * Verifica si una conexión es necesaria para conectar edificios
+     * @param {string} fromNodeId - ID del nodo origen
+     * @param {string} toNodeId - ID del nodo destino
+     * @param {string} endNodeId - ID del nodo de destino final
+     * @returns {boolean} True si la conexión es necesaria para conectar edificios
+     */
+    isNecessaryForBuildingConnection(fromNodeId, toNodeId, endNodeId) {
+        const fromNode = this.graph.getNode(fromNodeId);
+        const toNode = this.graph.getNode(toNodeId);
+        const endNode = this.graph.getNode(endNodeId);
+
+        // Si el nodo de destino es un edificio, permitir la conexión
+        if (endNode?.type === 'building') {
+            return true;
+        }
+
+        // Si el nodo de destino es un nodo de ruta, verificar si es necesario para llegar al edificio
+        if (endNode?.metadata?.route) {
+            // Permitir conexiones que acerquen al destino
+            const fromIndex = fromNode?.metadata?.index || 0;
+            const toIndex = toNode?.metadata?.index || 0;
+            const endIndex = endNode?.metadata?.index || 0;
+            
+            // Si la conexión nos acerca al destino, permitirla
+            const fromDistance = Math.abs(fromIndex - endIndex);
+            const toDistance = Math.abs(toIndex - endIndex);
+            
+            return toDistance < fromDistance;
+        }
+
+        return false;
     }
 
     /**

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Rutas - 22 Nodos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .info {
+            color: #17a2b8;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .node-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .node-item {
+            padding: 5px;
+            margin: 2px 0;
+            background: #f8f9fa;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .node-item:hover {
+            background: #e9ecef;
+        }
+        .node-item.selected {
+            background: #007bff;
+            color: white;
+        }
+        .test-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ddd;
+        }
+        .test-item.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .test-item.error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .test-item.warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba de Rutas - 22 Nodos del Grafo</h1>
+        <p>Prueba rutas entre todos los nodos disponibles en el sistema de navegación</p>
+        
+        <div class="grid">
+            <div class="section">
+                <h3>🎯 Selección de Nodos</h3>
+                <p>Selecciona el nodo de origen y destino para probar la ruta:</p>
+                
+                <div>
+                    <h4>Nodo de Origen:</h4>
+                    <div id="origenList" class="node-list"></div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4>Nodo de Destino:</h4>
+                    <div id="destinoList" class="node-list"></div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="calcularRuta()">🛣️ Calcular Ruta</button>
+                    <button class="btn" onclick="probarTodasLasRutas()">🧪 Probar Todas las Rutas</button>
+                    <button class="btn btn-danger" onclick="limpiarResultados()">🗑️ Limpiar</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>📊 Resultados de Pruebas</h3>
+                <div id="testResults" class="test-results"></div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>📝 Log de Debug</h3>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <script src="js/campus-graph.js"></script>
+    <script src="js/route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/navigation-system.js"></script>
+
+    <script>
+        let grafo;
+        let routeCalculator;
+        let routeVisualizer;
+        let navigationSystem;
+        
+        // Lista de los 22 nodos del grafo
+        const nodosDisponibles = [
+            // Edificios (16)
+            { id: 'edif_1', name: 'Edificio 1 (Dirección)', type: 'building' },
+            { id: 'edif_2', name: 'Edificio 2 (Coordinación)', type: 'building' },
+            { id: 'edif_3', name: 'Edificio 3 (Sistemas y Computación)', type: 'building' },
+            { id: 'edif_19', name: 'Edificio 19 (Laboratorio de Física y Química)', type: 'building' },
+            { id: 'edif_20', name: 'Edificio 20 (Laboratorio de Ingeniería Eléctrica)', type: 'building' },
+            { id: 'edif_25', name: 'Edificio 25 (Servicio Médico)', type: 'building' },
+            { id: 'edif_27', name: 'Edificio 27 (Lab. Ing Mecánica)', type: 'building' },
+            { id: 'edif_30', name: 'Edificio 30 (Manufactura avanzada Lab)', type: 'building' },
+            { id: 'edif_36', name: 'Edificio 36 (Centro de cómputo y lab de sistemas)', type: 'building' },
+            { id: 'edif_41', name: 'Edificio 41 (Centro de lenguas extranjeras)', type: 'building' },
+            { id: 'edif_45', name: 'Edificio 45 (Unidad académica departamental)', type: 'building' },
+            { id: 'edif_49', name: 'Edificio 49 (Lab. Ing Electrónica)', type: 'building' },
+            { id: 'edif_50', name: 'Edificio 50 (Centro de Información)', type: 'building' },
+            { id: 'edif_51', name: 'Edificio 51 (Unidad académica departamental)', type: 'building' },
+            { id: 'edif_52', name: 'Edificio 52 (Sala de titulación)', type: 'building' },
+            { id: 'edif_53', name: 'Edificio 53 (Ciencias básicas)', type: 'building' },
+            // Accesos (6)
+            { id: 'acceso_principal', name: 'Acceso principal (Avenida Tecnológico)', type: 'access' },
+            { id: 'acceso_visitantes', name: 'Acceso Visitantes (Frente a Sears)', type: 'access' },
+            { id: 'acceso_hangar_autobuses', name: 'Acceso Hangar Autobuses y Estacionamiento 3', type: 'access' },
+            { id: 'acceso_estacionamiento_2', name: 'Acceso Estacionamiento 2 (Colonia Maravillas)', type: 'access' },
+            { id: 'acceso_estudiantes', name: 'Acceso Estudiantes (Colonia Maravillas)', type: 'access' },
+            { id: 'acceso_estacionamiento_1', name: 'Acceso Estacionamiento 1 (Avenida Tecnológico)', type: 'access' }
+        ];
+        
+        let nodoOrigen = null;
+        let nodoDestino = null;
+        let resultadosPruebas = [];
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : 
+                            type === 'success' ? 'success' : 
+                            type === 'warning' ? 'warning' : 'info';
+            
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function initSystem() {
+            log('🚀 Inicializando sistema de navegación...', 'info');
+            
+            try {
+                grafo = new CampusGraph();
+                routeCalculator = new RouteCalculator(grafo);
+                routeVisualizer = new RouteVisualizer();
+                navigationSystem = new NavigationSystem();
+                
+                const stats = grafo.getStatistics();
+                log(`✅ Sistema inicializado: ${stats.totalNodes} nodos, ${stats.totalConnections} conexiones`, 'success');
+                
+                // Crear listas de nodos
+                crearListasNodos();
+                
+            } catch (error) {
+                log(`❌ Error inicializando sistema: ${error.message}`, 'error');
+            }
+        }
+
+        function crearListasNodos() {
+            const origenList = document.getElementById('origenList');
+            const destinoList = document.getElementById('destinoList');
+            
+            // Crear lista de origen
+            nodosDisponibles.forEach(nodo => {
+                const div = document.createElement('div');
+                div.className = 'node-item';
+                div.textContent = `${nodo.name} (${nodo.id})`;
+                div.onclick = () => seleccionarOrigen(nodo);
+                origenList.appendChild(div);
+            });
+            
+            // Crear lista de destino
+            nodosDisponibles.forEach(nodo => {
+                const div = document.createElement('div');
+                div.className = 'node-item';
+                div.textContent = `${nodo.name} (${nodo.id})`;
+                div.onclick = () => seleccionarDestino(nodo);
+                destinoList.appendChild(div);
+            });
+        }
+
+        function seleccionarOrigen(nodo) {
+            nodoOrigen = nodo;
+            actualizarSeleccion('origenList', nodo);
+            log(`📍 Origen seleccionado: ${nodo.name}`, 'info');
+        }
+
+        function seleccionarDestino(nodo) {
+            nodoDestino = nodo;
+            actualizarSeleccion('destinoList', nodo);
+            log(`🎯 Destino seleccionado: ${nodo.name}`, 'info');
+        }
+
+        function actualizarSeleccion(listId, nodoSeleccionado) {
+            const list = document.getElementById(listId);
+            const items = list.querySelectorAll('.node-item');
+            
+            items.forEach(item => {
+                item.classList.remove('selected');
+                if (item.textContent.includes(nodoSeleccionado.id)) {
+                    item.classList.add('selected');
+                }
+            });
+        }
+
+        function calcularRuta() {
+            if (!nodoOrigen || !nodoDestino) {
+                log('❌ Selecciona origen y destino antes de calcular la ruta', 'error');
+                return;
+            }
+            
+            if (nodoOrigen.id === nodoDestino.id) {
+                log('❌ El origen y destino no pueden ser el mismo', 'error');
+                return;
+            }
+            
+            log(`🛣️ Calculando ruta de ${nodoOrigen.name} a ${nodoDestino.name}...`, 'info');
+            
+            try {
+                const route = routeCalculator.calculateRoute(nodoOrigen.id, nodoDestino.id, 'mobility');
+                
+                log(`✅ Ruta calculada: ${route.path.length} nodos, ${route.totalDistance.toFixed(1)}m`, 'success');
+                log(`⏱️ Tiempo estimado: ${route.estimatedTime.toFixed(1)}min`, 'info');
+                
+                // Mostrar ruta completa
+                log('🛤️ Ruta completa:', 'info');
+                route.path.forEach((nodeId, index) => {
+                    const node = grafo.getNode(nodeId);
+                    const routeType = node?.metadata?.route || node?.type || 'desconocido';
+                    log(`  ${index + 1}. ${nodeId} (${routeType})`, 'info');
+                });
+                
+                // Agregar a resultados
+                agregarResultadoPrueba(nodoOrigen.name, nodoDestino.name, true, route.path.length, route.totalDistance);
+                
+            } catch (error) {
+                log(`❌ Error calculando ruta: ${error.message}`, 'error');
+                agregarResultadoPrueba(nodoOrigen.name, nodoDestino.name, false, 0, 0, error.message);
+            }
+        }
+
+        function probarTodasLasRutas() {
+            log('🧪 Iniciando prueba de todas las rutas...', 'info');
+            resultadosPruebas = [];
+            
+            let pruebasCompletadas = 0;
+            let pruebasExitosas = 0;
+            const totalPruebas = nodosDisponibles.length * (nodosDisponibles.length - 1);
+            
+            nodosDisponibles.forEach(origen => {
+                nodosDisponibles.forEach(destino => {
+                    if (origen.id !== destino.id) {
+                        try {
+                            const route = routeCalculator.calculateRoute(origen.id, destino.id, 'mobility');
+                            pruebasExitosas++;
+                            agregarResultadoPrueba(origen.name, destino.name, true, route.path.length, route.totalDistance);
+                        } catch (error) {
+                            agregarResultadoPrueba(origen.name, destino.name, false, 0, 0, error.message);
+                        }
+                        pruebasCompletadas++;
+                        
+                        // Actualizar progreso
+                        if (pruebasCompletadas % 10 === 0) {
+                            log(`📊 Progreso: ${pruebasCompletadas}/${totalPruebas} pruebas completadas`, 'info');
+                        }
+                    }
+                });
+            });
+            
+            log(`✅ Pruebas completadas: ${pruebasExitosas}/${totalPruebas} exitosas (${((pruebasExitosas/totalPruebas)*100).toFixed(1)}%)`, 'success');
+        }
+
+        function agregarResultadoPrueba(origen, destino, exito, nodos, distancia, error = '') {
+            const resultado = {
+                origen,
+                destino,
+                exito,
+                nodos,
+                distancia,
+                error,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            
+            resultadosPruebas.push(resultado);
+            actualizarResultados();
+        }
+
+        function actualizarResultados() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '';
+            
+            resultadosPruebas.forEach((resultado, index) => {
+                const div = document.createElement('div');
+                div.className = `test-item ${resultado.exito ? 'success' : 'error'}`;
+                
+                const status = resultado.exito ? '✅' : '❌';
+                const info = resultado.exito ? 
+                    `${resultado.nodos} nodos, ${resultado.distancia.toFixed(1)}m` : 
+                    resultado.error;
+                
+                div.innerHTML = `
+                    <strong>${status} ${resultado.origen} → ${resultado.destino}</strong><br>
+                    <small>${info} - ${resultado.timestamp}</small>
+                `;
+                
+                resultsDiv.appendChild(div);
+            });
+            
+            // Scroll al final
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function limpiarResultados() {
+            resultadosPruebas = [];
+            document.getElementById('testResults').innerHTML = '';
+            document.getElementById('log').innerHTML = '';
+            log('🗑️ Resultados limpiados', 'info');
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            initSystem();
+        });
+    </script>
+</body>
+</html>

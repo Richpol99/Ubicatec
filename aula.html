@@ -274,6 +274,9 @@
                 accessibilityModal = new AccessibilityModal();
                 accessibilityModal.init();
                 
+                // Configurar sistema de nodos en el modal
+                accessibilityModal.setNodesSystem(grafo);
+                
                 // Cargar edificios en el modal
                 const buildings = Array.from(grafo.nodes.values()).filter(node => node.type === 'building');
                 accessibilityModal.loadBuildings(buildings);

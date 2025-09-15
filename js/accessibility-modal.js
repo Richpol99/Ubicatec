@@ -419,6 +419,45 @@ class AccessibilityModal {
             }
         });
         
+        // Agregar accesos si están disponibles en el sistema de nodos
+        if (this.nodesSystem && this.nodesSystem.getAllNodes) {
+            try {
+                const allNodes = this.nodesSystem.getAllNodes();
+                const accessNodes = allNodes.filter(node => node.type === 'access');
+                
+                if (accessNodes.length > 0) {
+                    // Agregar separador visual
+                    const separator1 = new Option('────────── ACCESOS ──────────', '', true, true);
+                    const separator2 = new Option('────────── ACCESOS ──────────', '', true, true);
+                    
+                    if (this.startSelect) {
+                        this.startSelect.add(separator1);
+                    }
+                    if (this.endSelect) {
+                        this.endSelect.add(separator2);
+                    }
+                    
+                    // Agregar accesos
+                    accessNodes.forEach((access) => {
+                        const option1 = new Option(`🚪 ${access.name}`, access.id);
+                        const option2 = new Option(`🚪 ${access.name}`, access.id);
+                        
+                        if (this.startSelect) {
+                            this.startSelect.add(option1);
+                        }
+                        
+                        if (this.endSelect) {
+                            this.endSelect.add(option2);
+                        }
+                    });
+                    
+                    console.log(`🚪 ${accessNodes.length} accesos agregados al modal`);
+                }
+            } catch (error) {
+                console.warn('⚠️ Error obteniendo accesos:', error);
+            }
+        }
+        
         console.log(`🏢 ${buildings.length} edificios cargados en el modal`);
     }
     
