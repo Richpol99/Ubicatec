@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bienvenido a UBICATEC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdn.linearicons.com">
+    <link rel="preconnect" href="https://use.fontawesome.com">
+    <link rel="preconnect" href="https://unpkg.com">
+
+    <link rel="preload" as="image" href="img/logo/logo.svg">
+
+    <!-- CSS crítico - carga síncrona -->
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- CSS no crítico - carga asíncrona -->
+    <link rel="preload" href="vendor/select2/select2.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/owlcarousel/owl.carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="vendor/lightcase/lightcase.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+
+    <!-- Estilos críticos inline para evitar FOUC -->
+    <style>
+        /* Estilos críticos mínimos para evitar FOUC */
+        body {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Ocultar contenido hasta que se cargue el CSS completo */
+        .fouc-hidden {
+            visibility: hidden;
+        }
+        
+        /* Mostrar contenido una vez que el CSS esté cargado */
+        .fouc-loaded {
+            visibility: visible !important;
+        }
+        
+        /* Estilos para el banner de eventos en el video de bienvenida */
+        .floating-event-banner {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 380px;
+            min-width: 320px;
+            background: linear-gradient(135deg, #1C2B33 0%, #2C3E50 100%);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+            overflow: hidden;
+            z-index: 15;
+        }
+
+        .floating-event-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(155, 89, 182, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(3px);
+            }
+        }
+        
+        .floating-banner-content {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            min-height: 120px;
+            position: relative;
+            color: white;
+        }
+
+        .floating-banner-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            margin-left: -10px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-banner-text {
+            flex: 1;
+            padding: 20px 20px 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-banner-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 4px 0;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .floating-banner-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0 0 8px 0;
+            font-weight: 500;
+        }
+
+        .floating-banner-description {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+        }
+        
+        @keyframes floatingPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            }
+            50% {
+                transform: scale(1.4);
+                opacity: 0.8;
+                box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            }
+        }
+        
+        .floating-btn-primary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .floating-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .floating-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 3;
+            opacity: 1;
+        }
+        
+        .floating-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .floating-banner-body {
+            margin-bottom: 12px;
+        }
+        
+        .floating-banner-body p {
+            margin: 0 0 4px 0;
+            font-weight: 500;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+        
+        .floating-banner-body small {
+            opacity: 0.9;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .floating-banner-footer {
+            text-align: center;
+        }
+        
+        .floating-btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .floating-btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .floating-event-banner {
+                bottom: 20px;
+                left: 15px;
+                right: 15px;
+                transform: none;
+                max-width: none;
+                min-width: auto;
+                z-index: 15;
+                animation: fadeInUp 0.8s ease-out;
+            }
+            
+            @keyframes slideInBottom {
+                0% {
+                    transform: translateY(100%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            .floating-banner-content {
+                padding: 12px;
+            }
+            
+            .floating-banner-title {
+                font-size: 0.85rem;
+            }
+            
+            .floating-banner-body p {
+                font-size: 0.85rem;
+            }
+            
+            .floating-banner-body small {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-event-banner {
+                bottom: 15px;
+                left: 10px;
+                right: 10px;
+                z-index: 15;
+            }
+            
+            .floating-banner-content {
+                padding: 10px;
+            }
+            
+            .floating-pulse-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        /* Estilos para la navbar con transparencia */
+        #header-navbar {
+            background-color: rgba(12, 56, 114, 0.55) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        /* Estilos para el texto de los botones de la navbar */
+        #header-navbar .nav-link {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        #header-navbar .dropdown-toggle {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        /* Estilos para el logo de UBICATEC */
+        #header-navbar .navbar-brand img {
+            height: 35px !important;
+        }
+
+        /* Estilos para el modal de anuncio */
+        .modal-anuncio {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-anuncio.show {
+            display: flex;
+        }
+
+        .modal-anuncio-content {
+            background: white;
+            border-radius: 15px;
+            padding: 0;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-anuncio-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            z-index: 10001;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-anuncio-close:hover {
+            color: #000;
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .modal-anuncio img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px 15px 0 0;
+            display: block;
+        }
+
+        .modal-anuncio-boton {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 0 0 15px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .modal-anuncio-boton:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .modal-anuncio-content {
+                max-width: 95%;
+                margin: 10px;
+            }
+            
+            .modal-anuncio-close {
+                top: 10px;
+                right: 15px;
+                width: 35px;
+                height: 35px;
+                font-size: 25px;
+            }
+        }
+
+    </style>
+
+
+</head>
+<body data-spy="scroll" data-target="#navbar" class="static-layout fouc-hidden">
+    <!-- Modal de Anuncio -->
+    <div id="modalAnuncio" class="modal-anuncio">
+        <div class="modal-anuncio-content">
+            <span class="modal-anuncio-close" id="cerrarAnuncio">&times;</span>
+            <img src="img/Flyers/jornadas.jpg" alt="Anuncio de Jornadas de TICS">
+            <button class="modal-anuncio-boton" id="masInformacion">Más Información</button>
+        </div>
+    </div>
+
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center text-white" href="/">
+            <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 25px;"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-menu"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-nav-header">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="aula.html">Ubica tu Edificio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Accesos Estudiantes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                        <a class="dropdown-item" href="eventos.html">Eventos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
+                        <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
+                        <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
+                        <a class="dropdown-item" href="https://www.facebook.com/DesarrolloAcademicoItPuebla" rel="noopener noreferrer" target="_blank">Desarrollo Academico (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/profile.php?id=100063864618184" rel="noopener noreferrer" target="_blank">Actividades Extraescolares (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/TECNMcampusPuebla" rel="noopener noreferrer" target="_blank">TecNM Puebla (Facebook) </a>
+                        <a class="dropdown-item" href="https://www.facebook.com/cesacampuspuebla" rel="noopener noreferrer" target="_blank">CESA Puebla (Facebook) </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="equipo.html">Equipo de desarrollo</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="video-bienvenida-container">
+    <div class="overlay2"></div>
+    <div class="logo-bienvenida">
+        <object data="img/logo/logo.svg" type="image/svg+xml" alt="Logo de Bienvenida"></object>
+    </div>
+    
+    <!-- Banner de eventos en curso en el video de bienvenida -->
+    <div id="floating-event-banner" class="floating-event-banner" style="display: none;">
+        <div class="floating-banner-content">
+            <div class="floating-banner-image">
+                <span id="floating-banner-icon">🎯</span>
+            </div>
+            <div class="floating-banner-text">
+                <h3 class="floating-banner-title" id="floating-banner-title">Evento de Prueba</h3>
+                <p class="floating-banner-subtitle" id="floating-banner-subtitle">Ponencia</p>
+                <p class="floating-banner-description" id="floating-banner-description">Comienza en 5 min</p>
+                <button class="floating-btn-primary" onclick="window.location.href='jornadas.html'">
+                    Ver detalles
+                </button>
+            </div>
+            <button class="floating-close-btn" onclick="ocultarBannerFlotante()">&times;</button>
+        </div>
+    </div>
+</div>
+
+    <section id="section-featurettes" class="featurettes overlay bg-fixed" style="background-image: url(img/fondo.avif);">
+    <div class="container">
+        <div class="section-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row align-items-center text-white">
+
+                        <div class="col-md-6 offset-md-1 col-sm-6" data-aos="fade-right">
+                            <h4 class="mb-4" style="font-weight: bold; font-size: 36px;">Descubre UBICATEC: Tu Guía Inteligente del Campus</h4>
+                            <p style="font-size: 20px;">Transforma tu experiencia en el campus con <strong>UBICATEC</strong>, la solución innovadora que revoluciona la navegación universitaria. Nuestra plataforma utiliza tecnología de vanguardia con <strong>imágenes 360°</strong> y <strong>geolocalización precisa</strong> para llevarte exactamente donde necesitas estar.</p>
+                            
+                            <p style="font-size: 18px; margin-top: 20px;">• <strong>Encuentra instantáneamente:</strong> Aulas, laboratorios, bibliotecas, espacios deportivos y servicios administrativos</p>
+                            <p style="font-size: 18px;">• <strong>Ahorra tiempo:</strong> Navegación optimizada que reduce tus traslados y mejora tu productividad</p>
+                            <p style="font-size: 18px;">• <strong>Acceso universal:</strong> Disponible en cualquier campus del TECNM y adaptable a otros espacios educativos</p>
+                        </div>
+                        <div class="col-md-4 offset-md-1 col-sm-6" data-aos="flip-right">
+                            <img class="my-5" src="img/marcador.png" alt="" style="border-radius: 15px; margin-left: 30px; width: 60%; height: auto; display: block; margin: auto;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</footer>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js" defer></script>
+    <script src="vendor/bootstrap/popper.min.js" defer></script>
+    <script src="vendor/bootstrap/bootstrap.min.js" defer></script>
+    <script src="vendor/select2/select2.min.js " defer></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js" defer></script>
+    <script src="vendor/stellar/jquery.stellar.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="vendor/isotope/isotope.min.js" defer></script>
+    <script src="vendor/lightcase/lightcase.js" defer></script>
+    <script src="vendor/waypoints/waypoint.min.js" defer></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+
+    <script src="js/app.min.js " defer></script>
+    
+    <!-- Script para verificar eventos en curso -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Datos de las jornadas (fechas y horarios)
+            const jornadasData = {
+                fecha: '2025-09-11', // Ajustar según la fecha real
+                eventos: [] // Los eventos se agregarán dinámicamente
+            };
+
+            function verificarEventosEnCurso() {
+                const ahora = new Date();
+                const hoy = ahora.toISOString().split('T')[0];
+                
+                console.log('=== VERIFICAR EVENTOS ===');
+                console.log('Hoy:', hoy);
+                console.log('Fecha jornadas:', jornadasData.fecha);
+                console.log('Hora actual:', ahora.getHours() + ':' + ahora.getMinutes());
+                
+                // Verificar si es el día de las jornadas
+                if (hoy !== jornadasData.fecha) {
+                    console.log('❌ No es el día de las jornadas');
+                    return null;
+                }
+
+                let eventoProximo = null;
+                let minutosParaEvento = 0;
+                let minutosTranscurridos = 0;
+                let estado = null; // 'countdown', 'en_curso', 'finalizado'
+
+                jornadasData.eventos.forEach(evento => {
+                    const [hora, minutos] = evento.hora.split(':');
+                    const horaEvento = new Date();
+                    horaEvento.setHours(parseInt(hora), parseInt(minutos), 0, 0);
+                    
+                    const diferenciaMs = ahora - horaEvento;
+                    const diferenciaMinutos = Math.floor(diferenciaMs / (1000 * 60));
+                    
+                    console.log('Evento:', evento.titulo, 'Hora:', evento.hora);
+                    console.log('Diferencia minutos:', diferenciaMinutos);
+                    
+                    // Si el evento está en curso (0 a 60 minutos después)
+                    if (diferenciaMinutos >= 0 && diferenciaMinutos < 60) {
+                        console.log('✅ Evento en curso detectado');
+                        if (!eventoProximo || diferenciaMinutos < minutosTranscurridos) {
+                            eventoProximo = evento;
+                            minutosTranscurridos = diferenciaMinutos;
+                            estado = 'en_curso';
+                        }
+                    }
+                    // Si el evento está próximo (30 minutos antes a 0 minutos)
+                    else if (diferenciaMinutos >= -30 && diferenciaMinutos < 0) {
+                        console.log('⏰ Evento próximo detectado');
+                        if (!eventoProximo) {
+                            eventoProximo = evento;
+                            minutosParaEvento = Math.abs(diferenciaMinutos);
+                            estado = 'countdown';
+                        }
+                    } else {
+                        console.log('❌ Evento fuera de rango:', diferenciaMinutos);
+                    }
+                });
+
+                if (eventoProximo) {
+                    const resultado = { 
+                        ...eventoProximo, 
+                        minutosTranscurridos, 
+                        minutosParaEvento, 
+                        estado 
+                    };
+                    console.log('✅ Evento próximo encontrado:', resultado);
+                    return resultado;
+                }
+
+                console.log('❌ No hay eventos próximos');
+                return null;
+            }
+
+            function actualizarBanner() {
+                // Asegurar que solo hay un banner
+                const banners = document.querySelectorAll('#floating-event-banner');
+                if (banners.length > 1) {
+                    // Remover banners duplicados
+                    for (let i = 1; i < banners.length; i++) {
+                        banners[i].remove();
+                    }
+                }
+
+                const ahora = new Date();
+                const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+                
+                const banner = document.getElementById('floating-event-banner');
+                if (!banner) return; // Si no existe el banner, salir
+                
+                const bannerTitle = document.getElementById('floating-banner-title');
+                const bannerSubtitle = document.getElementById('floating-banner-subtitle');
+                const bannerDescription = document.getElementById('floating-banner-description');
+                const bannerIcon = document.getElementById('floating-banner-icon');
+
+                let eventoActivo = null;
+                let mejorPrioridad = -1;
+
+                // Buscar el evento más relevante
+                jornadasData.eventos.forEach(evento => {
+                    const [hora, minutos] = evento.hora.split(':');
+                    const tiempoEvento = parseInt(hora) * 60 + parseInt(minutos);
+                    const diferencia = horaActual - tiempoEvento;
+                    
+                    let prioridad = 0;
+                    let estado = '';
+                    
+                    // Evento en curso (mayor prioridad)
+                    if (diferencia >= 0 && diferencia < 60) {
+                        prioridad = 3;
+                        estado = 'en_curso';
+                    }
+                    // Evento próximo (prioridad media)
+                    else if (diferencia >= -30 && diferencia < 0) {
+                        prioridad = 2;
+                        estado = 'countdown';
+                    }
+                    // Evento futuro lejano (prioridad baja)
+                    else if (diferencia >= -60 && diferencia < -30) {
+                        prioridad = 1;
+                        estado = 'futuro';
+                    }
+                    
+                    if (prioridad > mejorPrioridad) {
+                        mejorPrioridad = prioridad;
+                        eventoActivo = { ...evento, diferencia, estado };
+                    }
+                });
+
+                // Mostrar/ocultar banner según corresponda
+                if (eventoActivo && mejorPrioridad > 0) {
+                    banner.style.display = 'block';
+                    
+                    const tipoTexto = eventoActivo.tipo === 'ponencia' ? 'Ponencia' : 'Taller';
+                    bannerTitle.textContent = eventoActivo.titulo;
+                    bannerSubtitle.textContent = tipoTexto;
+                    
+                    if (eventoActivo.estado === 'en_curso') {
+                        bannerIcon.textContent = '🎯';
+                        bannerDescription.textContent = `Comenzó hace ${eventoActivo.diferencia} min`;
+                    } else if (eventoActivo.estado === 'countdown') {
+                        bannerIcon.textContent = '⏰';
+                        bannerDescription.textContent = `Comienza en ${Math.abs(eventoActivo.diferencia)} min`;
+                    } else if (eventoActivo.estado === 'futuro') {
+                        bannerIcon.textContent = '⏰';
+                        bannerDescription.textContent = `Comienza en ${Math.abs(eventoActivo.diferencia)} min`;
+                    }
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
+
+            // Limpiar banners duplicados al cargar
+            function limpiarBannersDuplicados() {
+                const banners = document.querySelectorAll('#floating-event-banner');
+                if (banners.length > 1) {
+                    for (let i = 1; i < banners.length; i++) {
+                        banners[i].remove();
+                    }
+                }
+            }
+
+            // Verificar eventos al cargar la página
+            limpiarBannersDuplicados();
+            actualizarBanner();
+
+            // Actualizar cada minuto
+            setInterval(() => {
+                limpiarBannersDuplicados();
+                actualizarBanner();
+            }, 60000);
+
+            // Función para ocultar el banner
+            window.ocultarBannerFlotante = function() {
+                const banner = document.getElementById('floating-event-banner');
+                banner.style.display = 'none';
+            };
+        });
+    </script>
+    
+    <script src="//localhost:35729/livereload.js" defer></script>
+
+    <!-- Script para eliminar FOUC -->
+    <script>
+        // Función para mostrar el contenido una vez que el CSS esté cargado
+        function showContent() {
+            document.body.classList.remove('fouc-hidden');
+            document.body.classList.add('fouc-loaded');
+        }
+        
+        // Mostrar contenido cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pequeño delay para asegurar que el CSS esté cargado
+            setTimeout(showContent, 100);
+        });
+        
+        // Fallback: mostrar contenido después de un tiempo máximo
+        setTimeout(showContent, 1000);
+        
+        // Mostrar contenido cuando todas las imágenes estén cargadas
+        window.addEventListener('load', function() {
+            showContent();
+        });
+
+    </script>
+
+    <!-- Script para el modal de anuncio -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalAnuncio = document.getElementById('modalAnuncio');
+            const cerrarAnuncio = document.getElementById('cerrarAnuncio');
+            const masInformacion = document.getElementById('masInformacion');
+
+            // Mostrar modal automáticamente después de 1 segundo
+            setTimeout(function() {
+                modalAnuncio.classList.add('show');
+            }, 1000);
+
+            // Cerrar modal al hacer clic en la X
+            cerrarAnuncio.addEventListener('click', function() {
+                modalAnuncio.classList.remove('show');
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            modalAnuncio.addEventListener('click', function(e) {
+                if (e.target === modalAnuncio) {
+                    modalAnuncio.classList.remove('show');
+                }
+            });
+
+            // Acción del botón "Más Información"
+            masInformacion.addEventListener('click', function() {
+                // Redirigir a la página de jornadas
+                window.location.href = 'jornadas.html';
+            });
+
+            // Cerrar modal con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalAnuncio.classList.contains('show')) {
+                    modalAnuncio.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

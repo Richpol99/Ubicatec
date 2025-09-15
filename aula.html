@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ubica tu Aula</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Optimizaciones de rendimiento -->
+    <meta name="description" content="Encuentra tu aula en el campus del TecNM Puebla">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ubicatec.netlify.app/aula.html">
+    
+    <!-- DNS prefetch para recursos externos -->
+    <link rel="dns-prefetch" href="//unpkg.com">
+    <link rel="dns-prefetch" href="//ajax.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="css/markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Estilos para la navbar con transparencia */
+        #header-navbar {
+            background-color: rgba(12, 56, 114, 0.55) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
+        /* Estilos para el texto de los botones de la navbar */
+        #header-navbar .nav-link {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        #header-navbar .dropdown-toggle {
+            font-weight: bold !important;
+            font-family: 'Lato', sans-serif !important;
+            font-size: 15px !important;
+        }
+
+        /* Estilos para el logo de UBICATEC */
+        #header-navbar .navbar-brand img {
+            height: 35px !important;
+        }
+
+        /* Estilos modernos para el campo de búsqueda */
+        .search-wrapper {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modern-search {
+            width: 100%;
+            max-width: 1200px;
+            padding: 18px 25px 18px 55px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            position: relative;
+        }
+        
+        .modern-search::before {
+            content: "🔍";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            color: #3498db;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        
+        
+        .modern-search:hover {
+            border-color: #3498db;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .modern-search:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .modern-search::placeholder {
+            color: #6c757d;
+            font-weight: 400;
+        }
+        
+        /* Botón de búsqueda para móviles */
+        .search-btn {
+            display: none;
+            width: 50px;
+            height: 50px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .search-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+        
+        .search-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Estilos para el contenedor de búsqueda con icono */
+        .search-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        
+        /* Estilos modernos para el contenedor de filtros */
+        .filter-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .filter-wrapper {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        /* Estilos para el select moderno */
+        .modern-select {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 50px;
+        }
+        
+        .modern-select:hover {
+            border-color: #3498db;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .modern-select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .modern-select option {
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+            background-color: #ffffff;
+            border: none;
+        }
+        
+        .modern-select option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .modern-select option:checked {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        /* Efecto de animación al cargar */
+        .filter-wrapper {
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Animación de carga */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .search-wrapper {
+                margin: 15px 0;
+                padding: 0 15px;
+            }
+            
+            .modern-search {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                display: flex;
+            }
+            
+            .filter-container {
+                margin: 20px 0;
+                padding: 0 15px;
+            }
+            
+            .filter-wrapper {
+                max-width: 100%;
+            }
+            
+            .modern-select {
+                padding: 12px 15px;
+                font-size: 14px;
+                background-position: right 12px center;
+                background-size: 18px;
+                padding-right: 40px;
+            }
+            
+            .filter-label {
+                font-size: 14px;
+            }
+        }
+        
+        /* Efecto de pulso para indicar interactividad */
+        .modern-select:not(:focus):hover {
+            animation: gentlePulse 2s infinite;
+        }
+        
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            }
+            50% {
+                box-shadow: 0 6px 20px rgba(52, 152, 219, 0.2);
+            }
+        }
+        
+        /* Estilos para iconos de la leyenda */
+        .leyenda-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .leyenda-icon {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+        }
+        
+        /* Estilos para la leyenda de marcadores - Diseño original */
+        .leyenda-marcadores {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 12px;
+            max-width: 200px;
+        }
+        
+        .leyenda-marcadores h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .leyenda-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid;
+        }
+        
+        .leyenda-texto {
+            color: #666;
+            font-size: 11px;
+        }
+        
+        /* Eliminar margen inferior de la sección del mapa */
+        #mapa {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Hacer que el mapa ocupe toda la altura disponible */
+        #map {
+            height: calc(100vh - 200px) !important;
+            margin: 0 0 20px 0 !important; /* Margen inferior pequeño */
+            padding: 0 !important;
+            width: 100% !important;
+        }
+        
+        /* Ocultar footer para eliminar espacio */
+        footer {
+            display: none !important;
+        }
+        
+        /* Eliminar márgenes de contenedores */
+        #mapa .container,
+        #mapa .row,
+        #mapa .col-lg-12 {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Eliminar márgenes del body y html */
+        body, html {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Asegurar que no hay espacio después del mapa */
+        #mapa + * {
+            margin-top: 0 !important;
+        }
+        
+        /* Eliminar solo espacios inferiores del body y html */
+        body {
+            margin: 0 !important;
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
+            overflow-x: hidden !important;
+        }
+        
+        html {
+            margin: 0 !important;
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
+        }
+        
+        /* Asegurar que la sección del mapa solo elimine espacio inferior */
+        #mapa {
+            margin: 0 !important;
+            padding-top: 3rem !important; /* Mantener padding superior */
+            padding-bottom: 0 !important; /* Solo eliminar padding inferior */
+        }
+        
+        /* En desktop, la leyenda siempre está visible con diseño original */
+        @media (min-width: 769px) {
+            #map {
+                position: relative;
+            }
+            
+            .leyenda-marcadores {
+                position: absolute;
+                top: -20px;
+                right: -20px;
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                z-index: 1000;
+                font-size: 12px;
+                max-width: 200px;
+            }
+        }
+        
+        /* Responsive design para móviles */
+        @media (max-width: 768px) {
+            .leyenda-marcadores {
+                display: none !important;
+            }
+            
+            .leyenda-tab {
+                display: flex !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .leyenda-marcadores {
+                display: block !important;
+            }
+            
+            .leyenda-tab {
+                display: none !important;
+            }
+        }
+            
+            /* Pestaña de leyenda en móviles */
+            .leyenda-tab {
+                position: fixed;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 20px 20px 0 0;
+                cursor: pointer;
+                z-index: 1001;
+                box-shadow: 0 -3px 15px rgba(0, 123, 255, 0.3);
+                transition: all 0.2s ease;
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                min-width: 160px;
+                justify-content: center;
+            }
+            
+            .leyenda-tab:hover {
+                background: #0056b3;
+                transform: translateX(-50%) translateY(-1px);
+                box-shadow: 0 -4px 20px rgba(0, 123, 255, 0.4);
+            }
+            
+            .leyenda-tab i {
+                transition: transform 0.2s ease;
+                font-size: 16px;
+            }
+            
+            .leyenda-tab.expanded i {
+                transform: rotate(180deg);
+            }
+            
+            /* Botón de scroll hacia arriba */
+            .scroll-to-top {
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                background: #007bff;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+                transition: all 0.3s ease;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            
+            .scroll-to-top.show {
+                display: flex;
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .scroll-to-top:hover {
+                background: #0056b3;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
+            }
+            
+            /* Modal de leyenda */
+            .leyenda-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(5px);
+                z-index: 9999;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+            
+            .leyenda-modal.show {
+                display: flex;
+            }
+            
+            .leyenda-content {
+                background: white;
+                border-radius: 20px;
+                padding: 25px;
+                max-width: 400px;
+                width: 100%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                position: relative;
+            }
+            
+            .leyenda-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: #e74c3c;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+            }
+            
+            .leyenda-close:hover {
+                background: #c0392b;
+                transform: scale(1.1);
+            }
+            
+            
+            /* Ajustar el mapa para móviles */
+            #map {
+                height: calc(100vh - 120px);
+                position: relative;
+            }
+        }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target="#navbar" class="static-layout">
+
+    <nav id="header-navbar" class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white" href="index.html">
+                <img src="img/navbar.svg" alt="UBICATEC logo" style="height: 35px;"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav-header" aria-controls="navbar-nav-header" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="lnr lnr-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-nav-header">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="aula.html">Ubica tu Edificio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="sitiosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Accesos Estudiantes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="sitiosDropdown">
+                            <a class="dropdown-item" href="eventos.html">Eventos</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://puebla.ambar.tecnm.mx/" rel="noopener noreferrer" target="_blank">Ambar</a>
+                            <a class="dropdown-item" href="https://idiomastecpueblacle.blogspot.com/" rel="noopener noreferrer" target="_blank">Coordinacion de lenguas Extranjeras</a>
+                            <a class="dropdown-item" href="https://evadoc.puebla.tecnm.mx/" rel="noopener noreferrer" target="_blank">Sitio Evaluacion Docente</a>
+                            <a class="dropdown-item" href="https://www.facebook.com/DesarrolloAcademicoItPuebla" rel="noopener noreferrer" target="_blank">Desarrollo Academico (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/profile.php?id=100063864618184" rel="noopener noreferrer" target="_blank">Actividades Extraescolares (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/TECNMcampusPuebla" rel="noopener noreferrer" target="_blank">TecNM Puebla (Facebook) </a>
+                            <a class="dropdown-item" href="https://www.facebook.com/cesacampuspuebla" rel="noopener noreferrer" target="_blank">CESA Puebla (Facebook) </a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="equipo.html">Equipo de desarrollo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mapa-campus-section text-center">
+        <div class="container text-center">
+            <h2 class="titulo-mapa">Mapa del Campus</h2>
+        </div>
+    </section>
+
+    <section id="mapa" class="pt-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mb-4">Ubica tu Edificio</h2>
+                    <p class="text-muted">Instrucciones: usa el buscador o los filtros para localizar el edificio que deseas consultar</p>
+                    
+                    <!-- Indicador de carga optimizado -->
+                    <div id="mapLoadingIndicator" style="display: none; text-align: center; padding: 20px;">
+                        <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <p style="margin-top: 10px; color: #666;">Cargando mapa...</p>
+                    </div>
+                    <div class="search-wrapper">
+                        <div class="search-input-container">
+                            <input type="text" id="searchInput" class="modern-search" placeholder="Ingresa el número de edificio" />
+                            <button type="button" id="searchBtn" class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="filter-container">
+                        <div class="filter-wrapper">
+                            <label for="filterSelect" class="filter-label">Filtrar por tipo:</label>
+                            <select id="filterSelect" class="modern-select">
+                            <option value="todos">Todos los edificios</option>
+                                <option value="aula">Aulas</option>
+                                <option value="laboratorio">Laboratorios</option>
+                                <option value="administrativo">Administrativo</option>
+                                <option value="baño">Baños</option>
+                                <option value="acceso">Accesos</option>
+                                <option value="otros">Otros</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                    
+                    <!-- Pestaña de leyenda para móviles -->
+                    <div class="leyenda-tab" id="leyendaTab" style="display: none;">
+                        <i class="fas fa-chevron-up"></i>
+                        <span>Leyenda de Marcadores</span>
+                    </div>
+                    
+                    <!-- Botón de scroll hacia arriba -->
+                    <button class="scroll-to-top" id="scrollToTop" style="display: flex; background: #007bff; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; position: fixed; bottom: 80px; right: 20px; z-index: 1000; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    
+                    <!-- Modal de leyenda -->
+                    <div class="leyenda-modal" id="leyendaModal">
+                        <div class="leyenda-content">
+                            <button class="leyenda-close" id="leyendaClose">×</button>
+                        <h4>Leyenda de Marcadores</h4>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #3498db; border-color: #2980b9;">
+                                <img src="Icon/tabler/school.svg" alt="Aulas" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Aulas</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #27ae60; border-color: #229954;">
+                                <img src="Icon/tabler/microscope.svg" alt="Laboratorios" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Laboratorios</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e67e22; border-color: #d35400;">
+                                <img src="Icon/tabler/building.svg" alt="Administrativo" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Administrativo</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #9b59b6; border-color: #8e44ad;">
+                                <img src="Icon/tabler/toilet-paper.svg" alt="Baños" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Baños</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e74c3c; border-color: #c0392b;">
+                                <img src="Icon/tabler/door.svg" alt="Accesos" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Accesos</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #95a5a6; border-color: #7f8c8d;">
+                                <img src="Icon/tabler/tools.svg" alt="Otros" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Otros</span>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Leyenda de colores (solo para desktop) -->
+                    <div class="leyenda-marcadores" id="leyendaMarcadores">
+                        <h4>Leyenda de Marcadores</h4>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #3498db; border-color: #2980b9;">
+                                <img src="Icon/tabler/school.svg" alt="Aulas" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Aulas</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #27ae60; border-color: #229954;">
+                                <img src="Icon/tabler/microscope.svg" alt="Laboratorios" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Laboratorios</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e67e22; border-color: #d35400;">
+                                <img src="Icon/tabler/building.svg" alt="Administrativo" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Administrativo</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #9b59b6; border-color: #8e44ad;">
+                                <img src="Icon/tabler/toilet-paper.svg" alt="Baños" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Baños</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #e74c3c; border-color: #c0392b;">
+                                <img src="Icon/tabler/door.svg" alt="Accesos" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Accesos</span>
+                        </div>
+                        <div class="leyenda-item">
+                            <div class="leyenda-color" style="background-color: #95a5a6; border-color: #7f8c8d;">
+                                <img src="Icon/tabler/tools.svg" alt="Otros" class="leyenda-icon" />
+                            </div>
+                            <span class="leyenda-texto">Otros</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/app.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/mapa.js"></script>
+    
+    <script>
+        // Funcionalidad para la leyenda en móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            const leyendaTab = document.getElementById('leyendaTab');
+            const leyendaModal = document.getElementById('leyendaModal');
+            const leyendaClose = document.getElementById('leyendaClose');
+            const leyendaMarcadores = document.getElementById('leyendaMarcadores');
+            const scrollToTop = document.getElementById('scrollToTop');
+            const mapSection = document.getElementById('mapa');
+            
+            // Mostrar/ocultar pestaña en móviles
+            function checkScreenSize() {
+                if (window.innerWidth <= 768) {
+                    // Móvil: mostrar pestaña, ocultar leyenda flotante
+                    leyendaTab.style.display = 'flex';
+                    leyendaMarcadores.style.display = 'none';
+                } else {
+                    // Desktop: ocultar pestaña, mostrar leyenda flotante
+                    leyendaTab.style.display = 'none';
+                    leyendaMarcadores.style.display = 'block';
+                }
+            }
+            
+            // Verificar tamaño de pantalla al cargar y al redimensionar
+            checkScreenSize();
+            window.addEventListener('resize', checkScreenSize);
+            
+            // Mostrar botón inmediatamente
+            handleScroll();
+            
+            // Mostrar botón en todas las pantallas
+            function handleScroll() {
+                // Mostrar botón siempre (móvil y desktop)
+                scrollToTop.classList.add('show');
+            }
+            
+            // Escuchar eventos de scroll
+            window.addEventListener('scroll', handleScroll);
+            
+            // Scroll hacia arriba al hacer click en el botón
+            scrollToTop.addEventListener('click', function() {
+                // Ir al principio de la página
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Event listener para Enter en el campo de búsqueda
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        buscarEdificio(query);
+                    }
+                }
+            });
+            
+            // Event listener para el botón de búsqueda
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    buscarEdificio(query);
+                }
+            });
+            
+            // Función para buscar edificio
+            function buscarEdificio(query) {
+                if (!window.markersData || !map) {
+                    return;
+                }
+                
+                var edificioEncontrado = null;
+                var queryLower = query.toLowerCase();
+                
+                // Buscar edificio
+                window.markersData.forEach(function (data) {
+                    var nombreEdificio = data.name.toLowerCase();
+                    
+                    // Extraer número del edificio
+                    var match = nombreEdificio.match(/edificio (\d+)/);
+                    if (match) {
+                        var numeroEdificio = match[1];
+                        
+                        if (numeroEdificio === queryLower) {
+                            edificioEncontrado = data;
+                        }
+                    }
+                });
+                
+                if (edificioEncontrado) {
+                    // Centrar mapa
+                    var coords = edificioEncontrado.marker.getLatLng();
+                    map.setView(coords, 19, {
+                        animate: true,
+                        duration: 1.5
+                    });
+                    
+                    // Mostrar solo este edificio
+                    window.edificioMarkers.clearLayers();
+                    window.edificioMarkers.addLayer(edificioEncontrado.marker);
+                    
+                    // Abrir popup
+                    edificioEncontrado.marker.openPopup();
+                }
+            }
+            
+            // Abrir modal al hacer click en la pestaña
+            leyendaTab.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    leyendaModal.classList.add('show');
+                }
+            });
+            
+            // Cerrar modal con botón X
+            leyendaClose.addEventListener('click', function() {
+                leyendaModal.classList.remove('show');
+            });
+            
+            // Cerrar modal al hacer click en el fondo
+            leyendaModal.addEventListener('click', function(e) {
+                if (e.target === leyendaModal) {
+                    leyendaModal.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
