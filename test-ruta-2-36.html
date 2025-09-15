@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Ruta Edificio 2 → 36 - UBICATEC</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        #log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-success { background-color: #d4edda; color: #155724; }
+        .log-error { background-color: #f8d7da; color: #721c24; }
+        .log-info { background-color: #d1ecf1; color: #0c5460; }
+        .log-warning { background-color: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba Específica: Ruta Edificio 2 → 36</h1>
+        <p>Esta página prueba específicamente la ruta del Edificio 2 (Coordinación) al Edificio 36 (Centro de cómputo).</p>
+        
+        <div class="controls">
+            <button onclick="initializeSystem()">Inicializar Sistema</button>
+            <button onclick="testRoute2To36()">Probar Ruta 2→36</button>
+            <button onclick="showRouteDetails()">Ver Detalles de Ruta</button>
+            <button onclick="clearMap()">Limpiar Mapa</button>
+            <button onclick="clearLog()">Limpiar Log</button>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div id="log"></div>
+    </div>
+
+    <!-- Scripts de Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Scripts del sistema de navegación -->
+    <script src="js/campus-graph.js"></script>
+    <script src="js/route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/navigation-system.js"></script>
+
+    <script>
+        let map;
+        let visualizer;
+        let currentRoute = null;
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        function initializeSystem() {
+            log('🚀 Inicializando sistema...', 'info');
+            
+            try {
+                // Crear mapa
+                map = L.map('map').setView([19.069, -98.169], 18);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+                
+                // Crear visualizador
+                visualizer = new RouteVisualizer();
+                visualizer.init(map);
+                
+                // Exponer mapa globalmente
+                window.map = map;
+                
+                log('✅ Sistema inicializado correctamente', 'success');
+                
+            } catch (error) {
+                log(`❌ Error inicializando sistema: ${error.message}`, 'error');
+            }
+        }
+
+        function testRoute2To36() {
+            log('🧪 Probando ruta Edificio 2 → Edificio 36...', 'info');
+            
+            try {
+                // Crear grafo y calculador
+                const graph = new CampusGraph();
+                const calculator = new RouteCalculator(graph);
+                
+                // Buscar edificios
+                const edificio2 = graph.getNode('edif_2');
+                const edificio36 = graph.getNode('edif_36');
+                
+                if (!edificio2) {
+                    log('❌ Edificio 2 no encontrado', 'error');
+                    return;
+                }
+                
+                if (!edificio36) {
+                    log('❌ Edificio 36 no encontrado', 'error');
+                    return;
+                }
+                
+                log(`📍 Inicio: ${edificio2.name} (${edificio2.coords})`, 'info');
+                log(`🎯 Destino: ${edificio36.name} (${edificio36.coords})`, 'info');
+                
+                // Calcular ruta
+                const route = calculator.calculateRoute('edif_2', 'edif_36', 'mobility');
+                
+                log(`✅ Ruta calculada: ${route.path.length} nodos`, 'success');
+                log(`📏 Distancia total: ${route.totalDistance.toFixed(1)}m`, 'info');
+                log(`⏱️ Tiempo estimado: ${route.estimatedTime} minutos`, 'info');
+                log(`🛤️ Ruta: ${route.path.join(' → ')}`, 'info');
+                
+                // Visualizar ruta
+                if (visualizer) {
+                    visualizer.visualizeRoute(route, 'mobility');
+                    log('✅ Ruta visualizada en el mapa', 'success');
+                } else {
+                    log('⚠️ Visualizador no disponible', 'warning');
+                }
+                
+                currentRoute = route;
+                
+            } catch (error) {
+                log(`❌ Error probando ruta: ${error.message}`, 'error');
+                console.error('Error completo:', error);
+            }
+        }
+
+        function showRouteDetails() {
+            if (!currentRoute) {
+                log('❌ No hay ruta calculada', 'error');
+                return;
+            }
+            
+            log('📊 Detalles de la ruta actual:', 'info');
+            log(`   Nodos: ${currentRoute.path.length}`, 'info');
+            log(`   Distancia: ${currentRoute.totalDistance.toFixed(1)}m`, 'info');
+            log(`   Tiempo: ${currentRoute.estimatedTime} min`, 'info');
+            log(`   Tipo: ${currentRoute.accessibilityType}`, 'info');
+            
+            log('🛤️ Secuencia de nodos:', 'info');
+            currentRoute.path.forEach((nodeId, index) => {
+                const graph = new CampusGraph();
+                const node = graph.getNode(nodeId);
+                if (node) {
+                    log(`   ${index + 1}. ${nodeId}: ${node.name} (${node.coords})`, 'info');
+                } else {
+                    log(`   ${index + 1}. ${nodeId}: Nodo no encontrado`, 'warning');
+                }
+            });
+        }
+
+        function clearMap() {
+            if (visualizer) {
+                visualizer.clearRoute();
+                log('🧹 Mapa limpiado', 'info');
+            }
+            currentRoute = null;
+        }
+
+        // Auto-inicializar cuando se carga la página
+        window.addEventListener('load', () => {
+            log('🌐 Página cargada, inicializando...', 'info');
+            setTimeout(() => {
+                initializeSystem();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

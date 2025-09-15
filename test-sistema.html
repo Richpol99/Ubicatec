@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba del Sistema de Navegación - UBICATEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        #log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-success { background-color: #d4edda; color: #155724; }
+        .log-error { background-color: #f8d7da; color: #721c24; }
+        .log-info { background-color: #d1ecf1; color: #0c5460; }
+        .log-warning { background-color: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba del Sistema de Navegación UBICATEC</h1>
+        <p>Esta página permite probar el nuevo sistema de navegación accesible.</p>
+        
+        <div class="test-section info">
+            <h3>📊 Estado del Sistema</h3>
+            <div id="system-status">Cargando...</div>
+            <button onclick="checkSystemStatus()">Verificar Estado</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🏛️ Pruebas del Grafo</h3>
+            <button onclick="testGraph()">Probar Grafo</button>
+            <button onclick="listBuildings()">Listar Edificios</button>
+            <button onclick="testConnectivity()">Probar Conectividad</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🛣️ Pruebas de Rutas</h3>
+            <button onclick="testRouteCalculation()">Calcular Ruta de Prueba</button>
+            <button onclick="testAccessibilityTypes()">Probar Tipos de Accesibilidad</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧹 Utilidades</h3>
+            <button onclick="clearLog()">Limpiar Log</button>
+            <button onclick="exportLog()">Exportar Log</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 Log de Pruebas</h3>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <!-- Scripts del sistema de navegación -->
+    <script src="js/campus-graph.js"></script>
+    <script src="js/route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/navigation-system.js"></script>
+    <script src="js/test-navigation.js"></script>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        function exportLog() {
+            const logContent = document.getElementById('log').innerText;
+            const blob = new Blob([logContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test-log.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            
+            if (window.unifiedNav && window.unifiedNav.state.isInitialized) {
+                const stats = window.unifiedNav.getSystemStatistics();
+                statusDiv.innerHTML = `
+                    <div class="success">
+                        <strong>✅ Sistema Inicializado</strong><br>
+                        Nodos: ${stats.graphStats.totalNodes} | 
+                        Conexiones: ${stats.graphStats.totalConnections} | 
+                        Accesibilidad: ${stats.currentAccessibilityType}
+                    </div>
+                `;
+                log('✅ Sistema de navegación está funcionando correctamente', 'success');
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Sistema No Inicializado</strong><br>
+                        El sistema de navegación no está disponible
+                    </div>
+                `;
+                log('❌ Sistema de navegación no está disponible', 'error');
+            }
+        }
+
+        function testGraph() {
+            log('🧪 Probando grafo estático...', 'info');
+            
+            try {
+                const graph = new CampusGraph();
+                const stats = graph.getStatistics();
+                
+                log(`✅ Grafo creado: ${stats.totalNodes} nodos, ${stats.totalConnections} conexiones`, 'success');
+                log(`📊 Nodos por tipo: ${JSON.stringify(stats.nodesByType)}`, 'info');
+                log(`📊 Conexiones por tipo: ${JSON.stringify(stats.connectionsByType)}`, 'info');
+                
+                // Probar algunos nodos específicos
+                const testNodes = ['edif_1', 'edif_2', 'acceso_principal', 'verde_1'];
+                testNodes.forEach(nodeId => {
+                    const node = graph.getNode(nodeId);
+                    if (node) {
+                        log(`✅ Nodo ${nodeId}: ${node.name}`, 'success');
+                    } else {
+                        log(`❌ Nodo ${nodeId}: No encontrado`, 'error');
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ Error probando grafo: ${error.message}`, 'error');
+            }
+        }
+
+        function listBuildings() {
+            log('🏢 Listando edificios disponibles...', 'info');
+            
+            try {
+                const buildings = listAllBuildings();
+                log(`📋 Total de edificios: ${buildings.length}`, 'info');
+                
+                buildings.forEach((building, index) => {
+                    log(`${index + 1}. ${building.name} (${building.id})`, 'info');
+                });
+                
+            } catch (error) {
+                log(`❌ Error listando edificios: ${error.message}`, 'error');
+            }
+        }
+
+        function testConnectivity() {
+            log('🔗 Probando conectividad...', 'info');
+            
+            try {
+                testGraphConnectivity();
+            } catch (error) {
+                log(`❌ Error probando conectividad: ${error.message}`, 'error');
+            }
+        }
+
+        function testRouteCalculation() {
+            log('🛣️ Probando cálculo de rutas...', 'info');
+            
+            try {
+                if (window.unifiedNav && window.unifiedNav.state.isInitialized) {
+                    const edificio1 = window.unifiedNav.findBuildingByName('Edificio 1');
+                    const edificio2 = window.unifiedNav.findBuildingByName('Edificio 2');
+                    
+                    if (edificio1 && edificio2) {
+                        const route = window.unifiedNav.calculator.calculateRoute(
+                            edificio1.id, 
+                            edificio2.id, 
+                            'mobility'
+                        );
+                        
+                        log(`✅ Ruta calculada: ${route.path.length} nodos`, 'success');
+                        log(`📏 Distancia: ${route.totalDistance.toFixed(1)}m`, 'info');
+                        log(`⏱️ Tiempo: ${route.estimatedTime} minutos`, 'info');
+                        log(`🛤️ Ruta: ${route.path.join(' → ')}`, 'info');
+                    } else {
+                        log('❌ No se encontraron los edificios de prueba', 'error');
+                    }
+                } else {
+                    log('❌ Sistema de navegación no inicializado', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error calculando ruta: ${error.message}`, 'error');
+            }
+        }
+
+        function testAccessibilityTypes() {
+            log('♿ Probando tipos de accesibilidad...', 'info');
+            
+            try {
+                testAccessibilityTypes();
+            } catch (error) {
+                log(`❌ Error probando tipos de accesibilidad: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-ejecutar pruebas cuando la página se carga
+        window.addEventListener('load', () => {
+            log('🚀 Página de pruebas cargada', 'info');
+            setTimeout(() => {
+                checkSystemStatus();
+                testGraph();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

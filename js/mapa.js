@@ -58,6 +58,12 @@ $(document).ready(function() {
 
     function inicializarMapa() {
         mapa = L.map('mapa').setView([19.0733, -98.2889], 20); // Coordenadas iniciales (Tec de Puebla) y zoom
+        
+        // Exponer el mapa globalmente para el sistema de rutas accesibles
+        window.map = mapa;
+        
+        // Notificar que el mapa está listo para el sistema de rutas
+        console.log('🗺️ Mapa inicializado y listo para rutas accesibles');
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -137,6 +143,12 @@ $(document).ready(function() {
     }
 
     var map = L.map('map').setView([19.0698, -98.1688], 18);
+    
+    // Exponer el mapa principal globalmente para el sistema de rutas accesibles
+    window.map = map;
+    console.log('🗺️ Mapa principal inicializado y listo para rutas accesibles');
+    console.log('🗺️ window.map disponible:', !!window.map, typeof window.map);
+    console.log('🗺️ window.map.addLayer disponible:', typeof window.map.addLayer);
 
     var calle = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 20,
@@ -171,7 +183,7 @@ $(document).ready(function() {
         { nombre: "Edificio 17 (Aulas y sala de titulacion)", coords: [19.069322, -98.169910], link: "edif_17.html", tipo: "aula" },
         { nombre: "Edificio 18 (WC, Portico, Aula Jean Piaget)", coords: [19.069206, -98.169657], link: "edif_18.html", tipo: "aula" },
         { nombre: "Edificio 19 (Laboratorio de Fisica y Quimica)", coords: [19.069084, -98.169326], link: "edif_19.html", tipo: "laboratorio" },
-        { nombre: "Edificio 20 (Laboratorio de Ingenieria Electrica)", coords: [19.069205695460248, -98.16860064509656], link: "edif_20.html", tipo: "laboratorio" },
+        { nombre: "Edificio 20 (Laboratorio de Ingenieria Electrica)", coords: [19.069142510837185, -98.16839168822943], link: "edif_20.html", tipo: "laboratorio" },
         { nombre: "Edificio 21 (Depto. Economico administrativo. Lab de negocios)", coords: [19.068948, -98.168838], link: "edif_21.html", tipo: "administrativo" },
         { nombre: "Edificio 22 (Aulas)", coords: [19.069201, -98.170032], link: "edif_22.html", tipo: "aula" },
         { nombre: "Edificio 23 (Aulas)", coords: [19.068833, -98.170307], link: "edif_23.html", tipo: "aula" },
@@ -181,7 +193,7 @@ $(document).ready(function() {
         { nombre: "Edificio 27 (Lab. Ing Mecanica)", coords: [19.068793, -98.168558], link: "edif_27.html", tipo: "laboratorio" },
         { nombre: "Edificio 28 (Aulas)", coords: [19.068603, -98.170041], link: "edif_28.html", tipo: "aula" },
         { nombre: "Edificio 29 (Posgrado)", coords: [19.068590, -98.169251], link: "edif_29.html", tipo: "administrativo" },
-        { nombre: "Edificio 30 (Manufactura avanzada Lab; y depto. Metal mecanica)", coords: [19.0684055, -98.1689559], link: "edif_30.html", tipo: "laboratorio" },
+        { nombre: "Edificio 30 (Manufactura avanzada Lab; y depto. Metal mecanica)", coords: [19.0684790, -98.1689670], link: "edif_30.html", tipo: "laboratorio" },
         { nombre: "Edificio 31 (Coordinacion cultural)", coords: [19.0684058, -98.1685666], link: "edif_31.html", tipo: "administrativo" },
         { nombre: "Edificio 32 (Exsub-Estacion electrica 1)", coords: [19.068168, -98.168593], link: "edif_32.html", tipo: "otro" },
         { nombre: "Edificio 33 (Lab. Desarrollo tecnico e innovacion)", coords: [19.068213, -98.169197], link: "edif_33.html", tipo: "laboratorio" },
@@ -226,7 +238,7 @@ $(document).ready(function() {
             if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.state.isInitialized) {
                 console.log('✅ Activando sistema de rutas accesibles para:', edificio.nombre);
                 // Activar el sistema de rutas accesibles
-                window.unifiedNav.selectBuilding(edificio.nombre);
+                window.unifiedNav.navigateToBuilding(edificio.nombre);
             } else {
                 console.log('⚠️ Sistema de rutas accesibles no disponible, redirigiendo a página del edificio');
                 // Fallback: redirigir a la página del edificio si existe
@@ -254,14 +266,15 @@ $(document).ready(function() {
         [19.0683475, -98.1699010], //ACesso Cajon de estacinamiento(Visitantes)
         [19.0684908, -98.1698233], //inicio de nodo canchas
         [19.0684141, -98.1692114], // Fin de nodo canchas
-        [19.0685174, -98.1691869], // Inicio ruta 30
-        [19.0684790, -98.1689670], // Fin ruta 30
+        [19.0685174, -98.1691869], // Inicio ruta 30 -98.1692287407718
+        [19.0684790, -98.1689670], // edificio 30
         
     ];
 
     var rutaAzulCoords2 = [
         [19.0683843, -98.1702980],
-        [19.0681717, -98.1702765],
+        [19.068163, -98.170270], // edificio 36
+
     ];
 
     var rutaAzulCoords3 = [
@@ -278,7 +291,7 @@ $(document).ready(function() {
 
     var rutaAzulCoords4 = [
         [19.067589895228735 ,-98.1696891],
-        [19.0675674, -98.1696891], // Entrada de centro de informacion
+        [19.067422488611665, -98.169682206123], // edificio 50
     ];
 
     var rutaAzulCoords5 = [
@@ -331,30 +344,33 @@ $(document).ready(function() {
 var rutaVerdeCoords = [
     [19.070467999988388, -98.16775186055264], // Rampa de acceso al lab del 45
     [19.07080388748417, -98.16819241335915], // Rampa de acceso al estacionamiento
-    [19.070919229826135, -98.16892197417498], // Rampa de acceso al 45
-    [19.070954086013042, -98.16938800799538], // Estacionamiento exclusivo para personas con discapacidad 
+    [19.070917, -98.168811], // edificio 45
+    [19.070954086013042, -98.16938800799538], //NODOO4
     [19.071092876936074, -98.16938197304088], // Rampa de acceso a edificio de vinculación 
     [19.0711188606115, -98.16963343010836], // Rampa de acceso en dirección hacia edificio de mecánica y logística
-    [19.071187939146842, -98.1696481822939], // Rampa de acceso parte trasera edificio 53
+    [19.071187939146842, -98.1696481822939], //Nodo 7
     [19.071452211800658, -98.16961331358914], // Rampa acceso a edificio idiomas 
     [19.07150761227954, -98.16981708188739],
-    [19.071546904566866, -98.16981238802212], // Rampa de acceso estacionamiento edificio mecánica
+    [19.071552, -98.169811], // edificio 51
 ];
 
 // Definir coordenadas de la ruta verde 2
 var rutaVerdeCoords2 = [
-    [19.070994326099086, -98.1693896693844], // Punto inicial (cerca edificio/área)
+    [19.070954086013042, -98.16938800799538], // Punto inicial (cerca edificio/área)
     [19.07081751014322, -98.16939838656272],
     [19.07079279391931, -98.16941582091938],
+    [19.070806589761048, -98.169548184706],
     [19.070811172650252, -98.16963777369097], // Punto final (camino hacia otra zona)
-    [19.070835209330742, -98.1696384312973],
+    [19.070834, -98.169673],
+    
 ];
 
 // Definir coordenadas de la ruta verde 3
 var rutaVerdeCoords3 = [
-    [19.071176799811443, -98.16965653623642], // Punto inicial
-    [19.07116032236412, -98.16964178406658], // Punto intermedio
-    [19.071206860822464, -98.16991584203343]   // Punto final
+     // Punto inicial// Punto intermedio
+    [19.071208, -98.169903], // edificio 41
+    [19.071187939146842, -98.1696481822939], 
+      // Punto final
 ];
 
 // Definir coordenadas de la ruta verde 4
@@ -363,14 +379,17 @@ var rutaVerdeCoords4 = [
     [19.070762805083532, -98.1695532147195], // Punto inicial
     [19.070811202962297, -98.16998753799062], // Punto intermedio 1
     [19.070718888479348, -98.16999986594247], // Punto intermedio 2
-    [19.07073053982469, -98.1701329062525]   // Punto final
+    [19.07073053982469, -98.1701329062525],   // Punto final
+
 ];
 
 var rutaVerdeCoords5 = [
-    [19.070806589761048, -98.169548184706],   // Punto inicial
+    [19.070806589761048, -98.169548184706],
+    [19.070762805083532, -98.1695532147195],
     [19.07045696117779, -98.16959931061868],  // Punto intermedio 1
     [19.070413866126465, -98.16913998236355], // Punto intermedio 2
-    [19.07039041734366, -98.16914601732076]   // Punto final
+    [19.07039041734366, -98.16914601732076] ,  // Punto final
+    [19.07028250570129, -98.1691442328977], //edificio 3
 ];
 // Crear la polyline de la ruta verde
 var rutaVerde = L.polyline(rutaVerdeCoords, {
@@ -423,7 +442,9 @@ rutaVerde.addTo(map);
 var rutaNaranjaCoords = [
     [19.069804848263956, -98.17041271377924], // Punto inicial
     [19.069621431292198, -98.17040155232779], // Punto intermedio
-    [19.06954411330357,  -98.16980476088763]  // Punto final
+    [19.06954411330357,  -98.169699301171],
+    
+    
     
 ];
 
@@ -437,65 +458,98 @@ var rutaNaranjaCoords2 = [
     [19.07051431443449, -98.17014230172214],
     [19.07060430697445, -98.17017381767646],
     [19.07061685675977, -98.1702820816372],
-     
+    
+      
 ];
 
 // Coordenadas de la tercera ruta
 var rutaNaranjaCoords3 = [
     [19.070192532570985, -98.17007127832228],  // Punto inicial
-    [19.070182596818434, -98.16984098206038],  // Punto intermedio 1
-    [19.070215551904166, -98.16983293543421],  // Punto intermedio 2
-    [19.070157880499842, -98.1698336059864],   // Punto 
+    [19.070182596818434, -98.16984098206038],   // Punto inicial
+    [19.070159827858692, -98.16965699301171],
+    
+       
 ];
 
 // Coordenadas de la cuarta ruta corregida
 var rutaNaranjaCoords4 = [
-    [19.070185811680407, -98.16982999547415],  // Punto inicial
-    [19.070159827858692, -98.16965699301171]   // Punto final
+    [19.070339683584418, -98.16984213200494], // edificio 2
+    [19.070182596818434, -98.16984098206038],
+    [19.0700471611661, -98.16987998532049],  //edificio 1
+
 ];
 
-// Coordenadas de la quinta ruta
+// Coordenadas de la quinta ruta------------------------------------>
 var rutaNaranjaCoords5 = [
-    [19.070519164744134, -98.16959798441236],  // Punto inicial
+    [19.07045696117779, -98.16959931061868], 
+    [19.070159827858692, -98.16965699301171],
+    [19.06954411330357,  -98.169699301171],
+    [19.069276620209916, -98.1697020963557], 
     [19.069187280232338, -98.1697393033749],   // Punto intermedio 1
     [19.06883313589799, -98.1699629309711],    // Punto intermedio 2
-    [19.068709930910195, -98.1699847419628]    // Punto final
+    [19.068709930910195, -98.1699847419628],   // Punto final
+    
 ];
 
 var rutaNaranjaCoords6 = [
-    [19.06919511288231, -98.16971735643747],  // Punto inicial
+    [19.069187280232338, -98.1697393033749],
     [19.069155186281783, -98.16946992268306], // Punto intermedio 1
     [19.06907279802546, -98.16947394598972],  // Punto intermedio 2
-    [19.069053151589696, -98.16934050610591]  // Punto final
+    [19.069053151589696, -98.16934050610591], // Punto final
+    [19.069084, -98.169326], // edificio 19
+
 ];
 
 // Coordenadas de la séptima ruta
 var rutaNaranjaCoords7 = [
-    [19.069184527629343, -98.16946410461652],  // Punto inicial
+    [19.06907279802546, -98.16947394598972],
     [19.068963346800043, -98.16949092670183],  // Punto intermedio
     [19.068940531567176, -98.16941381317659],  // Punto final
     [19.06881314646958, -98.16942521256362],
     [19.06880047133015, -98.16917710825706],
-    [19.06846141098486, -98.1692287407718],
+    [19.0685174, -98.1691869], //---------
+        
 ];
 
 // Coordenadas de la octava ruta
 var rutaNaranjaCoords8 = [
-    [19.068820155189837, -98.16917024812984],  // Punto inicial
+    [19.06880047133015, -98.16917710825706],
     [19.0689629787397, -98.16914431034333],    // Punto intermedio 1
     [19.068953386117077, -98.16897627859588],  // Punto intermedio 2
-    [19.068825367272474, -98.16898566632639],  // Punto intermedio 3
-    [19.068793679424385, -98.16860546324035]   // Punto final
+    [19.068825367272474, -98.16898566632639],
+    [19.068793679424385, -98.1687050881701],  //-unto intermedio 3
+    [19.068793, -98.168558], // edificio 27
+       
 ];
 
+
 // Coordenadas de la novena ruta
-var rutaNaranjaCoords9 = [
-    [19.06881010434018, -98.1687050881701],     // Punto inicial
+var rutaNaranjaCoords9 = [ 
+    [19.068793679424385, -98.1687050881701],     // Punto inicial
     [19.069272112524505, -98.16864071515533],   // Punto intermedio 1
     [19.06924295978286, -98.16833896666323],    // Punto intermedio 2
     [19.069104801068896, -98.16835170715466],   // Punto intermedio 3
-    [19.069106068580556, -98.1683034273977]     // Punto final
+    [19.069142, -98.168277], // edificio 49
+
 ];
+var rutaNaranjaCoords10 = [ 
+    [19.069104801068896, -98.16835170715466],
+    [19.069142510837185, -98.16839168822943], // edificio 20
+
+];
+
+var rutaNaranjaCoords11 = [ 
+    [19.06880047133015, -98.16917710825706],
+    [19.068845419565694, -98.16910953816078], // edificio 25
+
+];
+
+var rutaNaranjaCoords12 = [ 
+    [19.069276620209916, -98.1697020963557],
+    [19.06927554283283, -98.16995516119464],   // Punto intermedio 1,
+    [19.069322, -98.169955], // edificio 17/52
+];
+
 // Crear la polyline de la ruta naranja
 var rutaNaranja = L.polyline(rutaNaranjaCoords, {
     color: 'orange', // Color naranja
@@ -567,7 +621,35 @@ var rutaNaranja9 = L.polyline(rutaNaranjaCoords9, {
     smoothFactor: 1  // Suavizado
 });
 
+// Crear la polyline de la décima ruta
+var rutaNaranja10 = L.polyline(rutaNaranjaCoords10, {
+    color: 'orange', // Color naranja
+    weight: 4,       // Grosor de línea
+    opacity: 0.8,    // Transparencia
+    smoothFactor: 1  // Suavizado
+});
+
+// Crear la polyline de la undécima ruta
+var rutaNaranja11 = L.polyline(rutaNaranjaCoords11, {
+    color: 'orange', // Color naranja
+    weight: 4,       // Grosor de línea
+    opacity: 0.8,    // Transparencia
+    smoothFactor: 1  // Suavizado
+});
+
+// Crear la polyline de la doceava ruta
+var rutaNaranja12 = L.polyline(rutaNaranjaCoords12, {
+    color: 'orange', // Color naranja
+    weight: 4,       // Grosor de línea
+    opacity: 0.8,    // Transparencia
+    smoothFactor: 1  // Suavizado
+});
+
 // Agregar la ruta al mapa
+
+rutaNaranja12.addTo(map);
+rutaNaranja11.addTo(map);
+rutaNaranja10.addTo(map);
 rutaNaranja9.addTo(map);
 rutaNaranja8.addTo(map);
 rutaNaranja7.addTo(map);

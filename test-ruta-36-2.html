@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Ruta 36 → 2 (18 Nodos)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .map-container {
+            height: 600px;
+            position: relative;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 300px;
+            z-index: 1000;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .node-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .node-item {
+            padding: 5px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 12px;
+        }
+        .node-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Prueba Ruta 36 → 2 (18 Nodos)</h1>
+            <p>Verificación de que la ruta siga exactamente las rutas predefinidas con todos los nodos intermedios</p>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-success" onclick="testRoute36To2()">🚀 Probar Ruta 36 → 2</button>
+            <button class="btn btn-warning" onclick="clearRoute()">🗑️ Limpiar Ruta</button>
+            <button class="btn" onclick="showGraphInfo()">📊 Info del Grafo</button>
+            <button class="btn" onclick="showRouteNodes()">🔍 Ver Nodos de Ruta</button>
+        </div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="info-panel">
+                <h4>📋 Información de la Ruta</h4>
+                <div id="routeInfo">
+                    <p>Haz clic en "Probar Ruta" para comenzar</p>
+                </div>
+                <div id="nodeList" class="node-list" style="display: none;">
+                    <h5>Nodos de la Ruta:</h5>
+                    <div id="nodeItems"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts del sistema de rutas accesibles -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/campus-graph.js"></script>
+    <script src="js/route-calculator.js"></script>
+    <script src="js/route-visualizer.js"></script>
+    <script src="js/navigation-system.js"></script>
+
+    <script>
+        let map;
+        let grafo;
+        let routeCalculator;
+        let routeVisualizer;
+        let currentRoute = null;
+
+        // Inicializar el mapa
+        function initMap() {
+            console.log('🗺️ Inicializando mapa...');
+            
+            // Coordenadas del campus
+            const campusCenter = [25.6539, -100.2891];
+            
+            map = L.map('map').setView(campusCenter, 18);
+            
+            // Agregar capa de tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            console.log('✅ Mapa inicializado');
+        }
+
+        // Inicializar el sistema
+        function initSystem() {
+            console.log('🚀 Inicializando sistema...');
+            
+            try {
+                // Inicializar grafo
+                grafo = new CampusGraph();
+                console.log(`✅ Grafo inicializado: ${grafo.nodes.size} nodos`);
+                
+                // Inicializar calculador de rutas
+                routeCalculator = new RouteCalculator(grafo);
+                console.log('✅ Calculador de rutas inicializado');
+                
+                // Inicializar visualizador
+                routeVisualizer = new RouteVisualizer(map);
+                routeVisualizer.init();
+                console.log('✅ Visualizador inicializado');
+                
+                updateStatus('Sistema inicializado correctamente', 'success');
+                
+            } catch (error) {
+                console.error('❌ Error inicializando sistema:', error);
+                updateStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Probar ruta del Edificio 36 al 2
+        function testRoute36To2() {
+            console.log('🧪 Probando ruta del Edificio 36 al 2...');
+            
+            if (!routeCalculator) {
+                updateStatus('Sistema no inicializado', 'error');
+                return;
+            }
+            
+            try {
+                // Calcular ruta
+                const route = routeCalculator.calculateRoute('edif_36', 'edif_2', 'wheelchair');
+                
+                if (!route || !route.path || route.path.length === 0) {
+                    updateStatus('No se pudo calcular la ruta', 'error');
+                    return;
+                }
+                
+                console.log('✅ Ruta calculada:', route);
+                currentRoute = route;
+                
+                // Mostrar información de la ruta
+                showRouteInfo(route);
+                
+                // Visualizar la ruta
+                routeVisualizer.showRoute(route, 'wheelchair');
+                
+                updateStatus(`Ruta calculada: ${route.path.length} nodos, ${route.totalDistance.toFixed(1)}m`, 'success');
+                
+            } catch (error) {
+                console.error('❌ Error calculando ruta:', error);
+                updateStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Mostrar información detallada de la ruta
+        function showRouteInfo(route) {
+            const routeInfo = document.getElementById('routeInfo');
+            const nodeList = document.getElementById('nodeList');
+            const nodeItems = document.getElementById('nodeItems');
+            
+            // Información general
+            routeInfo.innerHTML = `
+                <div class="status success">
+                    <strong>✅ Ruta Calculada</strong><br>
+                    <strong>Nodos:</strong> ${route.path.length}<br>
+                    <strong>Distancia:</strong> ${route.totalDistance.toFixed(1)}m<br>
+                    <strong>Tiempo:</strong> ${route.estimatedTime.toFixed(1)}min<br>
+                    <strong>Waypoints:</strong> ${route.waypoints ? route.waypoints.length : 'N/A'}
+                </div>
+            `;
+            
+            // Lista de nodos
+            if (route.path && route.path.length > 0) {
+                nodeItems.innerHTML = '';
+                route.path.forEach((nodeId, index) => {
+                    const node = grafo.getNode(nodeId);
+                    const nodeItem = document.createElement('div');
+                    nodeItem.className = 'node-item';
+                    nodeItem.innerHTML = `
+                        <strong>${index + 1}.</strong> ${nodeId} 
+                        ${node ? `(${node.metadata?.route || 'edificio'})` : ''}
+                    `;
+                    nodeItems.appendChild(nodeItem);
+                });
+                nodeList.style.display = 'block';
+            }
+        }
+
+        // Limpiar ruta actual
+        function clearRoute() {
+            if (routeVisualizer) {
+                routeVisualizer.clearRoute();
+            }
+            currentRoute = null;
+            document.getElementById('routeInfo').innerHTML = '<p>Ruta limpiada</p>';
+            document.getElementById('nodeList').style.display = 'none';
+            updateStatus('Ruta limpiada', 'info');
+        }
+
+        // Mostrar información del grafo
+        function showGraphInfo() {
+            if (!grafo) {
+                updateStatus('Grafo no inicializado', 'error');
+                return;
+            }
+            
+            const stats = grafo.getStatistics();
+            const info = `
+                <strong>📊 Estadísticas del Grafo:</strong><br>
+                <strong>Total nodos:</strong> ${stats.totalNodes}<br>
+                <strong>Total conexiones:</strong> ${stats.totalConnections}<br>
+                <strong>Nodos por tipo:</strong><br>
+                ${Object.entries(stats.nodesByType).map(([type, count]) => `• ${type}: ${count}`).join('<br>')}
+            `;
+            
+            updateStatus(info, 'info');
+        }
+
+        // Mostrar nodos de ruta específicos
+        function showRouteNodes() {
+            if (!grafo) {
+                updateStatus('Grafo no inicializado', 'error');
+                return;
+            }
+            
+            const routeNodes = Array.from(grafo.nodes.values())
+                .filter(node => node.metadata?.route)
+                .sort((a, b) => {
+                    if (a.metadata.route !== b.metadata.route) {
+                        return a.metadata.route.localeCompare(b.metadata.route);
+                    }
+                    return a.metadata.index - b.metadata.index;
+                });
+            
+            const info = `
+                <strong>🛤️ Nodos de Ruta:</strong><br>
+                <strong>Total:</strong> ${routeNodes.length}<br>
+                ${routeNodes.slice(0, 10).map(node => 
+                    `• ${node.id} (${node.metadata.route}-${node.metadata.index})`
+                ).join('<br>')}
+                ${routeNodes.length > 10 ? `<br>... y ${routeNodes.length - 10} más` : ''}
+            `;
+            
+            updateStatus(info, 'info');
+        }
+
+        // Actualizar estado
+        function updateStatus(message, type) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            
+            const routeInfo = document.getElementById('routeInfo');
+            routeInfo.innerHTML = '';
+            routeInfo.appendChild(statusDiv);
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Iniciando aplicación...');
+            initMap();
+            initSystem();
+        });
+    </script>
+</body>
+</html>

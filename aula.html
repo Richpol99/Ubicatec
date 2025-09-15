@@ -9,7 +9,10 @@
 
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" href="vendor/lightcase/lightcase.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 
@@ -78,47 +81,281 @@
     <script src="vendor/bootstrap/bootstrap.min.js"></script>
     <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script src="js/app.min.js"></script>
-
+    
+    <!-- Librerías faltantes para app.min.js -->
+    <script src="vendor/stellar/jquery.stellar.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/isotope/isotope.min.js"></script>
+    <script src="vendor/lightcase/lightcase.js"></script>
+    <script src="vendor/waypoints/waypoint.min.js"></script>
+    <script src="vendor/countto/jquery.countto.js"></script>
+    
+    <!-- Inicializar el mapa primero -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="js/mapa.js"></script>
     
-    <!-- Scripts del sistema de rutas accesibles -->
-    <script src="js/campus-nodes.js"></script>
-    <script src="js/campus-connections.js"></script>
-    <script src="js/accessibility-weights.js"></script>
-    <script src="js/distance-calculator.js"></script>
-    <script src="js/route-validator.js"></script>
-    <script src="js/dijkstra-route-calculator.js"></script>
+    <!-- Cargar app.min.js después de que el mapa esté listo -->
+    <script>
+        $(document).ready(function() {
+            // Esperar a que el mapa esté inicializado antes de cargar app.min.js
+            if (typeof window.map !== 'undefined' && window.map) {
+                // Cargar app.min.js dinámicamente
+                var script = document.createElement('script');
+                script.src = 'js/app.min.js';
+                script.onload = function() {
+                    console.log('✅ app.min.js cargado correctamente');
+                };
+                script.onerror = function() {
+                    console.warn('⚠️ Error cargando app.min.js');
+                };
+                document.head.appendChild(script);
+            } else {
+                // Si el mapa no está listo, reintentar
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            }
+        });
+    </script>
+    
+    <!-- Scripts del sistema de rutas accesibles - NUEVA ARQUITECTURA -->
+    <script src="js/campus-graph.js"></script>
+    <script src="js/route-calculator.js"></script>
     <script src="js/route-visualizer.js"></script>
-    <script src="js/rutas-accesibles.js"></script>
-    <script src="js/unified-navigation.js"></script>
+    <script src="js/navigation-system.js"></script>
+    <script src="js/test-navigation.js"></script>
+    <script src="js/visual-indicators.js"></script>
+    <script src="js/accessibility-modal.js"></script>
     
     <!-- Integración del botón de rutas accesibles -->
     <script>
-        $(document).ready(function() {
-            // Esperar a que el mapa esté listo
-            setTimeout(function() {
-                // Configurar el botón de rutas accesibles
-                $('#rutasAccesiblesBtn').on('click', function() {
-                    console.log('🔍 Verificando sistemas disponibles...');
-                    console.log('accessibleRouteSystem:', typeof window.accessibleRouteSystem);
-                    console.log('unifiedNav:', typeof window.unifiedNav);
-                    
-                    if (typeof window.unifiedNav !== 'undefined' && window.unifiedNav.state.isInitialized) {
-                        console.log('✅ Usando sistema de navegación unificado');
-                        // El sistema unificado maneja el clic del botón
-                        window.unifiedNav.handleAccessibleRoutesClick();
-                    } else if (typeof window.accessibleRouteSystem !== 'undefined') {
-                        console.log('✅ Usando sistema de rutas accesibles');
-                        // Mostrar modal de configuración de rutas accesibles
-                        alert('Sistema de rutas accesibles activado. Esta funcionalidad estará disponible en la Fase 2.');
-                    } else {
-                        console.error('❌ Ningún sistema de rutas accesibles disponible');
-                        alert('Sistema de rutas accesibles no disponible. Verifica que los scripts estén cargados correctamente.');
-                    }
+        // Variables globales para el sistema UNIFICADO
+        let accessibilityModal = null;
+        let routeVisualizer = null;
+        let visualIndicators = null;
+        let grafo = null;
+        let dijkstraCalculator = null;
+        
+        // Funciones globales para el cálculo de rutas - SISTEMA UNIFICADO
+        function handleRouteCalculation(routeOptions) {
+            console.log('🛣️ Calculando ruta:', routeOptions);
+            
+            try {
+                if (!grafo || !dijkstraCalculator) {
+                    alert('❌ Sistema no inicializado. Intenta recargar la página.');
+                    return;
+                }
+                
+                // Verificar que los nodos existan
+                const startNode = grafo.getNode(routeOptions.start);
+                const endNode = grafo.getNode(routeOptions.end);
+                
+                if (!startNode) {
+                    throw new Error(`Edificio de inicio no encontrado: ${routeOptions.start}`);
+                }
+                
+                if (!endNode) {
+                    throw new Error(`Edificio de destino no encontrado: ${routeOptions.end}`);
+                }
+                
+                console.log('✅ Edificios encontrados:', { 
+                    start: startNode.name, 
+                    end: endNode.name 
                 });
-            }, 2000); // Aumentar tiempo de espera
+                
+                // Calcular ruta usando el sistema unificado
+                const route = dijkstraCalculator.calculateRoute(
+                    routeOptions.start,
+                    routeOptions.end,
+                    routeOptions.accessibilityType
+                );
+                
+                if (route && route.path.length > 0) {
+                    // Inicializar RouteVisualizer si no está disponible
+                    if (!routeVisualizer) {
+                        console.log('🔄 Inicializando RouteVisualizer...');
+                        
+                        // Contador de reintentos para evitar bucle infinito
+                        let retryCount = 0;
+                        const maxRetries = 10; // Máximo 10 reintentos (5 segundos)
+                        
+                        // Función para intentar inicializar el visualizador
+                        const tryInitializeVisualizer = () => {
+                            retryCount++;
+                            
+                            // Verificar que el mapa esté disponible
+                            if (!window.map || typeof window.map.addLayer !== 'function') {
+                                if (retryCount >= maxRetries) {
+                                    console.error('❌ Mapa no disponible después de 10 reintentos. Abortando...');
+                                    alert('❌ Error: El mapa no está disponible. Recarga la página e intenta de nuevo.');
+                                    return;
+                                }
+                                console.warn(`⚠️ Mapa aún no disponible, reintentando en 500ms... (${retryCount}/${maxRetries})`);
+                                setTimeout(tryInitializeVisualizer, 500);
+                                return;
+                            }
+                            
+                            try {
+                                routeVisualizer = new RouteVisualizer();
+                                const initResult = routeVisualizer.init(window.map);
+                                console.log('✅ RouteVisualizer inicializado correctamente:', initResult);
+                                
+                                // Verificar que el mapa se guardó correctamente
+                                if (!routeVisualizer.map) {
+                                    console.error('❌ El mapa no se guardó correctamente en el visualizador');
+                                    alert('❌ Error: El visualizador no pudo conectar con el mapa');
+                                    return;
+                                }
+                                
+                                // Ahora que el visualizador está listo, visualizar la ruta
+                                routeVisualizer.visualizeRoute(route, routeOptions.accessibilityType);
+                                
+                            } catch (error) {
+                                console.error('❌ Error inicializando RouteVisualizer:', error);
+                                alert('❌ Error inicializando el visualizador de rutas');
+                                return;
+                            }
+                        };
+                        
+                        // Intentar inicializar inmediatamente o con retry
+                        tryInitializeVisualizer();
+                        return; // Salir aquí para evitar la visualización duplicada
+                    }
+                    
+                    // Visualizar ruta en el mapa
+                    routeVisualizer.visualizeRoute(route, routeOptions.accessibilityType);
+                    
+                    // Mostrar información de la ruta en el modal
+                    accessibilityModal.showRouteInfo(route);
+                    
+                    console.log('✅ Ruta calculada y visualizada correctamente');
+                    
+                    // Mostrar mensaje de éxito
+                    setTimeout(() => {
+                        alert(`✅ Ruta calculada exitosamente!\n\nDistancia: ${route.totalDistance.toFixed(1)} metros\nTiempo estimado: ${route.estimatedTime.toFixed(1)} minutos\n\nLa ruta se ha marcado en el mapa.`);
+                    }, 500);
+                    
+                } else {
+                    alert('❌ No se pudo calcular una ruta accesible entre los puntos seleccionados.');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error calculando ruta:', error);
+                alert('❌ Error calculando la ruta: ' + error.message);
+            }
+        }
+            
+            function handleAccessibilityChange(accessibilityType) {
+                console.log('🎯 Tipo de accesibilidad cambiado:', accessibilityType);
+                
+                // Aquí se pueden hacer ajustes adicionales según el tipo de accesibilidad
+                // Por ejemplo, cambiar colores del mapa, mostrar información específica, etc.
+        }
+        
+        
+        // Inicializar el sistema unificado
+        function initializeUnifiedSystem() {
+            console.log('🚀 Inicializando sistema unificado...');
+            
+            try {
+                // Inicializar grafo estático del campus
+                grafo = new CampusGraph();
+                console.log(`✅ Grafo inicializado: ${grafo.nodes.size} nodos, ${grafo.getTotalConnections()} conexiones`);
+                
+                // Exponer el grafo globalmente para el RouteVisualizer
+                window.grafo = grafo;
+                console.log('🌐 Grafo expuesto globalmente como window.grafo');
+                
+                // Inicializar calculador de rutas
+                dijkstraCalculator = new RouteCalculator(grafo);
+                console.log('✅ Calculador de rutas inicializado');
+                
+                // Inicializar modal de accesibilidad
+                accessibilityModal = new AccessibilityModal();
+                accessibilityModal.init();
+                
+                // Cargar edificios en el modal
+                const buildings = Array.from(grafo.nodes.values()).filter(node => node.type === 'building');
+                accessibilityModal.loadBuildings(buildings);
+                
+                // Configurar callbacks
+                accessibilityModal.setOnRouteCalculate(handleRouteCalculation);
+                accessibilityModal.setOnAccessibilityChange(handleAccessibilityChange);
+                
+                console.log('✅ Sistema unificado inicializado correctamente');
+                
+            } catch (error) {
+                console.error('❌ Error inicializando sistema unificado:', error);
+                alert('Error inicializando el sistema: ' + error.message);
+            }
+        }
+        
+        // Esperar a que el mapa esté completamente inicializado
+        function waitForMapAndInitialize() {
+            console.log('🔍 Esperando que el mapa esté listo...');
+            
+            // Verificar si el mapa está disponible
+            if (window.map && typeof window.map.addLayer === 'function') {
+                console.log('✅ Mapa detectado, inicializando sistema...');
+                initializeUnifiedSystem();
+            } else {
+                console.log('⏳ Mapa no listo, reintentando en 1 segundo...');
+                setTimeout(waitForMapAndInitialize, 1000);
+            }
+        }
+        
+        // Inicializar cuando el DOM esté listo
+        $(document).ready(function() {
+            console.log('🚀 DOM listo, esperando mapa...');
+            
+            // Esperar un poco más para que mapa.js se ejecute
+            setTimeout(waitForMapAndInitialize, 1000);
+        });
+        
+        $(document).ready(function() {
+            // Configurar el botón de rutas accesibles
+            $('#rutasAccesiblesBtn').on('click', function() {
+                console.log('🔍 Botón de rutas accesibles presionado');
+                
+                // Verificar si el sistema está listo
+                if (grafo && dijkstraCalculator && accessibilityModal) {
+                    // Mostrar el modal
+                    accessibilityModal.show();
+                    console.log('✅ Modal de accesibilidad mostrado');
+                } else {
+                    console.warn('⚠️ Sistema de accesibilidad aún no está listo');
+                    alert('⏳ Sistema de rutas accesibles aún se está cargando. Espera unos segundos e intenta de nuevo.');
+                }
+            });
+            
+            // Configurar búsqueda para abrir modal automáticamente
+            $('#searchInput').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    const searchTerm = $(this).val().trim();
+                    if (searchTerm && grafo && accessibilityModal) {
+                        // Buscar el edificio en el grafo unificado
+                        const buildings = Array.from(grafo.nodes.values()).filter(node => node.type === 'building');
+                        const foundBuilding = buildings.find(b => 
+                            b.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            b.id.toLowerCase().includes(searchTerm.toLowerCase())
+                        );
+                        
+                        if (foundBuilding) {
+                            // Abrir modal y preseleccionar el edificio
+                            accessibilityModal.show();
+                            
+                            // Preseleccionar el edificio encontrado
+                            setTimeout(() => {
+                                $('#endBuilding').val(foundBuilding.id).trigger('change');
+                            }, 500);
+                            
+                            console.log('✅ Edificio encontrado y preseleccionado:', foundBuilding.name);
+                        } else {
+                            alert('❌ No se encontró el edificio: ' + searchTerm);
+                        }
+                    }
+                }
+            });
         });
     </script>
 

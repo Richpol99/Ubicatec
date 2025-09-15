@@ -1,0 +1,40 @@
+{
+  "name": "ubicatec",
+  "version": "1.0.0",
+  "description": "Aplicativo para localizar edificios mediante imágenes 360° y geolocalización en campus TECNM",
+  "main": "index.html",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "live-server --port=3000 --open=/index.html",
+    "dev": "live-server --port=3000 --open=/index.html --watch=js,css,html",
+    "serve": "http-server -p 8080 -o",
+    "serve-simple": "http-server -p 8080",
+    "build": "echo 'Build process - optimize assets'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Richpol99/Ubicatec.git"
+  },
+  "keywords": [
+    "geolocalización",
+    "campus",
+    "navegación",
+    "360",
+    "accesibilidad"
+  ],
+  "author": "Equipo UBICATEC",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Richpol99/Ubicatec/issues"
+  },
+  "homepage": "https://github.com/Richpol99/Ubicatec#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  }
+}

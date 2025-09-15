@@ -698,7 +698,7 @@ section {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 1050; /* Sit on top - Mayor que el mapa de Leaflet */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -718,6 +718,29 @@ section {
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Estilos específicos para el modal de accesibilidad */
+#accessibilityModal.modal {
+    z-index: 1055 !important; /* Asegurar que esté encima del mapa y otros modales */
+}
+
+#accessibilityModal .modal-dialog {
+    z-index: 1056 !important;
+}
+
+#accessibilityModal .modal-content {
+    z-index: 1057 !important;
+}
+
+/* Asegurar que el backdrop del modal de accesibilidad esté en la capa correcta */
+.modal-backdrop {
+    z-index: 1054 !important;
+}
+
+/* Asegurar que el backdrop específico del modal de accesibilidad esté correcto */
+#accessibilityModal + .modal-backdrop {
+    z-index: 1054 !important;
 }
 
 .modal-content {
