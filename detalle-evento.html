@@ -868,7 +868,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div class="info-content">
                             <h6>Ubicación:</h6>
-                            <p id="evento-ubicacion">Auditorio 1 - Edificio 53</p>
+                            <p id="evento-ubicacion">Edificio 36</p>
                         </div>
                     </div>
                     
@@ -928,7 +928,7 @@
                 titulo: urlParams.get('titulo') || 'Análisis de señales Fetales con inteligencia Artificial y fusión de datos multimodal',
                 ponente: urlParams.get('ponente') || 'Sócrates Reyes Romero',
                 empresa: urlParams.get('empresa') || 'INAOE - Puebla',
-                ubicacion: urlParams.get('ubicacion') || 'Auditorio 1 - Edificio 53',
+                ubicacion: urlParams.get('ubicacion') || 'Edificio 36',
                 categoria: urlParams.get('categoria') || 'IA'
             };
         }
@@ -964,7 +964,7 @@
         function inicializarMapaEvento() {
             if (mapaEvento) return;
             
-            const coordenadasAuditorio = [19.070901, -98.169714];
+            const coordenadasAuditorio = [19.068163, -98.17027];
             
             mapaEvento = L.map('mapa').setView(coordenadasAuditorio, 20);
             
@@ -983,9 +983,9 @@
             
             marcadorAuditorio.bindPopup(`
                 <div style="text-align: center;">
-                    <h4 style="color: #007bff; margin-bottom: 10px;">Auditorio 1</h4>
-                    <p style="margin-bottom: 8px;"><strong>Edificio 53</strong></p>
-                    <p style="margin-bottom: 0; font-size: 14px; color: #666;">Ciencias básicas, WC</p>
+                    <h4 style="color: #007bff; margin-bottom: 10px;">Edificio 36</h4>
+                    <p style="margin-bottom: 8px;"><strong>Laboratorio de TICS</strong></p>
+                    <p style="margin-bottom: 0; font-size: 14px; color: #666;">Redes, programación, bases de datos</p>
                 </div>
             `).openPopup();
         }
@@ -1051,8 +1051,8 @@
 
         // Función para actualizar contador de distancia
         function actualizarContadorDistancia(lat, lng) {
-            const auditorioLat = 19.070901;
-            const auditorioLng = -98.169714;
+            const auditorioLat = 19.068163;
+            const auditorioLng = -98.17027;
             
             const distancia = calcularDistancia(lat, lng, auditorioLat, auditorioLng);
             const distanciaM = Math.round(distancia);
@@ -1154,7 +1154,7 @@
                 mapaEvento.panTo(new L.LatLng(latitudUsuario, longitudUsuario));
 
                 // Calcular distancia
-                const distancia = calcularDistancia(latitudUsuario, longitudUsuario, 19.070901, -98.169714);
+                const distancia = calcularDistancia(latitudUsuario, longitudUsuario, 19.068163, -98.17027);
                 actualizarContadorDistancia(latitudUsuario, longitudUsuario);
 
                 // Verificar llegada
