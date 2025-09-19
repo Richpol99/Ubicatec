@@ -937,9 +937,20 @@
         function cargarDatosEvento() {
             const params = obtenerParametrosURL();
             
-            // Si es un taller, forzar ubicación a Edificio 36
+            // Ajustar ubicación según el tipo de evento
             if (params.tipo === 'TALLER') {
+                // Todos los talleres son en Edificio 36
                 params.ubicacion = 'Edificio 36';
+            } else if (params.tipo === 'PONENCIA') {
+                // Las ponencias pueden ser en Auditorio 1 o 2, pero siempre Edificio 53
+                if (params.ubicacion.includes('Auditorio 1')) {
+                    params.ubicacion = 'Auditorio 1 - Edificio 53';
+                } else if (params.ubicacion.includes('Auditorio 2')) {
+                    params.ubicacion = 'Auditorio 2 - Edificio 53';
+                } else {
+                    // Si no especifica auditorio, asumir Auditorio 1
+                    params.ubicacion = 'Auditorio 1 - Edificio 53';
+                }
             }
             
             // Actualizar título de la página
@@ -980,10 +991,15 @@
                 coordenadasAuditorio = [19.068163, -98.17027];
                 tituloMarcador = 'Edificio 36';
                 descripcionMarcador = 'Laboratorio de TICS - Redes, programación, bases de datos';
-            } else {
-                // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+            } else if (params.tipo === 'PONENCIA') {
+                // Para ponencias, usar coordenadas del Edificio 53
                 coordenadasAuditorio = [19.070901, -98.169714];
-                tituloMarcador = 'Auditorio 1';
+                // Determinar si es Auditorio 1 o 2
+                if (params.ubicacion.includes('Auditorio 2')) {
+                    tituloMarcador = 'Auditorio 2';
+                } else {
+                    tituloMarcador = 'Auditorio 1';
+                }
                 descripcionMarcador = 'Edificio 53 - Ciencias básicas, WC';
             }
             
@@ -1078,8 +1094,8 @@
                 // Para talleres, usar coordenadas del Edificio 36
                 auditorioLat = 19.068163;
                 auditorioLng = -98.17027;
-            } else {
-                // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+            } else if (params.tipo === 'PONENCIA') {
+                // Para ponencias, usar coordenadas del Edificio 53 (mismo edificio para ambos auditorios)
                 auditorioLat = 19.070901;
                 auditorioLng = -98.169714;
             }
@@ -1191,8 +1207,8 @@
                     // Para talleres, usar coordenadas del Edificio 36
                     auditorioLat = 19.068163;
                     auditorioLng = -98.17027;
-                } else {
-                    // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+                } else if (params.tipo === 'PONENCIA') {
+                    // Para ponencias, usar coordenadas del Edificio 53 (mismo edificio para ambos auditorios)
                     auditorioLat = 19.070901;
                     auditorioLng = -98.169714;
                 }
