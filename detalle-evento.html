@@ -937,6 +937,11 @@
         function cargarDatosEvento() {
             const params = obtenerParametrosURL();
             
+            // Si es un taller, forzar ubicación a Edificio 36
+            if (params.tipo === 'TALLER') {
+                params.ubicacion = 'Edificio 36';
+            }
+            
             // Actualizar título de la página
             document.title = `${params.titulo} - UBICATEC`;
             
@@ -964,7 +969,23 @@
         function inicializarMapaEvento() {
             if (mapaEvento) return;
             
-            const coordenadasAuditorio = [19.068163, -98.17027];
+            // Obtener parámetros para determinar si es taller
+            const params = obtenerParametrosURL();
+            let coordenadasAuditorio;
+            let tituloMarcador;
+            let descripcionMarcador;
+            
+            if (params.tipo === 'TALLER') {
+                // Para talleres, usar coordenadas del Edificio 36
+                coordenadasAuditorio = [19.068163, -98.17027];
+                tituloMarcador = 'Edificio 36';
+                descripcionMarcador = 'Laboratorio de TICS - Redes, programación, bases de datos';
+            } else {
+                // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+                coordenadasAuditorio = [19.070901, -98.169714];
+                tituloMarcador = 'Auditorio 1';
+                descripcionMarcador = 'Edificio 53 - Ciencias básicas, WC';
+            }
             
             mapaEvento = L.map('mapa').setView(coordenadasAuditorio, 20);
             
@@ -983,9 +1004,8 @@
             
             marcadorAuditorio.bindPopup(`
                 <div style="text-align: center;">
-                    <h4 style="color: #007bff; margin-bottom: 10px;">Edificio 36</h4>
-                    <p style="margin-bottom: 8px;"><strong>Laboratorio de TICS</strong></p>
-                    <p style="margin-bottom: 0; font-size: 14px; color: #666;">Redes, programación, bases de datos</p>
+                    <h4 style="color: #007bff; margin-bottom: 10px;">${tituloMarcador}</h4>
+                    <p style="margin-bottom: 8px;"><strong>${descripcionMarcador}</strong></p>
                 </div>
             `).openPopup();
         }
@@ -1051,8 +1071,18 @@
 
         // Función para actualizar contador de distancia
         function actualizarContadorDistancia(lat, lng) {
-            const auditorioLat = 19.068163;
-            const auditorioLng = -98.17027;
+            const params = obtenerParametrosURL();
+            let auditorioLat, auditorioLng;
+            
+            if (params.tipo === 'TALLER') {
+                // Para talleres, usar coordenadas del Edificio 36
+                auditorioLat = 19.068163;
+                auditorioLng = -98.17027;
+            } else {
+                // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+                auditorioLat = 19.070901;
+                auditorioLng = -98.169714;
+            }
             
             const distancia = calcularDistancia(lat, lng, auditorioLat, auditorioLng);
             const distanciaM = Math.round(distancia);
@@ -1153,8 +1183,22 @@
 
                 mapaEvento.panTo(new L.LatLng(latitudUsuario, longitudUsuario));
 
+                // Obtener coordenadas según el tipo de evento
+                const params = obtenerParametrosURL();
+                let auditorioLat, auditorioLng;
+                
+                if (params.tipo === 'TALLER') {
+                    // Para talleres, usar coordenadas del Edificio 36
+                    auditorioLat = 19.068163;
+                    auditorioLng = -98.17027;
+                } else {
+                    // Para ponencias, usar coordenadas del Auditorio 1 - Edificio 53
+                    auditorioLat = 19.070901;
+                    auditorioLng = -98.169714;
+                }
+                
                 // Calcular distancia
-                const distancia = calcularDistancia(latitudUsuario, longitudUsuario, 19.068163, -98.17027);
+                const distancia = calcularDistancia(latitudUsuario, longitudUsuario, auditorioLat, auditorioLng);
                 actualizarContadorDistancia(latitudUsuario, longitudUsuario);
 
                 // Verificar llegada
