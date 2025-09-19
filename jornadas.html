@@ -1027,52 +1027,126 @@
 
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+                margin-bottom: 20px;
             }
             
             .hero-section {
-                padding: 80px 0 60px 0;
+                padding: 60px 0 40px 0;
+            }
+
+            /* Navbar móvil */
+            #header-navbar {
+                padding: 0.75rem 0 !important;
+            }
+
+            #header-navbar .navbar-brand img {
+                height: 30px !important;
+            }
+
+            #header-navbar .nav-link {
+                font-size: 14px !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+
+            /* Contenedor principal */
+            .container {
+                padding: 0 15px;
             }
             
             .event-info {
-                padding: 2rem;
-                margin-top: 2rem;
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+                border-radius: 12px;
             }
             
             .event-info h3 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                line-height: 1.3;
+                margin-bottom: 15px;
             }
             
             .event-details {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 12px;
             }
             
             .event-detail {
-                padding: 0.875rem 1rem;
+                padding: 12px 15px;
+                border-radius: 8px;
+            }
+
+            .event-detail i {
+                font-size: 1.1rem;
+            }
+
+            .event-detail span {
+                font-size: 0.9rem;
             }
             
             .day-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                margin-bottom: 15px;
             }
             
             .auditorium-title {
-                font-size: 1.1rem;
-                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+                padding: 8px 12px;
+                border-radius: 20px;
             }
             
             .sessions-grid, .workshop-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
+                gap: 12px;
             }
             
             .session-card, .workshop-card {
-                padding: 16px;
-                margin-bottom: 15px;
+                padding: 15px;
+                margin-bottom: 12px;
+                border-radius: 8px;
+                min-height: 200px;
+            }
+
+            .card-body {
+                padding: 12px;
+            }
+
+            .card-title {
+                font-size: 0.95rem;
+                line-height: 1.3;
+                margin-bottom: 8px;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+            }
+
+            .card-speaker {
+                font-size: 0.8rem;
+                margin-bottom: 4px;
+            }
+
+            .card-company {
+                font-size: 0.75rem;
+                margin-bottom: 8px;
+            }
+
+            .card-category {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+
+            .card-header {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+
+            .card-time {
+                font-size: 0.7rem;
             }
             
             .schedule-section, .workshops-section {
@@ -1081,96 +1155,157 @@
             }
             
             .cta-section {
-                padding: 40px 0;
+                padding: 30px 0;
             }
             
             .cta-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+
+            .cta-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
             }
             
             .cta-buttons {
                 flex-direction: column;
                 align-items: center;
-                gap: 12px;
+                gap: 10px;
             }
             
             .btn-cta {
                 width: 100%;
                 max-width: 300px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
                 justify-content: center;
+            }
+
+            /* Partículas en móvil */
+            .particles-container {
+                display: none;
             }
         }
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                line-height: 1.1;
             }
             
             .hero-subtitle {
-                font-size: 1rem;
+                font-size: 0.95rem;
+                margin-bottom: 15px;
             }
             
             .hero-section {
-                padding: 70px 0 50px 0;
+                padding: 50px 0 30px 0;
             }
             
             .event-info {
-                padding: 1.5rem;
-                margin-top: 1.5rem;
+                padding: 1rem;
+                margin-top: 1rem;
+                border-radius: 8px;
             }
             
             .event-info h3 {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
+                margin-bottom: 10px;
             }
             
             .event-detail {
-                padding: 0.75rem;
-                gap: 0.75rem;
+                padding: 8px 10px;
+                gap: 8px;
+                margin-bottom: 8px;
             }
             
             .event-detail i {
-                font-size: 1.25rem;
-            }
-            
-            .event-detail span {
-                font-size: 0.9rem;
-            }
-            
-            .day-title {
-                font-size: 1.25rem;
-            }
-            
-            .session-card, .workshop-card {
-                padding: 12px;
-            }
-            
-            .session-title, .workshop-title {
                 font-size: 1rem;
             }
             
-            .session-time, .workshop-time {
+            .event-detail span {
                 font-size: 0.8rem;
             }
             
-            .session-speaker, .workshop-instructor {
-                font-size: 0.8rem;
+            .day-title {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
             }
             
-            .session-company, .workshop-company {
+            .auditorium-title {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+            
+            .session-card, .workshop-card {
+                padding: 10px;
+                margin-bottom: 8px;
+                min-height: 180px;
+            }
+
+            .card-body {
+                padding: 8px;
+            }
+
+            .card-title {
+                font-size: 0.85rem;
+                line-height: 1.2;
+                margin-bottom: 6px;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+            }
+
+            .card-speaker {
                 font-size: 0.75rem;
+                margin-bottom: 3px;
+            }
+
+            .card-company {
+                font-size: 0.7rem;
+                margin-bottom: 6px;
+            }
+
+            .card-category {
+                font-size: 0.65rem;
+                padding: 2px 5px;
+            }
+
+            .card-header {
+                padding: 6px 8px;
+                font-size: 0.7rem;
+            }
+
+            .card-time {
+                font-size: 0.65rem;
             }
             
             .schedule-section, .workshops-section {
-                padding: 15px 10px;
-                margin: 15px 0;
+                padding: 12px 8px;
+                margin: 12px 0;
             }
             
             .cta-title {
-                font-size: 1.25rem;
+                font-size: 1.1rem;
             }
             
             .cta-subtitle {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+            }
+
+            /* Mejoras para el mapa en móviles muy pequeños */
+            .mapa-campus-section {
+                padding: 40px 0;
+            }
+
+            #mapa-jornadas {
+                height: 300px;
+                border-radius: 8px;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -1461,10 +1596,10 @@
                 <div class="schedule-day">
                     <div class="day-title">Viernes 19 de Septiembre 2025</div>
                     
-                    <!-- Ponencias - Auditorio 1 y 2 Edificio 53 -->
+                    <!-- Ponencias - Auditorio 1 Edificio 53 -->
                     <div class="auditorium-section">
                         <div class="auditorium-title">
-                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1 y 2 Edificio 53
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1 Edificio 53
                         </div>
                         
                         <div class="sessions-grid">
@@ -1481,6 +1616,113 @@
                                     <span class="card-category">IA</span>
                                 </div>
                             </div>
+
+                            <!-- Evento 2: Seguridad y ética en el uso de la IA -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Seguridad y ética en el uso de la IA</div>
+                                    <div class="card-speaker">Ángel de Jesús</div>
+                                    <div class="card-company">PWO MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 3: PostgreSQL en la Inteligencia Artificial -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">PostgreSQL en la Inteligencia Artificial</div>
+                                    <div class="card-speaker">Bryan Heriberto Camacho C., Alfredo Rodríguez C. (DrokoRod)</div>
+                                    <div class="card-company">PGDAY MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 4: Inteligencia Artificial para la enseñanza -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Inteligencia Artificial para la enseñanza</div>
+                                    <div class="card-speaker">Roberto Andrade Fonseca</div>
+                                    <div class="card-company">PGDAY MEXICO</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ponencias - Auditorio 2 Edificio 53 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 2 Edificio 53
+                        </div>
+                        
+                        <div class="sessions-grid">
+                            <!-- Evento 1: No olvides que el software es un negocio -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">No olvides que el software es un negocio</div>
+                                    <div class="card-speaker">Carlos Amin Espinoza</div>
+                                    <div class="card-company">MICROSOFT</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 2: Del servicio al producto -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Del servicio al producto</div>
+                                    <div class="card-speaker">Alejandro Miguel Escalante Medina</div>
+                                    <div class="card-company">AUDELABS.COM</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 3: El poder de AWS a tu alcance -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">El poder de AWS a tu alcance</div>
+                                    <div class="card-speaker">Ana María Reyna R., Mariano Alberto Rodríguez D.</div>
+                                    <div class="card-company">AWS USER GROUP MIXTLI</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 4: Construyendo un futuro exitoso -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Construyendo un futuro exitoso: El poder de las Bases en Tecnologías de la Información</div>
+                                    <div class="card-speaker">Atanacio Mauricio Noyola Corona</div>
+                                    <div class="card-company">ORACLE DBA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1491,7 +1733,117 @@
                         </div>
                         
                         <div class="sessions-grid">
-                            <!-- Los eventos se agregarán aquí uno por uno -->
+                            <!-- Taller 1: Introducción a redes neuronales con Python -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">14:00 - 15:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Introducción a redes neuronales con Python en plataforma Google Colab y uso de aplicaciones en IA</div>
+                                    <div class="card-speaker">Sócrates Reyes Romero</div>
+                                    <div class="card-company">INAOE - PUEBLA</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 2: Programa tu primer aplicación Web Serverless con AWS -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">15:30 - 17:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Programa tu primer aplicación Web Serverless con AWS</div>
+                                    <div class="card-speaker">Ana María Reyna R., Mariano Alberto Rodríguez D.</div>
+                                    <div class="card-company">AWS USER GROUP MIXTLI</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 3: Videojuegos con APP Inventor -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">17:00 - 18:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Videojuegos con APP Inventor</div>
+                                    <div class="card-speaker">Jesús Hernández Guillén</div>
+                                    <div class="card-company">I. T. TLAHUAC</div>
+                                    <span class="card-category">Desarrollo</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 4: Animación y ciencia -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">18:30 - 19:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Animación y ciencia</div>
+                                    <div class="card-speaker">Ricardo Irving López Beristain</div>
+                                    <div class="card-company">Universidad Autónoma Metropolitana</div>
+                                    <span class="card-category">Multimedia</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 5: Instalación de PostgreSQL -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">14:00 - 15:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Instalación de PostgreSQL</div>
+                                    <div class="card-speaker">Bryan Heriberto Camacho C., Alfredo Rodríguez C. (DrokoRod)</div>
+                                    <div class="card-company">PGDAY MEXICO</div>
+                                    <span class="card-category">Base de Datos</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 6: Desarrollo con NodeJS -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">15:30 - 17:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Desarrollo con NodeJS</div>
+                                    <div class="card-speaker">Alejandro Miguel Escalante Medina</div>
+                                    <div class="card-company">AUDELABS.COM</div>
+                                    <span class="card-category">Desarrollo</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 7: Construye APIs Serverless con Python y AWS -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">17:00 - 18:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Construye APIs Serverless con Python y AWS</div>
+                                    <div class="card-speaker">Cristian Jesús Abrajan Fortis</div>
+                                    <div class="card-company">SOFTTEK</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 8: Crea tu primer app low code con Oracle Apex -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">18:30 - 19:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Crea tu primer app low code con Oracle Apex</div>
+                                    <div class="card-speaker">Carlos Francisco Huerta del Niño de Rivera</div>
+                                    <div class="card-company">Oracle</div>
+                                    <span class="card-category">Low Code</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1500,14 +1852,133 @@
                 <div class="schedule-day">
                     <div class="day-title">Sábado 20 de Septiembre 2025</div>
                     
-                    <!-- Ponencias - Auditorio 1 y 2 Edificio 53 -->
+                    <!-- Ponencias - Auditorio 1 Edificio 53 -->
                     <div class="auditorium-section">
                         <div class="auditorium-title">
-                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1 y 2 Edificio 53
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 1 Edificio 53
                         </div>
                         
                         <div class="sessions-grid">
-                            <!-- Los eventos se agregarán aquí uno por uno -->
+                            <!-- Evento 1: AWS Lambda: Menos estrés, más ServerLESS -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">AWS Lambda: Menos estrés, más ServerLESS</div>
+                                    <div class="card-speaker">Israel Jesús García Osorio</div>
+                                    <div class="card-company">AWS PUEBLA</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 2: How time and space complexity impacts your infrastructure -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">How time and space complexity impacts your infrastructure</div>
+                                    <div class="card-speaker">Edwin Alan Moedano Cardiel</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 3: Primeros pasos en AWS -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Primeros pasos en AWS</div>
+                                    <div class="card-speaker">Luis Gerardo Guerra Garrido</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 4: Serverless vs Anonymous. La nube al rescate -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Serverless vs Anonymous. La nube al rescate</div>
+                                    <div class="card-speaker">David Jonathan Sol Llaven</div>
+                                    <div class="card-company">PYTHON CDMX, AWS AJOLOTES, CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ponencias - Auditorio 2 Edificio 53 -->
+                    <div class="auditorium-section">
+                        <div class="auditorium-title">
+                            <i class="fas fa-microphone"></i> Ponencias - Auditorio 2 Edificio 53
+                        </div>
+                        
+                        <div class="sessions-grid">
+                            <!-- Evento 1: UX: El Ingrediente secreto del software -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">9:00 - 10:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">UX: El Ingrediente secreto del software que sí conecta más allá de funciones ¿cómo se siente usar lo que construyes?</div>
+                                    <div class="card-speaker">Jesús Javier García Osorio</div>
+                                    <div class="card-company">AWS PUEBLA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 2: El arte de construir castillos de datos al viento -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">10:00 - 11:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">El arte de construir castillos de datos al viento</div>
+                                    <div class="card-speaker">Héctor Iván Castañeda Nazario</div>
+                                    <div class="card-company">PYTHON CDMX</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 3: Transformación digital -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">11:00 - 12:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Transformación digital</div>
+                                    <div class="card-speaker">Jesús López Domínguez</div>
+                                    <div class="card-company">INTERCOVAMEX</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
+
+                            <!-- Evento 4: ¡Sin romper el cochinito! Construyendo tu aplicación -->
+                            <div class="session-card">
+                                <div class="card-header">
+                                    <span>PONENCIA</span>
+                                    <span class="card-time">12:00 - 13:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">¡Sin romper el cochinito! Construyendo tu aplicación con herramientas de software libre</div>
+                                    <div class="card-speaker">Mario Meza</div>
+                                    <div class="card-company">CAYLENT PUEBLA</div>
+                                    <span class="card-category">Product Design</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1518,21 +1989,150 @@
                         </div>
                         
                         <div class="sessions-grid">
-                            <!-- Los eventos se agregarán aquí uno por uno -->
+                            <!-- Taller 1: Ship Fast, Think Smart: CI/CD for GenAI with AWS & GITHUB -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">14:00 - 15:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Ship Fast, Think Smart: CI/CD for GenAI with AWS & GITHUB</div>
+                                    <div class="card-speaker">Edwin Alan Moedano Cardiel</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 2: Tu primer despliegue en la Nube -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">15:30 - 17:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Tu primer despliegue en la Nube</div>
+                                    <div class="card-speaker">Mario Meza</div>
+                                    <div class="card-company">CAYLENT PUEBLA</div>
+                                    <span class="card-category">Cloud</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 3: Front End Inteligente -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">17:00 - 18:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Front End Inteligente: Diseño fundamental con HTML/HTML5, CSS Y JS. Diseño con Frameworks React, Angular y Vue</div>
+                                    <div class="card-speaker">Marco Antonio Hernández Sánchez</div>
+                                    <div class="card-company">THYSSENKRUPP</div>
+                                    <span class="card-category">Frontend</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 4: Taller Sistema ERP Odoo -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">18:30 - 19:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Taller Sistema ERP Odoo</div>
+                                    <div class="card-speaker">Jesús López D., José Ángel Bacilio D.</div>
+                                    <div class="card-company">INTERCOVAMEX</div>
+                                    <span class="card-category">ERP</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 5: Potencializa tu desarrollo de software con Kiro AI -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">14:00 - 15:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Potencializa tu desarrollo de software con Kiro AI</div>
+                                    <div class="card-speaker">Luis Gerardo Guerra Garrido</div>
+                                    <div class="card-company">CAYLENT</div>
+                                    <span class="card-category">IA</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 6: UX/UI para desarrolladores -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">15:30 - 17:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">UX/UI para desarrolladores: Crear interfaces intuitivas</div>
+                                    <div class="card-speaker">Guadalupe Sarai Calixto M.</div>
+                                    <div class="card-company">SEBN MX</div>
+                                    <span class="card-category">UX/UI</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 7: Instalación de Linux -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">17:00 - 18:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Instalación de Linux</div>
+                                    <div class="card-speaker">Pablo Carmona</div>
+                                    <div class="card-company">TEC PUEBLA</div>
+                                    <span class="card-category">Linux</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 8: Instalación básica de ArchLinux -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">18:30 - 19:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Instalación básica de ArchLinux</div>
+                                    <div class="card-speaker">Yael Hernández Espinosa</div>
+                                    <div class="card-company">Instituto Politécnico Nacional, Unidad Profesional Interdisciplinaria de Ingeniería Campus Tlaxcala</div>
+                                    <span class="card-category">Linux</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 9: GitHub Foundations en 5 horas o menos -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">14:00 - 15:30</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">GitHub Foundations en 5 horas o menos</div>
+                                    <div class="card-speaker">Daniel Paredes Z., Galilea Márquez S.</div>
+                                    <div class="card-company">SUDO FCIENCIAS UNAM</div>
+                                    <span class="card-category">Git</span>
+                                </div>
+                            </div>
+
+                            <!-- Taller 10: Arduino Básico -->
+                            <div class="workshop-card">
+                                <div class="card-header">
+                                    <span>TALLER</span>
+                                    <span class="card-time">15:30 - 17:00</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">Arduino Básico</div>
+                                    <div class="card-speaker">WIE IEEE SECCION PUEBLA</div>
+                                    <div class="card-company">IEEE SECCIÓN PUEBLA</div>
+                                    <span class="card-category">Electrónica</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Workshops Section -->
-            <div class="workshops-section">
-                <h2 class="text-center mb-5"><i class="fas fa-laptop-code"></i> Talleres Adicionales (14:00 - 19:00 hrs)</h2>
-                <p class="text-center text-muted mb-4">Todos los talleres se realizarán en el Edificio 36</p>
-                
-                <div class="workshop-grid">
-                    <!-- Los talleres se agregarán aquí uno por uno -->
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1568,23 +2168,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="cta-title">¡No te lo pierdas!</h2>
-            <p class="cta-subtitle">Evento gratuito con ponentes de primer nivel</p>
-            <div class="cta-buttons">
-                <a href="#" class="btn-cta">
-                    <i class="fas fa-qrcode"></i>
-                    Registro con QR
-                </a>
-                <a href="index.html" class="btn-cta btn-cta-outline">
-                    <i class="fas fa-home"></i>
-                    Volver al Inicio
-                </a>
-            </div>
-        </div>
-    </section>
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>

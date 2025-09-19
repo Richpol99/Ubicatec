@@ -623,44 +623,186 @@
             transform: translateY(-2px);
         }
 
-        /* Responsive Design */
+        /* Responsive Design para móviles */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .hero-section {
-                padding: 80px 0 60px 0;
-            }
-            
-            .featured-title {
-                font-size: 2rem;
-            }
-            
-            .featured-description {
                 font-size: 1.1rem;
-            }
-            
-            .featured-meta {
-                gap: 16px;
-            }
-            
-            .event-card {
                 margin-bottom: 20px;
             }
             
+            .hero-section {
+                padding: 60px 0 40px 0;
+            }
+
+            /* Navbar móvil */
+            #header-navbar {
+                padding: 0.75rem 0 !important;
+            }
+
+            #header-navbar .navbar-brand img {
+                height: 30px !important;
+            }
+
+            #header-navbar .nav-link {
+                font-size: 14px !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+
+            /* Contenedor principal */
+            .container {
+                padding: 0 15px;
+            }
+            
+            .featured-title {
+                font-size: 1.8rem;
+                line-height: 1.3;
+            }
+            
+            .featured-description {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+            
+            .featured-meta {
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .featured-meta span {
+                font-size: 0.9rem;
+            }
+            
+            .event-card {
+                margin-bottom: 15px;
+                min-height: 400px;
+            }
+            
             .event-content {
+                padding: 15px;
+            }
+
+            .event-content h4 {
+                font-size: 1.1rem;
+                line-height: 1.3;
+                margin-bottom: 8px;
+            }
+
+            .event-content p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+                margin-bottom: 10px;
+            }
+
+            .event-meta {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+
+            .event-meta span {
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 10px 16px;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Grid de eventos */
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Mejoras para cards volteables en móvil */
+            .card-inner {
+                height: 100%;
+                min-height: 400px;
+            }
+
+            .card-front, .card-back {
+                height: 100%;
+                min-height: 400px;
+            }
+
+            .back-content {
                 padding: 20px;
+            }
+
+            .back-title {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+
+            .back-summary h4 {
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+            }
+
+            .back-summary h5 {
+                font-size: 0.95rem;
+                margin: 12px 0 6px 0;
+            }
+
+            .back-summary p {
+                font-size: 0.85rem;
+                line-height: 1.4;
+                margin-bottom: 12px;
+            }
+
+            .detail-item {
+                margin-bottom: 10px;
+                padding: 6px 0;
+            }
+
+            .detail-item i {
+                font-size: 1rem;
+                margin-top: 2px;
+            }
+
+            .detail-item strong {
+                font-size: 0.9rem;
+                margin-bottom: 3px;
+            }
+
+            .detail-item span {
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+
+            .back-activities li {
+                font-size: 0.85rem;
+                padding: 6px 0;
+            }
+
+            .back-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .back-button {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+
+            .flip-hint {
+                margin-top: 12px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
             }
         }
 
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .hero-subtitle {
@@ -668,23 +810,63 @@
             }
             
             .hero-section {
-                padding: 70px 0 50px 0;
+                padding: 50px 0 30px 0;
+            }
+
+            /* Navbar extra pequeña */
+            #header-navbar .navbar-brand img {
+                height: 25px !important;
+            }
+
+            #header-navbar .nav-link {
+                font-size: 13px !important;
+                padding: 0.4rem 0.5rem !important;
+            }
+
+            /* Contenedor más compacto */
+            .container {
+                padding: 0 10px;
             }
             
             .featured-event {
-                padding: 24px;
+                padding: 20px;
             }
             
             .featured-title {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
             
             .featured-description {
-                font-size: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .featured-meta {
+                gap: 8px;
+            }
+
+            .featured-meta span {
+                font-size: 0.8rem;
             }
             
             .event-content {
-                padding: 16px;
+                padding: 12px;
+            }
+
+            .event-content h4 {
+                font-size: 1rem;
+            }
+
+            .event-content p {
+                font-size: 0.85rem;
+            }
+
+            .event-meta {
+                font-size: 0.75rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -884,9 +1066,12 @@
             });
         });
 
-        // Función para voltear la tarjeta
+        // Función para voltear la tarjeta (solo si no está volteada)
         function flipCard(card) {
-            card.classList.toggle('flipped');
+            // Solo voltear si la card no está ya volteada
+            if (!card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+            }
         }
 
         // Función para volver al frente de la tarjeta
