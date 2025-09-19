@@ -112,6 +112,30 @@
             overflow: hidden;
         }
 
+        /* Event Image Container - Colores según tipo */
+        .event-image-container {
+            transition: all 0.3s ease;
+        }
+
+        .event-image-container.ponencia {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%) !important;
+        }
+
+        .event-image-container.taller {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+        }
+
+        /* Event Type Badge - Colores según tipo */
+        .event-type-badge.ponencia {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+        }
+
+        .event-type-badge.taller {
+            background: rgba(255, 255, 255, 0.3) !important;
+            color: white !important;
+        }
+
         .event-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
@@ -965,6 +989,23 @@
             document.getElementById('evento-empresa').textContent = params.empresa;
             document.getElementById('evento-ubicacion').textContent = params.ubicacion;
             document.getElementById('evento-categoria').textContent = params.categoria;
+
+            // Aplicar clases CSS según el tipo de evento
+            const eventContainer = document.querySelector('.event-image-container');
+            const eventBadge = document.querySelector('.event-type-badge');
+            
+            // Remover clases anteriores
+            eventContainer.classList.remove('ponencia', 'taller');
+            eventBadge.classList.remove('ponencia', 'taller');
+            
+            // Aplicar clase según el tipo
+            if (params.tipo === 'PONENCIA') {
+                eventContainer.classList.add('ponencia');
+                eventBadge.classList.add('ponencia');
+            } else if (params.tipo === 'TALLER') {
+                eventContainer.classList.add('taller');
+                eventBadge.classList.add('taller');
+            }
             
             // Generar descripción
             let descripcion = '';
